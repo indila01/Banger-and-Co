@@ -24,7 +24,7 @@ const Vehicle = ({ vehicle }) => {
           />
         </Card.Text>
 
-        <Card.Text as='h3'>${vehicle.price_per_day}</Card.Text>
+        <Card.Text as='h3'>${vehicle.pricePerDay}</Card.Text>
       </Card.Body>
     </Card>
   )

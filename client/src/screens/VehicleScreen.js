@@ -14,7 +14,7 @@ const VehicleScreen = ({ match }) => {
     }
 
     fetchVehicle()
-  }, [])
+  }, [match])
   return (
     <>
       <Row>
@@ -32,7 +32,7 @@ const VehicleScreen = ({ match }) => {
                 text={`${vehicle.numReviews} reviews`}
               />
             </ListGroup.Item>
-            <ListGroup.Item>Price: ${vehicle.price}</ListGroup.Item>
+            <ListGroup.Item>Price: ${vehicle.pricePerDay}</ListGroup.Item>
             <ListGroup variant='flush'>
               <ListGroup.Item>seats: {vehicle.seats}</ListGroup.Item>
               <ListGroup.Item>
@@ -49,7 +49,7 @@ const VehicleScreen = ({ match }) => {
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>${vehicle.price_per_day}</strong>
+                    <strong>${vehicle.pricePerDay}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>

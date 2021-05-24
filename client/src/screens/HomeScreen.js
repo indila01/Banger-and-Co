@@ -1,31 +1,38 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Col, Row } from 'react-bootstrap'
 import Vehicle from '../components/Vehicle'
-import axios from 'axios'
+import { listVehicles } from '../actions/vehicleActions'
+import Message from '../components/Message'
+import Loader from '../components/Loader'
 
 const HomeScreen = () => {
-  const [vehicles, setVehicles] = useState([])
+  const dispatch = useDispatch()
+
+  const vehicleList = useSelector((state) => state.vehicleList)
+  const { loading, error, vehicles } = vehicleList
 
   useEffect(() => {
-    const fetchVehicles = async () => {
-      const { data } = await axios.get('/api/vehicles')
-
-      setVehicles(data)
-    }
-
-    fetchVehicles()
-  }, [])
+    dispatch(listVehicles())
+  }, [dispatch])
 
   return (
     <div>
       <h1>Vehicles</h1>
-      <Row>
-        {vehicles.map((vehicle) => (
-          <Col key={vehicle._id} sm={12} md={6} lg={4} xl={3}>
-            <Vehicle vehicle={vehicle} />
-          </Col>
-        ))}
-      </Row>
+
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant='danger'>{error}</Message>
+      ) : (
+        <Row>
+          {vehicles.map((vehicle) => (
+            <Col key={vehicle._id} sm={12} md={6} lg={4} xl={3}>
+              <Vehicle vehicle={vehicle} />
+            </Col>
+          ))}
+        </Row>
+      )}
     </div>
   )
 }

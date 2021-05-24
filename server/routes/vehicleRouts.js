@@ -10,6 +10,7 @@ router.get(
   '/',
   asyncHandler(async (req, res) => {
     const vehicles = await Vehicle.find({})
+
     res.json(vehicles)
   })
 )

@@ -58,7 +58,7 @@ const vehicleSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    pricePerPay: {
+    pricePerDay: {
       type: Number,
       required: true,
     },

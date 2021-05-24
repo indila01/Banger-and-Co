@@ -1,6 +1,5 @@
 const vehicals = [
   {
-    _id: '1',
     type: 'Small town car',
     name: 'Toyota Aygo',
     miles_per_gallon: 18,
@@ -17,7 +16,6 @@ const vehicals = [
     availability: true,
   },
   {
-    _id: '2',
     type: 'Small town car',
     name: 'Ford Puma SUV',
     miles_per_gallon: 15,
@@ -34,7 +32,6 @@ const vehicals = [
     availability: false,
   },
   {
-    _id: '3',
     type: 'Family hatchback',
     name: 'Audi A3',
     miles_per_gallon: 13,
@@ -51,7 +48,6 @@ const vehicals = [
     availability: true,
   },
   {
-    _id: '4',
     type: 'Family hatchback',
     name: 'Honda Civic',
     miles_per_gallon: 35,
@@ -68,7 +64,6 @@ const vehicals = [
     availability: true,
   },
   {
-    _id: '5',
     type: 'sedan',
     name: 'Honda Accord',
     miles_per_gallon: 22,
@@ -85,7 +80,6 @@ const vehicals = [
     availability: true,
   },
   {
-    _id: '6',
     type: 'sedan',
     name: 'Hyundai Accent',
     miles_per_gallon: 29,
@@ -102,7 +96,6 @@ const vehicals = [
     availability: true,
   },
   {
-    _id: '7',
     type: 'Estate',
     name: 'BMW X3',
     miles_per_gallon: 23,
@@ -119,7 +112,6 @@ const vehicals = [
     availability: true,
   },
   {
-    _id: '8',
     type: 'Van',
     name: 'Volkswagen Transporter',
     miles_per_gallon: 23,

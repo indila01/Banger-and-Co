@@ -5,13 +5,20 @@ import {
   vehicleDetailstReducer,
   vehicleListReducer,
 } from './reducers/vehicleReducer'
+import { userLoginReducer, userRegisterReducer } from './reducers/userReducer'
 
 const reducer = combineReducers({
   vehicleList: vehicleListReducer,
   vehicleDetails: vehicleDetailstReducer,
+  userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
 })
 
-const initialState = {}
+const userInfoFromStorage = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : null
+
+const initialState = { userLogin: { userInfo: userInfoFromStorage } }
 
 const middleware = [thunk]
 

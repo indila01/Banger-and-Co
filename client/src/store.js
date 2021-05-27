@@ -11,6 +11,7 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
 } from './reducers/userReducer'
+import { bookingReduer } from './reducers/bookingReducer'
 
 const reducer = combineReducers({
   vehicleList: vehicleListReducer,
@@ -19,13 +20,20 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  bookingDetails: bookingReduer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
 
-const initialState = { userLogin: { userInfo: userInfoFromStorage } }
+// const driverDetailsFromStorage = localStorage.getItem('driverDetails')
+//   ? JSON.parse(localStorage.getItem('driverDetails'))
+//   : {}
+
+const initialState = {
+  userLogin: { userInfo: userInfoFromStorage },
+}
 
 const middleware = [thunk]
 

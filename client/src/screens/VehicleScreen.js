@@ -6,11 +6,15 @@ import { listVehicleDetails } from '../actions/vehicleActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const VehicleScreen = ({ match }) => {
+const VehicleScreen = ({ match, history }) => {
   const dispatch = useDispatch()
 
   const vehicleDetails = useSelector((state) => state.vehicleDetails)
   const { loading, error, vehicle } = vehicleDetails
+
+  const checkoutHandler = () => {
+    history.push('/login?redirect=booking')
+  }
 
   useEffect(() => {
     dispatch(listVehicleDetails(match.params.id))
@@ -75,6 +79,7 @@ const VehicleScreen = ({ match }) => {
                     className='btn-block'
                     type='button'
                     disabled={vehicle.availability === false}
+                    onClick={checkoutHandler}
                   >
                     Add To Cart
                   </Button>

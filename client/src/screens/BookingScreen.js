@@ -35,7 +35,7 @@ const BookingScreen = ({ history }) => {
         driverNIC,
       })
     )
-    history.push('/payment')
+    history.push('/paymenta')
   }
 
   const dispatch = useDispatch()

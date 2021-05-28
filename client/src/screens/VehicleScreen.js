@@ -5,6 +5,7 @@ import Rating from '../components/Rating'
 import { listVehicleDetails } from '../actions/vehicleActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { saveVehicleDetails } from '../actions/bookingAction'
 
 const VehicleScreen = ({ match, history }) => {
   const dispatch = useDispatch()
@@ -13,6 +14,7 @@ const VehicleScreen = ({ match, history }) => {
   const { loading, error, vehicle } = vehicleDetails
 
   const checkoutHandler = () => {
+    dispatch(saveVehicleDetails(vehicle.id))
     history.push('/login?redirect=booking')
   }
 

@@ -3,14 +3,25 @@ import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import { saveDriverDetails } from '../actions/bookingAction'
+import CheckoutSteps from '../components/CheckoutSteps'
 
 const BookingScreen = ({ history }) => {
-  const [driverName, setDriverName] = useState('')
-  const [driverEmail, setDriverEmail] = useState('')
-  const [driverContactNumber, setDriverContactNumber] = useState('')
-  const [driverAddress, setDriverAddress] = useState('')
-  const [driverLicenseNumber, setDriverLicenseNumber] = useState('')
-  const [driverNIC, setDriverNIC] = useState('')
+  const bookingDetails = useSelector((state) => state.bookingDetails)
+
+  const { driverDetails } = bookingDetails
+
+  const [driverName, setDriverName] = useState(driverDetails.driverName)
+  const [driverEmail, setDriverEmail] = useState(driverDetails.driverEmail)
+  const [driverContactNumber, setDriverContactNumber] = useState(
+    driverDetails.driverContactNumber
+  )
+  const [driverAddress, setDriverAddress] = useState(
+    driverDetails.driverAddress
+  )
+  const [driverLicenseNumber, setDriverLicenseNumber] = useState(
+    driverDetails.driverLicenseNumber
+  )
+  const [driverNIC, setDriverNIC] = useState(driverDetails.driverNIC)
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -31,6 +42,7 @@ const BookingScreen = ({ history }) => {
 
   return (
     <FormContainer>
+      <CheckoutSteps step1 step2 />
       <h1>Driver Details</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='driverName'>

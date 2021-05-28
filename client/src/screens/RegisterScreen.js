@@ -16,16 +16,17 @@ const RegisterScreen = ({ location, history }) => {
 
   const dispatch = useDispatch()
 
+  const userLogin = useSelector((state) => state.userLogin)
   const userRegister = useSelector((state) => state.userRegister)
-  const { loading, error, userInfo } = userRegister
+  // const { loading, error, userInfo } = userLogin
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   useEffect(() => {
-    if (userInfo) {
+    if (userLogin.userInfo) {
       history.push(redirect)
     }
-  }, [history, userInfo, redirect])
+  }, [history, userLogin.userInfo, redirect])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -40,8 +41,10 @@ const RegisterScreen = ({ location, history }) => {
     <FormContainer>
       <h1>Sign Up</h1>
       {message && <Message variant='danger'>{message}</Message>}
-      {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader />}
+      {userRegister.error && (
+        <Message variant='danger'>{userRegister.error}</Message>
+      )}
+      {userRegister.loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
           <Form.Label>Name</Form.Label>

@@ -10,18 +10,24 @@ const BookingScreen = ({ history }) => {
 
   const { driverDetails } = bookingDetails
 
-  const [driverName, setDriverName] = useState(driverDetails.driverName)
-  const [driverEmail, setDriverEmail] = useState(driverDetails.driverEmail)
+  const [driverName, setDriverName] = useState(
+    driverDetails ? driverDetails.driverName : ''
+  )
+  const [driverEmail, setDriverEmail] = useState(
+    driverDetails ? driverDetails.driverEmail : ''
+  )
   const [driverContactNumber, setDriverContactNumber] = useState(
-    driverDetails.driverContactNumber
+    driverDetails ? driverDetails.driverContactNumber : ''
   )
   const [driverAddress, setDriverAddress] = useState(
-    driverDetails.driverAddress
+    driverDetails ? driverDetails.driverAddress : ''
   )
   const [driverLicenseNumber, setDriverLicenseNumber] = useState(
-    driverDetails.driverLicenseNumber
+    driverDetails ? driverDetails.driverLicenseNumber : ''
   )
-  const [driverNIC, setDriverNIC] = useState(driverDetails.driverNIC)
+  const [driverNIC, setDriverNIC] = useState(
+    driverDetails ? driverDetails.driverNIC : ''
+  )
 
   const submitHandler = (e) => {
     e.preventDefault()

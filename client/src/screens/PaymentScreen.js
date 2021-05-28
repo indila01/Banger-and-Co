@@ -6,6 +6,12 @@ import { savePaymentMethod } from '../actions/bookingAction'
 import CheckoutSteps from '../components/CheckoutSteps'
 
 const PaymentScreen = ({ history }) => {
+  const bookingDetails = useSelector((state) => state.bookingDetails)
+  const { driverDetails } = bookingDetails
+
+  if (!driverDetails) {
+    history.push('/booking')
+  }
   const [paymentMethod, setPaymentMethod] = useState('PayPal')
 
   const submitHandler = (e) => {

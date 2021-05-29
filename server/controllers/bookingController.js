@@ -66,4 +66,12 @@ const updateBookingToPaid = asyncHandler(async (req, res) => {
   }
 })
 
-export { createBooking, getBookingbyId, updateBookingToPaid }
+// @desc    get logged in user bookings
+// @route   GET /api/bookings/:id/mybookings
+// @access  Private
+const getMyBookings = asyncHandler(async (req, res) => {
+  const bookings = await Booking.find({ user: req.user._id })
+  res.json(bookings)
+})
+
+export { createBooking, getBookingbyId, updateBookingToPaid, getMyBookings }

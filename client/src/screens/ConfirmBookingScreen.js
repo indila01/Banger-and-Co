@@ -1,14 +1,188 @@
 import React, { useState } from 'react'
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import {
+  Button,
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Card,
+  Container,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 
 const ConfirmBookingScreen = () => {
+  const bookingDetails = useSelector((state) => state.bookingDetails)
+
+  //   Calculate prices
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2)
+  }
+  const tax = addDecimals(
+    Number((0.15 * bookingDetails.vehicleDetails.pricePerDay).toFixed(2))
+  )
+  const totalPrice = (
+    Number(bookingDetails.vehicleDetails.pricePerDay) + Number(tax)
+  ).toFixed(2)
+
+  const placeOrderHandler = () => {
+    console.log('order')
+  }
+
   return (
-    <div>
+    <>
       <CheckoutSteps step1 step2 step3 step4 />
-    </div>
+      <Row>
+        <Col md={8}>
+          <ListGroup variant='flush'>
+            <ListGroup.Item>
+              <h2>{bookingDetails.vehicleDetails.name} </h2>
+              <p>{bookingDetails.vehicleDetails.type}</p>
+              {bookingDetails.vehicleDetails === null ? (
+                <Message>Your have not selected a vehicle</Message>
+              ) : (
+                <ListGroup variant='flush'>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col md={6}>
+                        <Image
+                          src={bookingDetails.vehicleDetails.image}
+                          alt={bookingDetails.vehicleDetails.image}
+                          fluid
+                          rounded
+                        />
+                      </Col>
+                      <Col md={6}>
+                        <Row>
+                          <Col>
+                            <i className='far fa-user me-1'></i>
+                            {bookingDetails.vehicleDetails.seats} Seats
+                          </Col>
+                          <Col>
+                            <i className='fas fa-cogs me-1'></i>
+                            {bookingDetails.vehicleDetails.transmission}
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <i className='fas fa-gas-pump me-1'></i>
+                            {bookingDetails.vehicleDetails.fuel}
+                          </Col>
+                          <Col>
+                            <i className='fas fa-bolt me-1'></i>
+                            {bookingDetails.vehicleDetails.horsepower} HP
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>{bookingDetails.vehicleDetails.engine} L</Col>
+                          <Col>
+                            {bookingDetails.vehicleDetails.miles_per_gallon} mpg
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            {bookingDetails.vehicleDetails.cylinders} cylinders
+                          </Col>
+                        </Row>
+                      </Col>
+                      {/* <Col> */}
+                      {/* {item.qty} x ${item.price} = ${item.qty * item.price} */}
+                      {/* </Col> */}
+                    </Row>
+                  </ListGroup.Item>
+                </ListGroup>
+              )}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <h2>Driver Details</h2>
+              <p className='my-0'>
+                <strong>Name : </strong>
+                {bookingDetails.driverDetails.driverName}
+              </p>
+              <p className='my-0'>
+                <strong>Email : </strong>
+                {bookingDetails.driverDetails.driverEmail}
+              </p>
+              <p className='my-0'>
+                <strong>Contact Number : </strong>
+                {bookingDetails.driverDetails.driverContactNumber}
+              </p>
+              <p className='my-0'>
+                <strong>Address : </strong>
+                {bookingDetails.driverDetails.driverAddress}
+              </p>
+              <p className='my-0'>
+                <strong>NIC : </strong>
+                {bookingDetails.driverDetails.driverNIC}
+              </p>
+              <p className='my-0'>
+                <strong>Driving License : </strong>
+                {bookingDetails.driverDetails.driverLicenseNumber}
+              </p>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <h2>Payment Method</h2>
+              <strong>Method: </strong>
+              {bookingDetails.paymentMehod}
+            </ListGroup.Item>
+          </ListGroup>
+        </Col>
+        <Col md={4}>
+          <Card>
+            <ListGroup variant='flush'>
+              <ListGroup.Item>
+                <h2>Booking Summery</h2>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Price Per day</Col>
+                  <Col>
+                    {' '}
+                    ${addDecimals(bookingDetails.vehicleDetails.pricePerDay)}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Car Rental Price</Col>
+                  <Col>
+                    {' '}
+                    ${addDecimals(bookingDetails.vehicleDetails.pricePerDay)} *
+                    days
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Tax</Col>
+                  <Col>${tax}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Total Price</Col>
+                  <Col>${totalPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button
+                  type='button'
+                  className='btn-block'
+                  disabled={
+                    bookingDetails.vehicleDetails.availablility === false
+                  }
+                  onClick={placeOrderHandler}
+                >
+                  Place Order
+                </Button>
+              </ListGroup.Item>
+            </ListGroup>
+          </Card>
+        </Col>
+      </Row>
+    </>
   )
 }
 

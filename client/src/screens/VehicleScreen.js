@@ -5,12 +5,18 @@ import Rating from '../components/Rating'
 import { listVehicleDetails } from '../actions/vehicleActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { saveVehicleDetails } from '../actions/bookingAction'
 
-const VehicleScreen = ({ match }) => {
+const VehicleScreen = ({ match, history }) => {
   const dispatch = useDispatch()
 
   const vehicleDetails = useSelector((state) => state.vehicleDetails)
   const { loading, error, vehicle } = vehicleDetails
+
+  const checkoutHandler = () => {
+    dispatch(saveVehicleDetails(vehicle))
+    history.push('/login?redirect=driverDetails')
+  }
 
   useEffect(() => {
     dispatch(listVehicleDetails(match.params.id))
@@ -75,6 +81,7 @@ const VehicleScreen = ({ match }) => {
                     className='btn-block'
                     type='button'
                     disabled={vehicle.availability === false}
+                    onClick={checkoutHandler}
                   >
                     Add To Cart
                   </Button>

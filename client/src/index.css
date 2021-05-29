@@ -42,3 +42,13 @@ h3 {
 .section-4 {
     background: #e5e5e5;
 }
+
+.stepCompleted {
+    color: rgb(0, 0, 0) !important;
+    text-decoration: none !important;
+}
+
+.stepNotCompleted {
+    color: rgb(173, 173, 173) !important;
+    text-decoration: none !important;
+}

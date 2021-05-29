@@ -5,7 +5,7 @@ import FormContainer from '../components/FormContainer'
 import { saveDriverDetails } from '../actions/bookingAction'
 import CheckoutSteps from '../components/CheckoutSteps'
 
-const BookingScreen = ({ history }) => {
+const DriverDetailsScreen = ({ history }) => {
   const bookingDetails = useSelector((state) => state.bookingDetails)
 
   const { driverDetails } = bookingDetails
@@ -121,4 +121,4 @@ const BookingScreen = ({ history }) => {
   )
 }
 
-export default BookingScreen
+export default DriverDetailsScreen

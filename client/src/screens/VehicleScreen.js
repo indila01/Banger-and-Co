@@ -15,7 +15,7 @@ const VehicleScreen = ({ match, history }) => {
 
   const checkoutHandler = () => {
     dispatch(saveVehicleDetails(vehicle))
-    history.push('/login?redirect=booking')
+    history.push('/login?redirect=driverDetails')
   }
 
   useEffect(() => {

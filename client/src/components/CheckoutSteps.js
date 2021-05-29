@@ -19,7 +19,7 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
 
       <Nav.Item>
         {step2 ? (
-          <LinkContainer to='/booking'>
+          <LinkContainer to='/driverDetails'>
             <Nav.Link className='stepCompleted'>Booking</Nav.Link>
           </LinkContainer>
         ) : (

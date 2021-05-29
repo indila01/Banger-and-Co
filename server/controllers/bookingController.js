@@ -42,4 +42,28 @@ const getBookingbyId = asyncHandler(async (req, res) => {
   }
 })
 
-export { createBooking, getBookingbyId }
+// @desc    update booking to paid
+// @route   PUT /api/bookings/:id/pay
+// @access  Private
+const updateBookingToPaid = asyncHandler(async (req, res) => {
+  const booking = await Booking.findById(req.params.id)
+
+  if (booking) {
+    booking.isPaid = true
+    booking.paidAt = Date.now()
+    booking.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.payer.email_address,
+    }
+    const updatedBooking = await booking.save()
+
+    res.json(updatedBooking)
+  } else {
+    res.status(404)
+    throw new Error('Booking not found')
+  }
+})
+
+export { createBooking, getBookingbyId, updateBookingToPaid }

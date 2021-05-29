@@ -58,7 +58,7 @@ const bookingSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    deliveredAt: {
+    verifiedAt: {
       type: Date,
     },
   },

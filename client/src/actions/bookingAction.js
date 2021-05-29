@@ -8,6 +8,9 @@ import {
   BOOKING_DETAILS_REQUEST,
   BOOKING_DETAILS_SUCCESS,
   BOOKING_DETAILS_FAIL,
+  BOOKING_PAY_SUCCESS,
+  BOOKING_PAY_FAIL,
+  BOOKING_PAY_REQUEST,
 } from '../constants/bookingConstants'
 import axios from 'axios'
 
@@ -102,3 +105,41 @@ export const getBookingDetails = (id) => async (dispatch, getState) => {
     })
   }
 }
+
+export const payBooking =
+  (bookingId, paymentResult) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: BOOKING_PAY_REQUEST,
+      })
+
+      const {
+        userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      const { data } = await axios.put(
+        `/api/bookings/${bookingId}/pay`,
+        paymentResult,
+        config
+      )
+
+      dispatch({
+        type: BOOKING_PAY_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispatch({
+        type: BOOKING_PAY_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }

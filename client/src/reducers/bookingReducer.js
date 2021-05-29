@@ -5,6 +5,10 @@ import {
   BOOKING_DETAILS_FAIL,
   BOOKING_DETAILS_REQUEST,
   BOOKING_DETAILS_SUCCESS,
+  BOOKING_PAY_FAIL,
+  BOOKING_PAY_REQUEST,
+  BOOKING_PAY_RESET,
+  BOOKING_PAY_SUCCESS,
   BOOKING_SAVE_DRIVER_DETAILS,
   BOOKING_SAVE_PAYMENT_METHOD,
   BOOKING_SAVE_VEHICLE_DETAILS,
@@ -74,6 +78,29 @@ export const bookingDetailsReducer = (
         loading: false,
         error: action.payload,
       }
+    default:
+      return state
+  }
+}
+
+export const bookingPayReducer = (state = {}, action) => {
+  switch (action.type) {
+    case BOOKING_PAY_REQUEST:
+      return {
+        loading: true,
+      }
+    case BOOKING_PAY_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      }
+    case BOOKING_PAY_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    case BOOKING_PAY_RESET:
+      return {}
     default:
       return state
   }

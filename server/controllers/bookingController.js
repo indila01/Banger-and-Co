@@ -70,7 +70,9 @@ const updateBookingToPaid = asyncHandler(async (req, res) => {
 // @route   GET /api/bookings/:id/mybookings
 // @access  Private
 const getMyBookings = asyncHandler(async (req, res) => {
-  const bookings = await Booking.find({ user: req.user._id })
+  const bookings = await Booking.find({ user: req.user._id }).populate(
+    'vehicle'
+  )
   res.json(bookings)
 })
 

@@ -12,6 +12,7 @@ import PaymentScreen from './screens/PaymentScreen'
 import ConfirmBookingScreen from './screens/ConfirmBookingScreen'
 import DriverDetailsScreen from './screens/DriverDetailsScreen'
 import BookingScreen from './screens/BookingScreen'
+import UserListScreen from './screens/UserListScreen'
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route path='/driverDetails' component={DriverDetailsScreen} />
           <Route path='/confirmBooking' component={ConfirmBookingScreen} />
           <Route path='/payment' component={PaymentScreen} />
+          <Route path='/admin/userlist' component={UserListScreen} />
           <Route path='/' component={HomeScreen} exact />
         </Container>
       </main>

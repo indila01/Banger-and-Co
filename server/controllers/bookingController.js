@@ -26,4 +26,20 @@ const createBooking = asyncHandler(async (req, res) => {
   }
 })
 
-export { createBooking }
+// @desc    get booking by ID
+// @route   GET /api/bookings/:id
+// @access  Private
+const getBookingbyId = asyncHandler(async (req, res) => {
+  const booking = await Booking.findById(req.params.id)
+    .populate('user', 'name email')
+    .populate('vehicle')
+
+  if (booking) {
+    res.json(booking)
+  } else {
+    res.status(404)
+    throw new Error('Booking not found')
+  }
+})
+
+export { createBooking, getBookingbyId }

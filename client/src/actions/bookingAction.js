@@ -5,6 +5,9 @@ import {
   BOOKING_CREATE_FAIL,
   BOOKING_CREATE_SUCCESS,
   BOOKING_CREATE_REQUEST,
+  BOOKING_DETAILS_REQUEST,
+  BOOKING_DETAILS_SUCCESS,
+  BOOKING_DETAILS_FAIL,
 } from '../constants/bookingConstants'
 import axios from 'axios'
 
@@ -60,6 +63,38 @@ export const createBooking = (booking) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: BOOKING_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getBookingDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: BOOKING_DETAILS_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await axios.get(`/api/bookings/${id}`, config)
+
+    dispatch({
+      type: BOOKING_DETAILS_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: BOOKING_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const rentSchema = mongoose.Schema(
+const bookingSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,11 +12,13 @@ const rentSchema = mongoose.Schema(
       required: true,
       ref: 'Vehicle',
     },
-    shippingAddress: {
-      address: { type: String, required: true },
-      city: { type: String, required: true },
-      postalCode: { type: String, required: true },
-      country: { type: String, required: true },
+    driverDetails: {
+      driverName: { type: String, required: true },
+      driverEmail: { type: String, required: true },
+      driverContactNumber: { type: Number, required: true },
+      driverAddress: { type: String, required: true },
+      driverNIC: { type: String, required: true },
+      driverLicenseNumber: { type: String, required: true },
     },
     paymentMethod: {
       type: String,
@@ -28,7 +30,7 @@ const rentSchema = mongoose.Schema(
       update_time: { type: String },
       email_address: { type: String },
     },
-    taxPrice: {
+    tax: {
       type: Number,
       required: true,
       default: 0.0,
@@ -51,7 +53,7 @@ const rentSchema = mongoose.Schema(
     paidAt: {
       type: Date,
     },
-    isDelivered: {
+    isVerified: {
       type: Boolean,
       required: true,
       default: false,
@@ -65,6 +67,6 @@ const rentSchema = mongoose.Schema(
   }
 )
 
-const Rent = mongoose.model('Rent', rentSchema)
+const Booking = mongoose.model('Booking', bookingSchema)
 
-export default Rent
+export default Booking

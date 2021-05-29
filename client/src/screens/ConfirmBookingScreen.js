@@ -1,19 +1,12 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import {
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-  Container,
-} from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
+import { createBooking } from '../actions/bookingAction'
 
-const ConfirmBookingScreen = () => {
+const ConfirmBookingScreen = ({ history }) => {
+  const dispatch = useDispatch()
   const bookingDetails = useSelector((state) => state.bookingDetails)
 
   //   Calculate prices
@@ -27,8 +20,26 @@ const ConfirmBookingScreen = () => {
     Number(bookingDetails.vehicleDetails.pricePerDay) + Number(tax)
   ).toFixed(2)
 
-  const placeOrderHandler = () => {
-    console.log('order')
+  const bookingCreate = useSelector((state) => state.bookingCreate)
+  const { booking, success, error } = bookingCreate
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/booking/${booking._id}`)
+    }
+    // eslint-disable-next-line
+  }, [history, success])
+
+  const placeBooking = () => {
+    dispatch(
+      createBooking({
+        vehicleDetails: bookingDetails.vehicleDetails,
+        driverDetails: bookingDetails.driverDetails,
+        paymentMethod: bookingDetails.paymentMethod,
+        totalPrice: totalPrice,
+        tax: tax,
+      })
+    )
   }
 
   return (
@@ -125,7 +136,7 @@ const ConfirmBookingScreen = () => {
             <ListGroup.Item>
               <h2>Payment Method</h2>
               <strong>Method: </strong>
-              {bookingDetails.paymentMehod}
+              {bookingDetails.paymentMethod}
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -167,13 +178,13 @@ const ConfirmBookingScreen = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
+                {error && <Message variant='danger'>{error}</Message>}
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Button
                   type='button'
                   className='btn-block'
-                  disabled={
-                    bookingDetails.vehicleDetails.availablility === false
-                  }
-                  onClick={placeOrderHandler}
+                  onClick={placeBooking}
                 >
                   Place Order
                 </Button>

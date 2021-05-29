@@ -11,7 +11,7 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
 } from './reducers/userReducer'
-import { bookingReduer } from './reducers/bookingReducer'
+import { bookingReduer, bookingCreateReducer } from './reducers/bookingReducer'
 
 const reducer = combineReducers({
   vehicleList: vehicleListReducer,
@@ -21,6 +21,7 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   bookingDetails: bookingReduer,
+  bookingCreate: bookingCreateReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

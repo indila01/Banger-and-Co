@@ -13,6 +13,8 @@ import ConfirmBookingScreen from './screens/ConfirmBookingScreen'
 import DriverDetailsScreen from './screens/DriverDetailsScreen'
 import BookingScreen from './screens/BookingScreen'
 import UserListScreen from './screens/UserListScreen'
+import UserEditScreen from './screens/UserEditScreen'
+import VehicleListScreen from './screens/VehicleListScreen'
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
           <Route path='/confirmBooking' component={ConfirmBookingScreen} />
           <Route path='/payment' component={PaymentScreen} />
           <Route path='/admin/userlist' component={UserListScreen} />
+          <Route path='/admin/user/:id/edit' component={UserEditScreen} />
+          <Route path='/admin/vehiclelist' component={VehicleListScreen} />
           <Route path='/' component={HomeScreen} exact />
         </Container>
       </main>

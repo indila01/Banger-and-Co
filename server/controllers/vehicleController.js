@@ -24,4 +24,19 @@ const getVehicleById = asyncHandler(async (req, res) => {
   }
 })
 
-export { getVehicles, getVehicleById }
+// @desc    delete a vehicle
+// @route   DELETE /api/vehicles/:id
+// @access  private/admin
+const deleteVehicle = asyncHandler(async (req, res) => {
+  const vehicle = await Vehicle.findById(req.params.id)
+
+  if (vehicle) {
+    await vehicle.remove()
+    res.json({ message: 'Vehicle removed' })
+  } else {
+    res.status(404)
+    throw new Error('Vehicle not found')
+  }
+})
+
+export { getVehicles, getVehicleById, deleteVehicle }

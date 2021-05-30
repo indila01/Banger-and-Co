@@ -25,7 +25,7 @@ const ConfirmBookingScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      history.push(`/bookings/${booking._id}`)
+      history.push(`/booking/${booking._id}`)
     }
     // eslint-disable-next-line
   }, [history, success])

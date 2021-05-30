@@ -113,7 +113,12 @@ const DriverDetailsScreen = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' varient='primery'>
+        <Button
+          className='my-3'
+          style={{ width: '100%' }}
+          type='submit'
+          varient='primery'
+        >
           Continue
         </Button>
       </Form>

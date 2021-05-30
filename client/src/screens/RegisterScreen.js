@@ -18,7 +18,6 @@ const RegisterScreen = ({ location, history }) => {
 
   const userLogin = useSelector((state) => state.userLogin)
   const userRegister = useSelector((state) => state.userRegister)
-  // const { loading, error, userInfo } = userLogin
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
@@ -85,7 +84,12 @@ const RegisterScreen = ({ location, history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Button
+          type='submit'
+          variant='primary'
+          className='my-3'
+          style={{ width: '100%' }}
+        >
           Register
         </Button>
       </Form>

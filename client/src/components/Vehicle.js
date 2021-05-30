@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card } from 'react-bootstrap'
+import { Card, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Rating from './Rating'
 
@@ -7,15 +7,16 @@ const Vehicle = ({ vehicle }) => {
   return (
     <Card className='my-3 p-3 rounded'>
       <Link to={`/vehicle/${vehicle._id}`}>
-        <Card.Img src={vehicle.image} variant='top' />
+        <Card.Img src={vehicle.image} variant='top' rounded />
       </Link>
 
       <Card.Body>
-        <Link to={`/vehicle/${vehicle._id}`}>
-          <Card.Title as='div'>
-            <strong>{vehicle.name}</strong>
-          </Card.Title>
-        </Link>
+        <Card.Title className='mb-0' as='div'>
+          <strong>{vehicle.name}</strong>
+        </Card.Title>
+        <Card.Text className='mt-0' as='p'>
+          {vehicle.type}
+        </Card.Text>
 
         <Card.Text as='div'>
           <Rating
@@ -25,6 +26,17 @@ const Vehicle = ({ vehicle }) => {
         </Card.Text>
 
         <Card.Text as='h3'>${vehicle.pricePerDay}</Card.Text>
+        <Link to={`/vehicle/${vehicle._id}`}>
+          <Button
+            style={{ width: '100%' }}
+            type='button'
+            className='btn-block'
+            variant='success'
+            onClick={`/vehicle/${vehicle._id}`}
+          >
+            View
+          </Button>
+        </Link>
       </Card.Body>
     </Card>
   )

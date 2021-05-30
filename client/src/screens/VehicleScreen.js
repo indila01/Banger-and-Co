@@ -31,12 +31,50 @@ const VehicleScreen = ({ match, history }) => {
       ) : (
         <Row>
           <Col md={6}>
-            <Image src={vehicle.image} alt={vehicle.name} fluid />
+            <Image src={vehicle.image} alt={vehicle.name} fluid rounded />
           </Col>
           <Col md={3}>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h3>{vehicle.name}</h3>
+                <h3 className='py-0'>{vehicle.name}</h3>
+                {vehicle.type}
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <Row>
+                      <Col>
+                        <i className='far fa-user me-1'></i>
+                        {vehicle.seats} Seats
+                      </Col>
+                      <Col>
+                        <i className='fas fa-cogs me-1'></i>
+                        {vehicle.transmission}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <i className='fas fa-gas-pump me-1'></i>
+                        {vehicle.fuel}
+                      </Col>
+                      <Col>
+                        <i className='fas fa-bolt me-1'></i>
+                        {vehicle.horsepower} HP
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>{vehicle.engine} L</Col>
+                      <Col>{vehicle.miles_per_gallon} mpg</Col>
+                    </Row>
+                    <Row>
+                      <Col>{vehicle.cylinders} cylinders</Col>
+                    </Row>
+                  </Col>
+                  {/* <Col> */}
+                  {/* {item.qty} x ${item.price} = ${item.qty * item.price} */}
+                  {/* </Col> */}
+                </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Rating
@@ -44,13 +82,6 @@ const VehicleScreen = ({ match, history }) => {
                   text={`${vehicle.numReviews} reviews`}
                 />
               </ListGroup.Item>
-              <ListGroup.Item>Price: ${vehicle.pricePerDay}</ListGroup.Item>
-              <ListGroup variant='flush'>
-                <ListGroup.Item>seats: {vehicle.seats}</ListGroup.Item>
-                <ListGroup.Item>
-                  Miles per galon: {vehicle.miles_per_gallon}
-                </ListGroup.Item>
-              </ListGroup>
             </ListGroup>
           </Col>
           <Col md={3}>
@@ -78,12 +109,13 @@ const VehicleScreen = ({ match, history }) => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Button
+                    style={{ width: '100%' }}
                     className='btn-block'
                     type='button'
                     disabled={vehicle.availability === false}
                     onClick={checkoutHandler}
                   >
-                    Add To Cart
+                    Checkout
                   </Button>
                 </ListGroup.Item>
               </ListGroup>

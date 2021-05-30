@@ -19,7 +19,10 @@ const Header = () => {
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand href='/'>
-              <strong className='h4 mb-0 font-weight-bold'>
+              <strong
+                className='h4 mb-0 font-weight-bold'
+                style={{ color: 'white' }}
+              >
                 <i className='fas fa-car-alt' /> Banger and Co
               </strong>
             </Navbar.Brand>

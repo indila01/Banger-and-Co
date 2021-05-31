@@ -1,10 +1,15 @@
 import axios from 'axios'
 import {
+  BOOKING_DETAILS_RESET,
+  BOOKING_LIST_MY_RESET,
+} from '../constants/bookingConstants'
+import {
   USER_DELETE_FAIL,
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
+  USER_DETAILS_RESET,
   USER_DETAILS_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
@@ -260,10 +265,9 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem('vehicleDetails')
   localStorage.removeItem('driverDetails')
   localStorage.removeItem('paymentMethod')
-  dispatch({
-    type: USER_LOGOUT,
-  })
-  dispatch({
-    type: USER_LIST_RESET,
-  })
+  dispatch({ type: USER_LOGOUT })
+  dispatch({ type: USER_LIST_RESET })
+  dispatch({ type: BOOKING_LIST_MY_RESET })
+  dispatch({ type: BOOKING_DETAILS_RESET })
+  dispatch({ type: USER_DETAILS_RESET })
 }

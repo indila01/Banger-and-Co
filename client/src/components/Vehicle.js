@@ -7,7 +7,7 @@ const Vehicle = ({ vehicle }) => {
   return (
     <Card className='my-3 p-3 rounded'>
       <Link to={`/vehicle/${vehicle._id}`}>
-        <Card.Img src={vehicle.image} variant='top' rounded />
+        <Card.Img src={vehicle.image} variant='top' />
       </Link>
 
       <Card.Body>
@@ -32,7 +32,6 @@ const Vehicle = ({ vehicle }) => {
             type='button'
             className='btn-block'
             variant='success'
-            onClick={`/vehicle/${vehicle._id}`}
           >
             View
           </Button>

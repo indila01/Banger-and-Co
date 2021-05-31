@@ -42,6 +42,7 @@ const ProfileScreen = ({ location, history }) => {
       } else {
         setName(user.name)
         setEmail(user.email)
+        // dispatch(listMyBookings())
       }
     }
   }, [dispatch, history, userInfo, user])

@@ -6,6 +6,9 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { createBooking } from '../actions/bookingAction'
 
 const ConfirmBookingScreen = ({ history }) => {
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const dispatch = useDispatch()
   const bookingDetails = useSelector((state) => state.bookingDetails)
 
@@ -24,11 +27,15 @@ const ConfirmBookingScreen = ({ history }) => {
   const { booking, success, error } = bookingCreate
 
   useEffect(() => {
-    if (success) {
-      history.push(`/booking/${booking._id}`)
+    if (userInfo) {
+      if (success) {
+        history.push(`/booking/${booking._id}`)
+      }
+    } else {
+      history.push('/login')
     }
     // eslint-disable-next-line
-  }, [history, success])
+  }, [history, success, userInfo])
 
   const placeBooking = () => {
     dispatch(

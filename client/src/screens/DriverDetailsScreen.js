@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
@@ -6,6 +6,9 @@ import { saveDriverDetails } from '../actions/bookingAction'
 import CheckoutSteps from '../components/CheckoutSteps'
 
 const DriverDetailsScreen = ({ history }) => {
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const bookingDetails = useSelector((state) => state.bookingDetails)
 
   const { driverDetails } = bookingDetails
@@ -40,6 +43,11 @@ const DriverDetailsScreen = ({ history }) => {
     history.push('/payment')
   }
 
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
+  }, [userInfo, history])
   const dispatch = useDispatch()
 
   return (

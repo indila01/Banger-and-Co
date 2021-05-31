@@ -1,3 +1,4 @@
+import path from 'path'
 import express from 'express'
 import dotenv from 'dotenv'
 import colors from 'colors'
@@ -8,6 +9,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import vehicleRoutes from './routes/vehicleRouts.js'
 import userRoutes from './routes/userRoutes.js'
 import bookingRoutes from './routes/bookingRoutes.js'
+import uploadRoutes from './routes/uploadRoutes.js'
 
 dotenv.config()
 
@@ -24,10 +26,14 @@ app.get('/', (req, res) => {
 app.use('/api/vehicles', vehicleRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/bookings', bookingRoutes)
+app.use('/api/upload', uploadRoutes)
 
 app.get('/api/congif/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 )
+
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(notFound)
 app.use(errorHandler)

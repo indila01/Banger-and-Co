@@ -66,6 +66,25 @@ const updateBookingToPaid = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    update booking to paid
+// @route   PUT /api/bookings/:id/verified
+// @access  Private,admin
+const updateBookingToVerified = asyncHandler(async (req, res) => {
+  const booking = await Booking.findById(req.params.id)
+
+  if (booking) {
+    booking.isVerified = true
+    booking.verifiedAt = Date.now()
+
+    const updatedBooking = await booking.save()
+
+    res.json(updatedBooking)
+  } else {
+    res.status(404)
+    throw new Error('Booking not found')
+  }
+})
+
 // @desc    get logged in user bookings
 // @route   GET /api/bookings/:id/mybookings
 // @access  Private
@@ -92,4 +111,5 @@ export {
   updateBookingToPaid,
   getMyBookings,
   getBookings,
+  updateBookingToVerified,
 }

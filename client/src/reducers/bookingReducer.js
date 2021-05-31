@@ -20,6 +20,10 @@ import {
   BOOKING_SAVE_DRIVER_DETAILS,
   BOOKING_SAVE_PAYMENT_METHOD,
   BOOKING_SAVE_VEHICLE_DETAILS,
+  BOOKING_VERIFY_FAIL,
+  BOOKING_VERIFY_REQUEST,
+  BOOKING_VERIFY_SUCCESS,
+  BOOKING_VERIFY_RESET,
 } from '../constants/bookingConstants'
 
 export const bookingReduer = (state = { driverDetails: {} }, action) => {
@@ -109,6 +113,29 @@ export const bookingPayReducer = (state = {}, action) => {
         error: action.payload,
       }
     case BOOKING_PAY_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const bookingVerifyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case BOOKING_VERIFY_REQUEST:
+      return {
+        loading: true,
+      }
+    case BOOKING_VERIFY_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      }
+    case BOOKING_VERIFY_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    case BOOKING_VERIFY_RESET:
       return {}
     default:
       return state

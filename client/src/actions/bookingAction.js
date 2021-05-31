@@ -17,6 +17,9 @@ import {
   BOOKING_LIST_REQUEST,
   BOOKING_LIST_SUCCESS,
   BOOKING_LIST_FAIL,
+  BOOKING_VERIFY_REQUEST,
+  BOOKING_VERIFY_SUCCESS,
+  BOOKING_VERIFY_FAIL,
 } from '../constants/bookingConstants'
 import axios from 'axios'
 
@@ -149,6 +152,42 @@ export const payBooking =
       })
     }
   }
+
+export const verifyBooking = (booking) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: BOOKING_VERIFY_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await axios.put(
+      `/api/bookings/${booking._id}/verify`,
+      {},
+      config
+    )
+
+    dispatch({
+      type: BOOKING_VERIFY_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: BOOKING_VERIFY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
 
 export const listMyBookings = () => async (dispatch, getState) => {
   try {

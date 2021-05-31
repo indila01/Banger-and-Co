@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { PayPalButton } from 'react-paypal-button-v2'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getBookingDetails, payBooking } from '../actions/bookingAction'
-import { BOOKING_PAY_RESET } from '../constants/bookingConstants'
+import {
+  getBookingDetails,
+  payBooking,
+  verifyBooking,
+} from '../actions/bookingAction'
+import {
+  BOOKING_PAY_RESET,
+  BOOKING_VERIFY_RESET,
+} from '../constants/bookingConstants'
 
 const BookingScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin)
@@ -24,37 +31,52 @@ const BookingScreen = ({ match, history }) => {
   const bookingPay = useSelector((state) => state.bookingPay)
   const { success: successPay, loading: loadingPay } = bookingPay
 
+  const bookingVerify = useSelector((state) => state.bookingVerify)
+  const { success: successVerify, loading: loadingVerify } = bookingVerify
+
   useEffect(() => {
-    if (userInfo) {
-      const addPaypalScrip = async () => {
-        const { data: clientId } = await axios.get('/api/congif/paypal')
-        const script = document.createElement('script')
-        script.type = 'text/javascript'
-        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
-        script.async = true
-        script.onload = () => {
-          setSdkReady(true)
-        }
-        document.body.appendChild(script)
-      }
-      if (!booking || successPay) {
-        dispatch({ type: BOOKING_PAY_RESET })
-        dispatch(getBookingDetails(bookingId))
-      } else if (!booking.isPaid) {
-        if (!window.paypal) {
-          addPaypalScrip()
-        } else {
-          setSdkReady(true)
-        }
-      }
-    } else {
+    if (!userInfo) {
       history.push('/login')
     }
-  }, [userInfo, dispatch, bookingId, successPay, booking, history])
+    const addPaypalScrip = async () => {
+      const { data: clientId } = await axios.get('/api/congif/paypal')
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
+      script.async = true
+      script.onload = () => {
+        setSdkReady(true)
+      }
+      document.body.appendChild(script)
+    }
+    if (!booking || successPay || successVerify) {
+      dispatch({ type: BOOKING_PAY_RESET })
+      dispatch({ type: BOOKING_VERIFY_RESET })
+      dispatch(getBookingDetails(bookingId))
+    } else if (!booking.isPaid) {
+      if (!window.paypal) {
+        addPaypalScrip()
+      } else {
+        setSdkReady(true)
+      }
+    }
+  }, [
+    userInfo,
+    dispatch,
+    bookingId,
+    successPay,
+    successVerify,
+    booking,
+    history,
+  ])
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult)
     dispatch(payBooking(bookingId, paymentResult))
+  }
+
+  const verifyHandler = () => {
+    dispatch(verifyBooking(booking))
   }
 
   return loading ? (
@@ -194,7 +216,7 @@ const BookingScreen = ({ match, history }) => {
                   <Col>${booking.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {!booking.isPaid && (
+              {!booking.isPaid && !userInfo.isAdmin && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
@@ -207,6 +229,21 @@ const BookingScreen = ({ match, history }) => {
                   )}
                 </ListGroup.Item>
               )}
+              {loadingVerify && <Loader />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                booking.isPaid &&
+                !booking.isVerified && (
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn btn-block'
+                      onClick={verifyHandler}
+                    >
+                      Mark As Verified
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>

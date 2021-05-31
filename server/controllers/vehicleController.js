@@ -59,8 +59,8 @@ const createVehicle = asyncHandler(async (req, res) => {
     availability: false,
     user: req.user._id,
   })
-  const createdVehicle = vehicle.save()
-  res.status(201).json(vehicle)
+  const createdVehicle = await vehicle.save()
+  res.status(201).json(createdVehicle)
 })
 
 // @desc    update a vehicle
@@ -98,8 +98,8 @@ const updateVehicle = asyncHandler(async (req, res) => {
     vehicle.pricePerDay = pricePerDay
     vehicle.availability = availability
 
-    const updatedVehicle = vehicle.save()
-    res.json(vehicle)
+    const updatedVehicle = await vehicle.save()
+    res.json(updatedVehicle)
   } else {
     res.status(404)
     throw new Error('Vehicle not found')

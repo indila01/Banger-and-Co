@@ -4,7 +4,12 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listVehicles, deleteVehicle } from '../actions/vehicleActions'
+import {
+  listVehicles,
+  deleteVehicle,
+  createVehicle,
+} from '../actions/vehicleActions'
+import { VEHICLE_CREATE_RESET } from '../constants/vehicleConstants'
 
 const VehicleListScreen = ({ history, match }) => {
   const dispatch = useDispatch()
@@ -19,22 +24,45 @@ const VehicleListScreen = ({ history, match }) => {
     success: successDelete,
   } = vehicleDelete
 
+  const vehicleCreate = useSelector((state) => state.vehicleCreate)
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    vehicle: createdVehicle,
+  } = vehicleCreate
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
+    dispatch({ type: VEHICLE_CREATE_RESET })
+
+    if (!userInfo.isAdmin) {
+      history.push('/login')
+    }
+
+    if (successCreate) {
+      history.push(`/admin/vehicle/${createdVehicle._id}/edit`)
+    } else {
       dispatch(listVehicles())
-    } else history.push('/login')
-  }, [dispatch, history, userInfo, successDelete])
+    }
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    successDelete,
+    successCreate,
+    createdVehicle,
+  ])
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
       dispatch(deleteVehicle(id))
     }
   }
-  const createVehicleHandler = (product) => {
-    //createproduct
+  const createVehicleHandler = () => {
+    dispatch(createVehicle())
   }
 
   return (
@@ -51,6 +79,9 @@ const VehicleListScreen = ({ history, match }) => {
       </Row>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+
+      {loadingCreate && <Loader />}
+      {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -59,7 +90,7 @@ const VehicleListScreen = ({ history, match }) => {
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
-              <th>ID</th>
+              {/* <th>ID</th> */}
               <th>NAME</th>
               <th>PRICE</th>
               <th>TYPE</th>
@@ -76,7 +107,7 @@ const VehicleListScreen = ({ history, match }) => {
           <tbody>
             {vehicles.map((vehicle) => (
               <tr key={vehicle._id}>
-                <td>{vehicle._id}</td>
+                {/* <td>{vehicle._id}</td> */}
                 <td>{vehicle.name}</td>
                 <td>{vehicle.pricePerDay}</td>
                 <td>{vehicle.type}</td>

@@ -65,7 +65,7 @@ const UserEditScreen = ({ match, history }) => {
             <Form.Group controlId='name'>
               <Form.Label>Name</Form.Label>
               <Form.Control
-                type='name'
+                type='text'
                 placeholder='Enter name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -90,7 +90,12 @@ const UserEditScreen = ({ match, history }) => {
               ></Form.Check>
             </Form.Group>
 
-            <Button type='submit' variant='primary'>
+            <Button
+              type='submit'
+              variant='success'
+              className='my-3'
+              style={{ width: '100%' }}
+            >
               Update
             </Button>
           </Form>

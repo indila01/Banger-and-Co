@@ -5,6 +5,8 @@ import Vehicle from '../models/vehicleModel.js'
 // @route   GET /api/vehicles
 // @access  Public
 const getVehicles = asyncHandler(async (req, res) => {
+  const pageSize = 8
+  const page = Number(req.query.pageNumber) || 1
   const keyword = req.query.keyword
     ? {
         name: {
@@ -13,9 +15,12 @@ const getVehicles = asyncHandler(async (req, res) => {
         },
       }
     : {}
+  const count = await Vehicle.countDocuments({ ...keyword })
   const vehicles = await Vehicle.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
 
-  res.json(vehicles)
+  res.json({ vehicles, page, pages: Math.ceil(count / pageSize) })
 })
 
 // @desc    Fetch single vehicle

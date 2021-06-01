@@ -5,18 +5,20 @@ import Vehicle from '../components/Vehicle'
 import { listVehicles } from '../actions/vehicleActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Paginate from '../components/Paginate'
 
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
+  const pageNumber = match.params.pageNumber || 1
 
   const dispatch = useDispatch()
 
   const vehicleList = useSelector((state) => state.vehicleList)
-  const { loading, error, vehicles } = vehicleList
+  const { loading, error, vehicles, page, pages } = vehicleList
 
   useEffect(() => {
-    dispatch(listVehicles(keyword))
-  }, [dispatch, keyword])
+    dispatch(listVehicles(keyword, pageNumber))
+  }, [dispatch, keyword, pageNumber])
 
   return (
     <div>
@@ -27,13 +29,20 @@ const HomeScreen = ({ match }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Row>
-          {vehicles.map((vehicle) => (
-            <Col key={vehicle._id} sm={12} md={6} lg={4} xl={3}>
-              <Vehicle vehicle={vehicle} />
-            </Col>
-          ))}
-        </Row>
+        <>
+          <Row>
+            {vehicles.map((vehicle) => (
+              <Col key={vehicle._id} sm={12} md={6} lg={4} xl={3}>
+                <Vehicle vehicle={vehicle} />
+              </Col>
+            ))}
+          </Row>
+          <Paginate
+            pages={pages}
+            page={page}
+            keyword={keyword ? keyword : ''}
+          />
+        </>
       )}
     </div>
   )

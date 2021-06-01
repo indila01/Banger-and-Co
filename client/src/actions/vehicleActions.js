@@ -21,12 +21,14 @@ import {
 import axios from 'axios'
 
 export const listVehicles =
-  (keyword = '') =>
+  (keyword = '', pageNumber = '') =>
   async (dispatch) => {
     try {
       dispatch({ type: VEHICLE_LIST_REQUEST })
 
-      const { data } = await axios.get(`/api/vehicles?keyword=${keyword}`)
+      const { data } = await axios.get(
+        `/api/vehicles?keyword=${keyword}&pageNumber=${pageNumber}`
+      )
 
       dispatch({
         type: VEHICLE_LIST_SUCCESS,

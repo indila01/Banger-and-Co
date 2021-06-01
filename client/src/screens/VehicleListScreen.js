@@ -10,12 +10,14 @@ import {
   createVehicle,
 } from '../actions/vehicleActions'
 import { VEHICLE_CREATE_RESET } from '../constants/vehicleConstants'
+import Paginate from '../components/Paginate'
 
 const VehicleListScreen = ({ history, match }) => {
+  const pageNumber = match.params.pageNumber || 1
   const dispatch = useDispatch()
 
   const vehicleList = useSelector((state) => state.vehicleList)
-  const { loading, error, vehicles } = vehicleList
+  const { loading, error, vehicles, page, pages } = vehicleList
 
   const vehicleDelete = useSelector((state) => state.vehicleDelete)
   const {
@@ -45,7 +47,7 @@ const VehicleListScreen = ({ history, match }) => {
     if (successCreate) {
       history.push(`/admin/vehicle/${createdVehicle._id}/edit`)
     } else {
-      dispatch(listVehicles())
+      dispatch(listVehicles('', pageNumber))
     }
   }, [
     dispatch,
@@ -54,6 +56,7 @@ const VehicleListScreen = ({ history, match }) => {
     successDelete,
     successCreate,
     createdVehicle,
+    pageNumber,
   ])
 
   const deleteHandler = (id) => {
@@ -87,55 +90,58 @@ const VehicleListScreen = ({ history, match }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className='table-sm'>
-          <thead>
-            <tr>
-              {/* <th>ID</th> */}
-              <th>NAME</th>
-              <th>PRICE</th>
-              <th>TYPE</th>
-              <th>SEATS</th>
-              <th>TRANSMISSION</th>
-              <th>FUEL</th>
-              <th>CYLINDERS</th>
-              <th>HORSEPOWER</th>
-              <th>ENGINE CAPACITY</th>
-              <th>MPG</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {vehicles.map((vehicle) => (
-              <tr key={vehicle._id}>
-                {/* <td>{vehicle._id}</td> */}
-                <td>{vehicle.name}</td>
-                <td>{vehicle.pricePerDay}</td>
-                <td>{vehicle.type}</td>
-                <td>{vehicle.seats}</td>
-                <td>{vehicle.transmission}</td>
-                <td>{vehicle.fuel}</td>
-                <td>{vehicle.cylinders} </td>
-                <td>{vehicle.horsepower} hp</td>
-                <td>{vehicle.engine} L</td>
-                <td>{vehicle.miles_per_gallon} mpg</td>
-                <td>
-                  <LinkContainer to={`/admin/vehicle/${vehicle._id}/edit`}>
-                    <Button variant='light' className='btn-sm'>
-                      <i className='fas fa-edit'></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant='danger'
-                    className='btn-sm'
-                    onClick={() => deleteHandler(vehicle._id)}
-                  >
-                    <i className='fas fa-trash'></i>
-                  </Button>
-                </td>
+        <>
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                {/* <th>ID</th> */}
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>TYPE</th>
+                <th>SEATS</th>
+                <th>TRANSMISSION</th>
+                <th>FUEL</th>
+                <th>CYLINDERS</th>
+                <th>HORSEPOWER</th>
+                <th>ENGINE CAPACITY</th>
+                <th>MPG</th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {vehicles.map((vehicle) => (
+                <tr key={vehicle._id}>
+                  {/* <td>{vehicle._id}</td> */}
+                  <td>{vehicle.name}</td>
+                  <td>{vehicle.pricePerDay}</td>
+                  <td>{vehicle.type}</td>
+                  <td>{vehicle.seats}</td>
+                  <td>{vehicle.transmission}</td>
+                  <td>{vehicle.fuel}</td>
+                  <td>{vehicle.cylinders} </td>
+                  <td>{vehicle.horsepower} hp</td>
+                  <td>{vehicle.engine} L</td>
+                  <td>{vehicle.miles_per_gallon} mpg</td>
+                  <td>
+                    <LinkContainer to={`/admin/vehicle/${vehicle._id}/edit`}>
+                      <Button variant='light' className='btn-sm'>
+                        <i className='fas fa-edit'></i>
+                      </Button>
+                    </LinkContainer>
+                    <Button
+                      variant='danger'
+                      className='btn-sm'
+                      onClick={() => deleteHandler(vehicle._id)}
+                    >
+                      <i className='fas fa-trash'></i>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <Paginate pages={pages} page={page} isAdmin={true} />
+        </>
       )}
     </>
   )

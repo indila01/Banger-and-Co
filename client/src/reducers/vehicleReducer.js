@@ -27,7 +27,12 @@ export const vehicleListReducer = (state = { vehicles: [] }, action) => {
     case VEHICLE_LIST_REQUEST:
       return { loading: true, vehicles: [] }
     case VEHICLE_LIST_SUCCESS:
-      return { loading: false, vehicles: action.payload }
+      return {
+        loading: false,
+        vehicles: action.payload.vehicles,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      }
     case VEHICLE_LIST_FAIL:
       return { loading: false, error: action.payload }
     default:

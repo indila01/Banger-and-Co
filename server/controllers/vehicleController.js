@@ -106,10 +106,50 @@ const updateVehicle = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    create new review
+// @route   POST /api/vehicles/:id/reviews
+// @access  private
+const createVehicleReview = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body
+
+  const vehicle = await Vehicle.findById(req.params.id)
+
+  if (vehicle) {
+    const alreadyReviewed = vehicle.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    )
+
+    if (alreadyReviewed) {
+      res.status(400)
+      throw new Error('Vehicle already reviewed')
+    }
+
+    const review = {
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+      user: req.user._id,
+    }
+
+    vehicle.reviews.push(review)
+    vehicle.numReviews = vehicle.reviews.length
+    vehicle.rating =
+      vehicle.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      vehicle.reviews.length
+
+    await vehicle.save()
+    res.status(201).json({ message: 'Review added' })
+  } else {
+    res.status(404)
+    throw new Error('Vehicle not found')
+  }
+})
+
 export {
   getVehicles,
   getVehicleById,
   deleteVehicle,
   updateVehicle,
   createVehicle,
+  createVehicleReview,
 }

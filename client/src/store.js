@@ -6,6 +6,7 @@ import {
   vehicleDeleteReducer,
   vehicleDetailstReducer,
   vehicleListReducer,
+  vehicleReviewCreateReducer,
   vehicleUpdateReducer,
 } from './reducers/vehicleReducer'
 import {
@@ -33,6 +34,7 @@ const reducer = combineReducers({
   vehicleDelete: vehicleDeleteReducer,
   vehicleCreate: vehicleCreateReducer,
   vehicleUpdate: vehicleUpdateReducer,
+  vehicleReviewCreate: vehicleReviewCreateReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,

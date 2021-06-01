@@ -14,6 +14,9 @@ import {
   VEHICLE_UPDATE_REQUEST,
   VEHICLE_UPDATE_SUCCESS,
   VEHICLE_UPDATE_FAIL,
+  VEHICLE_CREATE_REVIEW_REQUEST,
+  VEHICLE_CREATE_REVIEW_SUCCESS,
+  VEHICLE_CREATE_REVIEW_FAIL,
 } from '../constants/vehicleConstants'
 import axios from 'axios'
 
@@ -158,3 +161,36 @@ export const updateVehicle = (vehicle) => async (dispatch, getState) => {
     })
   }
 }
+
+export const createVehicleReview =
+  (vehicleId, review) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: VEHICLE_CREATE_REVIEW_REQUEST,
+      })
+
+      const {
+        userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      await axios.post(`/api/vehicles/${vehicleId}/reviews`, review, config)
+
+      dispatch({
+        type: VEHICLE_CREATE_REVIEW_SUCCESS,
+      })
+    } catch (error) {
+      dispatch({
+        type: VEHICLE_CREATE_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }

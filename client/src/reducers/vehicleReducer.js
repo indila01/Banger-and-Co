@@ -16,6 +16,9 @@ import {
   VEHICLE_LIST_FAIL,
   VEHICLE_LIST_REQUEST,
   VEHICLE_LIST_SUCCESS,
+  VEHICLE_TOP_FAIL,
+  VEHICLE_TOP_REQUEST,
+  VEHICLE_TOP_SUCCESS,
   VEHICLE_UPDATE_FAIL,
   VEHICLE_UPDATE_REQUEST,
   VEHICLE_UPDATE_RESET,
@@ -109,6 +112,19 @@ export const vehicleReviewCreateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload }
     case VEHICLE_CREATE_REVIEW_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+export const vehicleTopRatedReducer = (state = { vehicles: [] }, action) => {
+  switch (action.type) {
+    case VEHICLE_TOP_REQUEST:
+      return { loading: true, vehicles: [] }
+    case VEHICLE_TOP_SUCCESS:
+      return { loading: false, vehicles: action.payload }
+    case VEHICLE_TOP_FAIL:
+      return { loading: false, error: action.payload }
     default:
       return state
   }

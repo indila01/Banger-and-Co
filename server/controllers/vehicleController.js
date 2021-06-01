@@ -158,6 +158,15 @@ const createVehicleReview = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Get top reviewed vehicles
+// @route   GET /api/vehicles/top
+// @access  Public
+const getTopVehicles = asyncHandler(async (req, res) => {
+  const vehicles = await Vehicle.find({}).sort({ rating: -1 }).limit(3)
+
+  res.json(vehicles)
+})
+
 export {
   getVehicles,
   getVehicleById,
@@ -165,4 +174,5 @@ export {
   updateVehicle,
   createVehicle,
   createVehicleReview,
+  getTopVehicles,
 }

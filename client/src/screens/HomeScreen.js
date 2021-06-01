@@ -6,6 +6,7 @@ import { listVehicles } from '../actions/vehicleActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
+// import VehicleCarousel from '../components/VehicleCarousel'
 
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
@@ -22,6 +23,7 @@ const HomeScreen = ({ match }) => {
 
   return (
     <div>
+      {/* {!keyword && <VehicleCarousel />} */}
       <h1>Vehicles</h1>
 
       {loading ? (

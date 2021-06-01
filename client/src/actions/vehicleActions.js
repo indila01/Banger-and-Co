@@ -17,6 +17,9 @@ import {
   VEHICLE_CREATE_REVIEW_REQUEST,
   VEHICLE_CREATE_REVIEW_SUCCESS,
   VEHICLE_CREATE_REVIEW_FAIL,
+  VEHICLE_TOP_REQUEST,
+  VEHICLE_TOP_SUCCESS,
+  VEHICLE_TOP_FAIL,
 } from '../constants/vehicleConstants'
 import axios from 'axios'
 
@@ -198,3 +201,24 @@ export const createVehicleReview =
       })
     }
   }
+
+export const listTopVehicles = () => async (dispatch) => {
+  try {
+    dispatch({ type: VEHICLE_TOP_REQUEST })
+
+    const { data } = await axios.get(`/api/vehicles/top`)
+
+    dispatch({
+      type: VEHICLE_TOP_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: VEHICLE_TOP_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}

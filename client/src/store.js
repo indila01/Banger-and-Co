@@ -7,6 +7,7 @@ import {
   vehicleDetailstReducer,
   vehicleListReducer,
   vehicleReviewCreateReducer,
+  vehicleTopRatedReducer,
   vehicleUpdateReducer,
 } from './reducers/vehicleReducer'
 import {
@@ -35,6 +36,7 @@ const reducer = combineReducers({
   vehicleCreate: vehicleCreateReducer,
   vehicleUpdate: vehicleUpdateReducer,
   vehicleReviewCreate: vehicleReviewCreateReducer,
+  vehicleTopRated: vehicleTopRatedReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,

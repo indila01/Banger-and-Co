@@ -5,7 +5,15 @@ import Vehicle from '../models/vehicleModel.js'
 // @route   GET /api/vehicles
 // @access  Public
 const getVehicles = asyncHandler(async (req, res) => {
-  const vehicles = await Vehicle.find({})
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
+    : {}
+  const vehicles = await Vehicle.find({ ...keyword })
 
   res.json(vehicles)
 })

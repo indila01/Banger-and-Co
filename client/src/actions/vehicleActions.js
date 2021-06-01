@@ -20,26 +20,28 @@ import {
 } from '../constants/vehicleConstants'
 import axios from 'axios'
 
-export const listVehicles = () => async (dispatch) => {
-  try {
-    dispatch({ type: VEHICLE_LIST_REQUEST })
+export const listVehicles =
+  (keyword = '') =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: VEHICLE_LIST_REQUEST })
 
-    const { data } = await axios.get('/api/vehicles')
+      const { data } = await axios.get(`/api/vehicles?keyword=${keyword}`)
 
-    dispatch({
-      type: VEHICLE_LIST_SUCCESS,
-      payload: data,
-    })
-  } catch (error) {
-    dispatch({
-      type: VEHICLE_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
+      dispatch({
+        type: VEHICLE_LIST_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispatch({
+        type: VEHICLE_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
   }
-}
 
 export const listVehicleDetails = (id) => async (dispatch) => {
   try {

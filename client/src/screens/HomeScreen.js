@@ -6,15 +6,17 @@ import { listVehicles } from '../actions/vehicleActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
+  const keyword = match.params.keyword
+
   const dispatch = useDispatch()
 
   const vehicleList = useSelector((state) => state.vehicleList)
   const { loading, error, vehicles } = vehicleList
 
   useEffect(() => {
-    dispatch(listVehicles())
-  }, [dispatch])
+    dispatch(listVehicles(keyword))
+  }, [dispatch, keyword])
 
   return (
     <div>

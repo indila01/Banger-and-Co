@@ -142,7 +142,7 @@ const ProfileScreen = ({ location, history }) => {
                   </td>
                   <td>
                     {booking.isVerified ? (
-                      booking.isVerified.substring(0, 10)
+                      booking.verifiedAt.substring(0, 10)
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
                     )}

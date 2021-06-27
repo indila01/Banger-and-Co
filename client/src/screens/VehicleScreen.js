@@ -162,6 +162,7 @@ const VehicleScreen = ({ match, history }) => {
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
+
                 <h2>Write a customer review</h2>
                 {errorVehicleReview && (
                   <Message variant='danger'>{errorVehicleReview}</Message>

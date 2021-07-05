@@ -40,7 +40,6 @@ const VehicleScreen = ({ match, history }) => {
 
   useEffect(() => {
     if (successVehicleReview) {
-      alert('Review submitted!')
       setRating(0)
       setComment('')
       dispatch({ type: VEHICLE_CREATE_REVIEW_RESET })
@@ -98,9 +97,6 @@ const VehicleScreen = ({ match, history }) => {
                         <Col>{vehicle.cylinders} cylinders</Col>
                       </Row>
                     </Col>
-                    {/* <Col> */}
-                    {/* {item.qty} x ${item.price} = ${item.qty * item.price} */}
-                    {/* </Col> */}
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -151,7 +147,8 @@ const VehicleScreen = ({ match, history }) => {
           </Row>
           <Row>
             <Col md={6}>
-              <h2>Reviews</h2>
+              <h2 className='py-2'>Reviews</h2>
+
               {vehicle.reviews.length === 0 && <Message>No reviews</Message>}
               <ListGroup variant='flush'>
                 {vehicle.reviews.map((review) => (
@@ -162,14 +159,19 @@ const VehicleScreen = ({ match, history }) => {
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
+              </ListGroup>
+            </Col>
+            <Col md={4}>
+              <h2 className='py-2'>Write a customer review</h2>
 
-                <h2>Write a customer review</h2>
-                {errorVehicleReview && (
-                  <Message variant='danger'>{errorVehicleReview}</Message>
-                )}
-                {userInfo ? (
-                  <Form onSubmit={submitHandler}>
-                    <Form.Group controlId='rating'>
+              {errorVehicleReview && (
+                <Message variant='danger'>{errorVehicleReview}</Message>
+              )}
+
+              {userInfo ? (
+                <Form onSubmit={submitHandler}>
+                  <Form.Group controlId='rating'>
+                    <ListGroup.Item>
                       <Form.Label>Rating</Form.Label>
                       <Form.Control
                         as='select'
@@ -183,28 +185,32 @@ const VehicleScreen = ({ match, history }) => {
                         <option value='4'>4</option>
                         <option value='5'>5</option>
                       </Form.Control>
-                    </Form.Group>
+                    </ListGroup.Item>
+                  </Form.Group>
 
-                    <Form.Group controlId='comment'>
-                      <Form.Label>comment</Form.Label>
+                  <Form.Group controlId='comment'>
+                    <ListGroup.Item>
+                      <Form.Label>Comment</Form.Label>
                       <Form.Control
                         as='textarea'
                         row='3'
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                       ></Form.Control>
-                    </Form.Group>
+                    </ListGroup.Item>
 
-                    <Button type='submit' varient='primary'>
-                      Submit Review
-                    </Button>
-                  </Form>
-                ) : (
-                  <Message>
-                    Please <Link to='/login'>sign in</Link> to write a review
-                  </Message>
-                )}
-              </ListGroup>
+                    <ListGroup.Item>
+                      <Button type='submit' varient='primary'>
+                        Submit Review
+                      </Button>
+                    </ListGroup.Item>
+                  </Form.Group>
+                </Form>
+              ) : (
+                <Message>
+                  Please <Link to='/login'>sign in</Link> to write a review
+                </Message>
+              )}
             </Col>
           </Row>
         </>

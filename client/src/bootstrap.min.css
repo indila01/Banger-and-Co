@@ -3786,7 +3786,7 @@ fieldset:disabled .btn {
 .btn-outline-dark:hover {
     color: rgb(0, 0, 0);
     background-color: #ffffff;
-    border-color: #212529;
+    border-color: #000000;
 }
 
 .btn-check:focus+.btn-outline-dark,
@@ -5234,8 +5234,8 @@ fieldset:disabled .btn {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #3459e6;
-    border-color: #3459e6;
+    background-color: #ffe606;
+    border-color: #ffe606;
 }
 
 .page-item.disabled .page-link {

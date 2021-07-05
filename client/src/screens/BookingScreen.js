@@ -16,14 +16,13 @@ import {
 } from '../constants/bookingConstants'
 
 const BookingScreen = ({ match, history }) => {
+  const dispatch = useDispatch()
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   const bookingId = match.params.id
 
   const [sdkReady, setSdkReady] = useState(false)
-
-  const dispatch = useDispatch()
 
   const bookingDetailsById = useSelector((state) => state.bookingDetailsById)
   const { booking, loading, error } = bookingDetailsById
@@ -49,7 +48,7 @@ const BookingScreen = ({ match, history }) => {
       }
       document.body.appendChild(script)
     }
-    if (!booking || successPay || successVerify) {
+    if (!booking || successPay || successVerify || booking._id !== bookingId) {
       dispatch({ type: BOOKING_PAY_RESET })
       dispatch({ type: BOOKING_VERIFY_RESET })
       dispatch(getBookingDetails(bookingId))
@@ -61,13 +60,13 @@ const BookingScreen = ({ match, history }) => {
       }
     }
   }, [
+    history,
     userInfo,
     dispatch,
     bookingId,
     successPay,
     successVerify,
     booking,
-    history,
   ])
 
   const successPaymentHandler = (paymentResult) => {

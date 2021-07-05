@@ -7,7 +7,7 @@ import vehicles from './data/vehicles.js'
 
 import User from './models/userModel.js'
 import Vehicle from './models/vehicleModel.js'
-import Rent from './models/rentModel.js'
+import Booking from './models/bookingModel.js'
 
 import connectDB from './config/db.js'
 
@@ -17,7 +17,7 @@ connectDB()
 
 const importData = async () => {
   try {
-    await Rent.deleteMany()
+    await Booking.deleteMany()
     await Vehicle.deleteMany()
     await User.deleteMany()
 
@@ -41,7 +41,7 @@ const importData = async () => {
 
 const destroyData = async () => {
   try {
-    await Rent.deleteMany()
+    await Booking.deleteMany()
     await Vehicle.deleteMany()
     await User.deleteMany()
 

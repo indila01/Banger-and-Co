@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,13 +14,13 @@ const RegisterScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [birthday, setBirthday] = useState('')
   const [message, setMessage] = useState(null)
 
   const dispatch = useDispatch()
 
   const userLogin = useSelector((state) => state.userLogin)
   const userRegister = useSelector((state) => state.userRegister)
-  // const { loading, error, userInfo } = userLogin
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
@@ -33,7 +35,7 @@ const RegisterScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      dispatch(register(name, email, password))
+      dispatch(register(name, email, password, birthday))
     }
   }
 
@@ -85,7 +87,26 @@ const RegisterScreen = ({ location, history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Form.Group controlId='confirmPassword'>
+          <Form.Label>Date of birth </Form.Label>
+
+          <DatePicker
+            selected={birthday}
+            onChange={(date) => setBirthday(date)}
+            dateFormat='yyyy-MM-dd'
+            maxDate={new Date(2018, 11, 24, 10, 33, 30, 0)}
+            isClearable
+            showYearDropdown
+            scrollableMonthYearDropdown
+          />
+        </Form.Group>
+
+        <Button
+          type='submit'
+          variant='primary'
+          className='my-3'
+          style={{ width: '100%' }}
+        >
           Register
         </Button>
       </Form>

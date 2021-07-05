@@ -2,26 +2,55 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import {
+  vehicleCreateReducer,
+  vehicleDeleteReducer,
   vehicleDetailstReducer,
   vehicleListReducer,
+  vehicleReviewCreateReducer,
+  vehicleTopRatedReducer,
+  vehicleUpdateReducer,
 } from './reducers/vehicleReducer'
 import {
   userDetailsReducer,
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
+  userListReducer,
+  userDeleteReducer,
+  userUpdateReducer,
 } from './reducers/userReducer'
-import { bookingReduer, bookingCreateReducer } from './reducers/bookingReducer'
+import {
+  bookingReduer,
+  bookingCreateReducer,
+  bookingDetailsReducer,
+  bookingPayReducer,
+  bookingListMyReducer,
+  bookingListReducer,
+  bookingVerifyReducer,
+} from './reducers/bookingReducer'
 
 const reducer = combineReducers({
   vehicleList: vehicleListReducer,
   vehicleDetails: vehicleDetailstReducer,
+  vehicleDelete: vehicleDeleteReducer,
+  vehicleCreate: vehicleCreateReducer,
+  vehicleUpdate: vehicleUpdateReducer,
+  vehicleReviewCreate: vehicleReviewCreateReducer,
+  vehicleTopRated: vehicleTopRatedReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  userUpdate: userUpdateReducer,
   bookingDetails: bookingReduer,
   bookingCreate: bookingCreateReducer,
+  bookingDetailsById: bookingDetailsReducer,
+  bookingPay: bookingPayReducer,
+  bookingVerify: bookingVerifyReducer,
+  bookingListMy: bookingListMyReducer,
+  bookingList: bookingListReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

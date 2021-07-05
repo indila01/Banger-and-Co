@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import { listMyBookings } from '../actions/bookingAction'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState('')
@@ -23,18 +26,28 @@ const ProfileScreen = ({ location, history }) => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  const bookingListMy = useSelector((state) => state.bookingListMy)
+  const {
+    loading: loadingBookings,
+    error: errorBookings,
+    bookings,
+  } = bookingListMy
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
+        dispatch(listMyBookings())
       } else {
         setName(user.name)
         setEmail(user.email)
+        // dispatch(listMyBookings())
       }
     }
-  }, [dispatch, history, userInfo, user])
+  }, [history, userInfo, user, dispatch, success])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -99,7 +112,55 @@ const ProfileScreen = ({ location, history }) => {
         </Form>
       </Col>
       <Col md={9}>
-        <h2>orders</h2>
+        <h2>Booking History</h2>
+        {loadingBookings ? (
+          <Loader />
+        ) : errorBookings ? (
+          <Message variant='danger'>{errorBookings}</Message>
+        ) : (
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Verified</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((booking) => (
+                <tr key={booking._id}>
+                  <td>{booking._id}</td>
+                  <td>{booking.createdAt.substring(0, 10)}</td>
+                  <td>{booking.totalPrice}</td>
+                  <td>
+                    {booking.isPaid ? (
+                      booking.paidAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {booking.isVerified ? (
+                      booking.verifiedAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/booking/${booking._id}`}>
+                      <Button className='btn-sm' variant='light'>
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   )

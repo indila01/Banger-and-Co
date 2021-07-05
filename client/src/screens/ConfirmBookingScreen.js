@@ -6,6 +6,9 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { createBooking } from '../actions/bookingAction'
 
 const ConfirmBookingScreen = ({ history }) => {
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const dispatch = useDispatch()
   const bookingDetails = useSelector((state) => state.bookingDetails)
 
@@ -24,11 +27,15 @@ const ConfirmBookingScreen = ({ history }) => {
   const { booking, success, error } = bookingCreate
 
   useEffect(() => {
-    if (success) {
-      history.push(`/bookings/${booking._id}`)
+    if (userInfo) {
+      if (success) {
+        history.push(`/booking/${booking._id}`)
+      }
+    } else {
+      history.push('/login')
     }
     // eslint-disable-next-line
-  }, [history, success])
+  }, [history, success, userInfo])
 
   const placeBooking = () => {
     dispatch(
@@ -49,61 +56,59 @@ const ConfirmBookingScreen = ({ history }) => {
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>{bookingDetails.vehicleDetails.name} </h2>
-              <p>{bookingDetails.vehicleDetails.type}</p>
               {bookingDetails.vehicleDetails === null ? (
                 <Message>Your have not selected a vehicle</Message>
               ) : (
-                <ListGroup variant='flush'>
-                  <ListGroup.Item>
+                <Row>
+                  <Col md={6}>
+                    <Image
+                      src={bookingDetails.vehicleDetails.image}
+                      alt={bookingDetails.vehicleDetails.image}
+                      fluid
+                      rounded
+                    />
+                  </Col>
+                  <Col md={6}>
                     <Row>
-                      <Col md={6}>
-                        <Image
-                          src={bookingDetails.vehicleDetails.image}
-                          alt={bookingDetails.vehicleDetails.image}
-                          fluid
-                          rounded
-                        />
-                      </Col>
-                      <Col md={6}>
-                        <Row>
-                          <Col>
-                            <i className='far fa-user me-1'></i>
-                            {bookingDetails.vehicleDetails.seats} Seats
-                          </Col>
-                          <Col>
-                            <i className='fas fa-cogs me-1'></i>
-                            {bookingDetails.vehicleDetails.transmission}
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <i className='fas fa-gas-pump me-1'></i>
-                            {bookingDetails.vehicleDetails.fuel}
-                          </Col>
-                          <Col>
-                            <i className='fas fa-bolt me-1'></i>
-                            {bookingDetails.vehicleDetails.horsepower} HP
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>{bookingDetails.vehicleDetails.engine} L</Col>
-                          <Col>
-                            {bookingDetails.vehicleDetails.miles_per_gallon} mpg
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            {bookingDetails.vehicleDetails.cylinders} cylinders
-                          </Col>
-                        </Row>
-                      </Col>
-                      {/* <Col> */}
-                      {/* {item.qty} x ${item.price} = ${item.qty * item.price} */}
-                      {/* </Col> */}
+                      <h2>{bookingDetails.vehicleDetails.name} </h2>
+                      <p>{bookingDetails.vehicleDetails.type}</p>
                     </Row>
-                  </ListGroup.Item>
-                </ListGroup>
+                    <Row>
+                      <Col>
+                        <i className='far fa-user me-1'></i>
+                        {bookingDetails.vehicleDetails.seats} Seats
+                      </Col>
+                      <Col>
+                        <i className='fas fa-cogs me-1'></i>
+                        {bookingDetails.vehicleDetails.transmission}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <i className='fas fa-gas-pump me-1'></i>
+                        {bookingDetails.vehicleDetails.fuel}
+                      </Col>
+                      <Col>
+                        <i className='fas fa-bolt me-1'></i>
+                        {bookingDetails.vehicleDetails.horsepower} HP
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>{bookingDetails.vehicleDetails.engine} L</Col>
+                      <Col>
+                        {bookingDetails.vehicleDetails.miles_per_gallon} mpg
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        {bookingDetails.vehicleDetails.cylinders} cylinders
+                      </Col>
+                    </Row>
+                  </Col>
+                  {/* <Col> */}
+                  {/* {item.qty} x ${item.price} = ${item.qty * item.price} */}
+                  {/* </Col> */}
+                </Row>
               )}
             </ListGroup.Item>
             <ListGroup.Item>
@@ -182,8 +187,10 @@ const ConfirmBookingScreen = ({ history }) => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
+                  style={{ width: '100%' }}
                   type='button'
                   className='btn-block'
+                  variant='success'
                   onClick={placeBooking}
                 >
                   Place Order

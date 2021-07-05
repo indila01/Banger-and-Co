@@ -23,6 +23,11 @@ const vehicleSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    licencePlateNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     type: {
       type: String,
       required: true,

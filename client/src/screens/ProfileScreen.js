@@ -9,7 +9,9 @@ import { listMyBookings } from '../actions/bookingAction'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 const ProfileScreen = ({ location, history }) => {
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [contactNumber, setContactNumber] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -37,12 +39,14 @@ const ProfileScreen = ({ location, history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
-      if (!user || !user.name || success) {
+      if (!user || !user.firstName || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
         dispatch(listMyBookings())
       } else {
-        setName(user.name)
+        setFirstName(user.firstName)
+        setLastName(user.lastName)
+        setContactNumber(user.contactNumber)
         setEmail(user.email)
         // dispatch(listMyBookings())
       }
@@ -54,7 +58,16 @@ const ProfileScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      dispatch(updateUserProfile({ id: user.id, name, email, password }))
+      dispatch(
+        updateUserProfile({
+          id: user.id,
+          firstName,
+          lastName,
+          contactNumber,
+          email,
+          password,
+        })
+      )
     }
   }
 
@@ -67,15 +80,41 @@ const ProfileScreen = ({ location, history }) => {
         {success && <Message variant='success'>Profile Updated</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='name'>
-            <Form.Label>Name</Form.Label>
+          <Row>
+            <Col>
+              <Form.Group controlId='firstname'>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type='name'
+                  placeholder='Enter first name'
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId='lastname'>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type='name'
+                  placeholder='Enter last name'
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Form.Group controlId='contact'>
+            <Form.Label>Contact Number</Form.Label>
             <Form.Control
-              type='name'
-              placeholder='Enter name'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              type='tel'
+              placeholder='Enter contact number'
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
             ></Form.Control>
           </Form.Group>
+
           <Form.Group controlId='email'>
             <Form.Label>Email Address</Form.Label>
             <Form.Control

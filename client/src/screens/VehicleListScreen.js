@@ -94,7 +94,7 @@ const VehicleListScreen = ({ history, match }) => {
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
-                {/* <th>ID</th> */}
+                <th>License</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>TYPE</th>
@@ -111,7 +111,7 @@ const VehicleListScreen = ({ history, match }) => {
             <tbody>
               {vehicles.map((vehicle) => (
                 <tr key={vehicle._id}>
-                  {/* <td>{vehicle._id}</td> */}
+                  <td>{vehicle.licensePlateNumber}</td>
                   <td>{vehicle.name}</td>
                   <td>{vehicle.pricePerDay}</td>
                   <td>{vehicle.type}</td>

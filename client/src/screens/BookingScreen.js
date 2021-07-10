@@ -84,10 +84,10 @@ const BookingScreen = ({ match, history }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <>
-      <h1>Booking {booking._id}</h1>
+      <h1>Booking ID {booking._id.substring(5, 10)}</h1>
       {booking.isVerified ? (
         <Message variant='success'>
-          Booking verified {booking.verifiedAt}
+          Booking verified {booking.verifiedAt.substring(0, 10)}
         </Message>
       ) : (
         <Message variant='danger'>Booking not verified</Message>
@@ -108,6 +108,7 @@ const BookingScreen = ({ match, history }) => {
                 <Col md={6}>
                   <Row>
                     <h2 className='mb-0'>{booking.vehicle.name} </h2>
+                    <h6>{booking.vehicle.licensePlateNumber}</h6>
                     <p className='mt-0'> {booking.vehicle.type}</p>
                     <Col>
                       <i className='far fa-user me-1'></i>
@@ -145,7 +146,8 @@ const BookingScreen = ({ match, history }) => {
               <h2>Driver Details</h2>
               <p className='my-0'>
                 <strong>Name : </strong>
-                {booking.driverDetails.driverName}
+                {booking.driverDetails.driverFirstName}{' '}
+                {booking.driverDetails.driverLastName}
               </p>
               <p className='my-0'>
                 <strong>Email : </strong>
@@ -175,7 +177,9 @@ const BookingScreen = ({ match, history }) => {
                 {booking.paymentMethod}
               </p>
               {booking.isPaid ? (
-                <Message variant='success'>Paid on {booking.paidAt}</Message>
+                <Message variant='success'>
+                  Paid on {booking.paidAt.substring(0, 10)}
+                </Message>
               ) : (
                 <Message variant='danger'>Not Paid</Message>
               )}

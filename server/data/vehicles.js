@@ -1,6 +1,7 @@
 const vehicals = [
   {
     type: 'Small town car',
+    licensePlateNumber: 'CAD-2342',
     name: 'Toyota Aygo',
     miles_per_gallon: 18,
     cylinders: 3,
@@ -17,6 +18,7 @@ const vehicals = [
   },
   {
     type: 'Small town car',
+    licensePlateNumber: 'CAD-4534',
     name: 'Ford Puma SUV',
     miles_per_gallon: 15,
     cylinders: 3,
@@ -33,6 +35,7 @@ const vehicals = [
   },
   {
     type: 'Family hatchback',
+    licensePlateNumber: 'CGD-1234',
     name: 'Audi A3',
     miles_per_gallon: 13,
     cylinders: 4,
@@ -49,6 +52,7 @@ const vehicals = [
   },
   {
     type: 'Family hatchback',
+    licensePlateNumber: 'CLD-1234',
     name: 'Honda Civic',
     miles_per_gallon: 35,
     cylinders: 4,
@@ -65,6 +69,7 @@ const vehicals = [
   },
   {
     type: 'sedan',
+    licensePlateNumber: 'CAB-1234',
     name: 'Honda Accord',
     miles_per_gallon: 22,
     cylinders: 4,
@@ -81,6 +86,7 @@ const vehicals = [
   },
   {
     type: 'sedan',
+    licensePlateNumber: 'CBD-1234',
     name: 'Hyundai Accent',
     miles_per_gallon: 29,
     cylinders: 4,
@@ -97,6 +103,7 @@ const vehicals = [
   },
   {
     type: 'Estate',
+    licensePlateNumber: 'CAD-1674',
     name: 'BMW X3',
     miles_per_gallon: 23,
     cylinders: 6,
@@ -113,6 +120,7 @@ const vehicals = [
   },
   {
     type: 'Van',
+    licensePlateNumber: 'CD-1234',
     name: 'Volkswagen Transporter',
     miles_per_gallon: 23,
     cylinders: 6,

@@ -115,7 +115,8 @@ const ConfirmBookingScreen = ({ history }) => {
               <h2>Driver Details</h2>
               <p className='my-0'>
                 <strong>Name : </strong>
-                {bookingDetails.driverDetails.driverName}
+                {bookingDetails.driverDetails.driverFirstName}{' '}
+                {bookingDetails.driverDetails.driverLastName}
               </p>
               <p className='my-0'>
                 <strong>Email : </strong>

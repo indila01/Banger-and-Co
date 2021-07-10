@@ -63,6 +63,7 @@ const VehicleScreen = ({ match, history }) => {
               <ListGroup variant='flush'>
                 <ListGroup.Item>
                   <h3 className='py-0'>{vehicle.name}</h3>
+                  <h6>{vehicle.licensePlateNumber}</h6>
                   {vehicle.type}
                 </ListGroup.Item>
 

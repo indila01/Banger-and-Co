@@ -2,6 +2,7 @@ import {
   BOOKING_CREATE_FAIL,
   BOOKING_CREATE_REQUEST,
   BOOKING_CREATE_SUCCESS,
+  BOOKING_CREATE_RESET,
   BOOKING_DETAILS_FAIL,
   BOOKING_DETAILS_REQUEST,
   BOOKING_DETAILS_RESET,
@@ -65,6 +66,8 @@ export const bookingCreateReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       }
+    case BOOKING_CREATE_RESET:
+      return {}
     default:
       return state
   }

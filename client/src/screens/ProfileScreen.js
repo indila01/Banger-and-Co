@@ -160,7 +160,7 @@ const ProfileScreen = ({ location, history }) => {
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
-                <th>ID</th>
+                <th>VEHICLE LICENSE</th>
                 <th>Date</th>
                 <th>Total</th>
                 <th>Paid</th>
@@ -171,7 +171,7 @@ const ProfileScreen = ({ location, history }) => {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking._id}>
-                  <td>{booking._id}</td>
+                  <td>{booking.vehicle.licensePlateNumber}</td>
                   <td>{booking.createdAt.substring(0, 10)}</td>
                   <td>{booking.totalPrice}</td>
                   <td>

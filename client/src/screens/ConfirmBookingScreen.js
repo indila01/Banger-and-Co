@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createBooking } from '../actions/bookingAction'
+import { BOOKING_VERIFY_RESET } from '../constants/bookingConstants'
 
 const ConfirmBookingScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
@@ -30,6 +31,7 @@ const ConfirmBookingScreen = ({ history }) => {
     if (userInfo) {
       if (success) {
         history.push(`/booking/${booking._id}`)
+        dispatch({ type: BOOKING_VERIFY_RESET })
       }
     } else {
       history.push('/login')
@@ -70,7 +72,12 @@ const ConfirmBookingScreen = ({ history }) => {
                   </Col>
                   <Col md={6}>
                     <Row>
-                      <h2>{bookingDetails.vehicleDetails.name} </h2>
+                      <h2 className='mb-0'>
+                        {bookingDetails.vehicleDetails.name}
+                      </h2>
+                      <h6>
+                        {bookingDetails.vehicleDetails.licensePlateNumber}
+                      </h6>
                       <p>{bookingDetails.vehicleDetails.type}</p>
                     </Row>
                     <Row>

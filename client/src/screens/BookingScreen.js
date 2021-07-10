@@ -11,6 +11,7 @@ import {
   verifyBooking,
 } from '../actions/bookingAction'
 import {
+  BOOKING_CREATE_RESET,
   BOOKING_PAY_RESET,
   BOOKING_VERIFY_RESET,
 } from '../constants/bookingConstants'
@@ -51,6 +52,7 @@ const BookingScreen = ({ match, history }) => {
     if (!booking || successPay || successVerify || booking._id !== bookingId) {
       dispatch({ type: BOOKING_PAY_RESET })
       dispatch({ type: BOOKING_VERIFY_RESET })
+      dispatch({ type: BOOKING_CREATE_RESET })
       dispatch(getBookingDetails(bookingId))
     } else if (!booking.isPaid) {
       if (!window.paypal) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -13,6 +13,7 @@ const VehicleEditScreen = ({ match, history }) => {
   const vehicleId = match.params.id
 
   const [name, setName] = useState('')
+  const [licensePlateNumber, setLicensePlateNumber] = useState('')
   const [availability, setAvailability] = useState(false)
   const [miles_per_gallon, setMiles_per_gallon] = useState(0)
   const [cylinders, setCylinders] = useState(0)
@@ -47,6 +48,7 @@ const VehicleEditScreen = ({ match, history }) => {
         dispatch(listVehicleDetails(vehicleId))
       } else {
         setName(vehicle.name)
+        setLicensePlateNumber(vehicle.licensePlateNumber)
         setAvailability(vehicle.availability)
         setMiles_per_gallon(vehicle.miles_per_gallon)
         setCylinders(vehicle.cylinders)
@@ -91,6 +93,7 @@ const VehicleEditScreen = ({ match, history }) => {
       updateVehicle({
         _id: vehicleId,
         name,
+        licensePlateNumber,
         availability,
         miles_per_gallon,
         cylinders,
@@ -122,15 +125,30 @@ const VehicleEditScreen = ({ match, history }) => {
           <Message variant='danger'>{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name'>
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter Vehicle Name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+            <Row>
+              <Col>
+                <Form.Group controlId='name'>
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type='text'
+                    placeholder='Enter Vehicle Name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='name'>
+                  <Form.Label>License number</Form.Label>
+                  <Form.Control
+                    type='text'
+                    placeholder='Enter license number'
+                    value={licensePlateNumber}
+                    onChange={(e) => setLicensePlateNumber(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
 
             <Form.Group controlId='image'>
               <Form.Label>Image</Form.Label>
@@ -195,6 +213,7 @@ const VehicleEditScreen = ({ match, history }) => {
               <Form.Control
                 type='number'
                 placeholder='HP'
+                step='.1'
                 value={horsepower}
                 onChange={(e) => setHorsepower(e.target.value)}
               ></Form.Control>
@@ -205,6 +224,7 @@ const VehicleEditScreen = ({ match, history }) => {
               <Form.Control
                 type='number'
                 placeholder='L'
+                step='.1'
                 value={engine}
                 onChange={(e) => setEngine(e.target.value)}
               ></Form.Control>
@@ -214,6 +234,7 @@ const VehicleEditScreen = ({ match, history }) => {
               <Form.Label>Miles Per Gallon</Form.Label>
               <Form.Control
                 type='number'
+                step='.1'
                 placeholder='mpg'
                 value={miles_per_gallon}
                 onChange={(e) => setMiles_per_gallon(e.target.value)}
@@ -234,6 +255,7 @@ const VehicleEditScreen = ({ match, history }) => {
               <Form.Label>Price Per Day</Form.Label>
               <Form.Control
                 type='number'
+                step='.01'
                 placeholder='Enter Price Per Day'
                 value={pricePerDay}
                 onChange={(e) => setPricePerDay(e.target.value)}

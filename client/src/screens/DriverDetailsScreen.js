@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import { saveDriverDetails } from '../actions/bookingAction'
@@ -9,30 +9,24 @@ const DriverDetailsScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const bookingDetails = useSelector((state) => state.bookingDetails)
-
-  const { driverDetails } = bookingDetails
-
-  const [driverName, setDriverName] = useState(driverDetails.driverName || '')
-  const [driverEmail, setDriverEmail] = useState(
-    driverDetails.driverEmail || ''
-  )
+  const [driverFirstName, setDriverFirstName] = useState(userInfo.firstName)
+  const [driverLastName, setDriverLastName] = useState(userInfo.lastName)
+  const [driverEmail, setDriverEmail] = useState(userInfo.email)
   const [driverContactNumber, setDriverContactNumber] = useState(
-    driverDetails.driverContactNumber || ''
+    userInfo.contactNumber
   )
-  const [driverAddress, setDriverAddress] = useState(
-    driverDetails.driverAddress || ''
-  )
+  const [driverAddress, setDriverAddress] = useState(userInfo.address)
   const [driverLicenseNumber, setDriverLicenseNumber] = useState(
-    driverDetails.driverLicenseNumber || ''
+    userInfo.licenseNumber
   )
-  const [driverNIC, setDriverNIC] = useState(driverDetails.driverNIC || '')
+  const [driverNIC, setDriverNIC] = useState(userInfo.NIC)
 
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
       saveDriverDetails({
-        driverName,
+        driverFirstName,
+        driverLastName,
         driverEmail,
         driverContactNumber,
         driverAddress,
@@ -42,7 +36,15 @@ const DriverDetailsScreen = ({ history }) => {
     )
     history.push('/payment')
   }
-
+  const clear = () => {
+    setDriverFirstName('')
+    setDriverLastName('')
+    setDriverEmail('')
+    setDriverContactNumber('')
+    setDriverAddress('')
+    setDriverLicenseNumber('')
+    setDriverNIC('')
+  }
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
@@ -54,17 +56,36 @@ const DriverDetailsScreen = ({ history }) => {
     <FormContainer>
       <CheckoutSteps step1 step2 />
       <h1>Driver Details</h1>
+      <Button className='my-3' onClick={clear} type='submit' varient='primary'>
+        Add a new driver
+      </Button>
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId='driverName'>
-          <Form.Label>Driver name</Form.Label>
-          <Form.Control
-            type='text'
-            required
-            placeholder='Enter driver name'
-            value={driverName}
-            onChange={(e) => setDriverName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+        <Row>
+          <Col>
+            <Form.Group controlId='driverName'>
+              <Form.Label>Driver first name</Form.Label>
+              <Form.Control
+                type='text'
+                required
+                placeholder='Enter driver first name'
+                value={driverFirstName}
+                onChange={(e) => setDriverFirstName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId='driverName'>
+              <Form.Label>Driver last Name</Form.Label>
+              <Form.Control
+                type='text'
+                required
+                placeholder='Enter driver last name'
+                value={driverLastName}
+                onChange={(e) => setDriverLastName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+        </Row>
 
         <Form.Group controlId='driverEmail'>
           <Form.Label>Driver email</Form.Label>

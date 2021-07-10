@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -10,8 +10,14 @@ import { USER_UPDATE_RESET } from '../constants/userConstants'
 
 const UserEditScreen = ({ match, history }) => {
   const userId = match.params.id
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
+  const [NIC, setNIC] = useState('')
+  const [licenseNumber, setLicenseNumber] = useState('')
+  const [contactNumber, setContactNumber] = useState('')
+  const [birthday, setBirthday] = useState()
   const [isAdmin, setIsAdmin] = useState(false)
 
   const dispatch = useDispatch()
@@ -31,10 +37,16 @@ const UserEditScreen = ({ match, history }) => {
       dispatch({ type: USER_UPDATE_RESET })
       history.push('/admin/userlist')
     } else {
-      if (!user.name || user._id !== userId) {
+      if (!user.firstName || user._id !== userId) {
         dispatch(getUserDetails(userId))
       } else {
-        setName(user.name)
+        setFirstName(user.firstName)
+        setLastName(user.lastName)
+        setAddress(user.address)
+        setNIC(user.NIC)
+        setLicenseNumber(user.licenseNumber)
+        setContactNumber(user.contactNumber)
+        setBirthday(user.birthday)
         setEmail(user.email)
         setIsAdmin(user.isAdmin)
       }
@@ -43,7 +55,19 @@ const UserEditScreen = ({ match, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(updateUser({ _id: userId, name, email, isAdmin }))
+    dispatch(
+      updateUser({
+        _id: userId,
+        firstName,
+        lastName,
+        contactNumber,
+        NIC,
+        licenseNumber,
+        address,
+        email,
+        isAdmin,
+      })
+    )
   }
 
   return (
@@ -62,15 +86,41 @@ const UserEditScreen = ({ match, history }) => {
           <Message variant='danger'>{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name'>
-              <Form.Label>Name</Form.Label>
+            <Row>
+              <Col>
+                <Form.Group controlId='firstname'>
+                  <Form.Label>First Name</Form.Label>
+                  <Form.Control
+                    type='name'
+                    placeholder='Enter first name'
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='lastname'>
+                  <Form.Label>Last Name</Form.Label>
+                  <Form.Control
+                    type='name'
+                    placeholder='Enter last name'
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Form.Group controlId='contact'>
+              <Form.Label>Contact Number</Form.Label>
               <Form.Control
-                type='text'
-                placeholder='Enter name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                type='tel'
+                placeholder='Enter contact number'
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
               ></Form.Control>
             </Form.Group>
+
             <Form.Group controlId='email'>
               <Form.Label>Email Address</Form.Label>
               <Form.Control
@@ -78,6 +128,50 @@ const UserEditScreen = ({ match, history }) => {
                 placeholder='Enter email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Row>
+              <Col>
+                <Form.Group controlId='license'>
+                  <Form.Label>License Number</Form.Label>
+                  <Form.Control
+                    type='name'
+                    placeholder='Enter license number'
+                    value={licenseNumber}
+                    onChange={(e) => setLicenseNumber(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='nic'>
+                  <Form.Label>NIC</Form.Label>
+                  <Form.Control
+                    type='name'
+                    placeholder='Enter NIC'
+                    value={NIC}
+                    onChange={(e) => setNIC(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='birthday'>
+                  <Form.Label>Date of birth </Form.Label>
+                  <Form.Control
+                    type='date'
+                    value={birthday}
+                    onChange={(e) => setBirthday(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Form.Group controlId='address'>
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='Enter address'
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               ></Form.Control>
             </Form.Group>
 

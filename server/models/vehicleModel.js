@@ -18,15 +18,15 @@ const reviewSchema = mongoose.Schema(
 
 const vehicleSchema = mongoose.Schema(
   {
+    licensePlateNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
-    },
-    licencePlateNumber: {
-      type: String,
-      required: true,
-      unique: true,
     },
     type: {
       type: String,

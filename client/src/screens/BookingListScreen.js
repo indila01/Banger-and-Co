@@ -45,8 +45,11 @@ const BookingListScreen = ({ history }) => {
           <tbody>
             {bookings.map((booking) => (
               <tr key={booking._id}>
-                <td>{booking._id}</td>
-                <td>{booking.user && booking.user.name}</td>
+                <td>{booking._id.substring(5, 10)}</td>
+                <td>
+                  {booking.user &&
+                    booking.user.firstName + ' ' + booking.user.lastName}
+                </td>
                 <td>{booking.vehicle && booking.vehicle.name}</td>
                 <td>{booking.createdAt.substring(0, 10)}</td>
                 <td>${booking.totalPrice}</td>

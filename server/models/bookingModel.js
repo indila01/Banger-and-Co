@@ -13,7 +13,8 @@ const bookingSchema = mongoose.Schema(
       ref: 'Vehicle',
     },
     driverDetails: {
-      driverName: { type: String, required: true },
+      driverFirstName: { type: String, required: true },
+      driverLastName: { type: String, required: true },
       driverEmail: { type: String, required: true },
       driverContactNumber: { type: Number, required: true },
       driverAddress: { type: String, required: true },

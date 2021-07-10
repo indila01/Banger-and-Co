@@ -58,6 +58,7 @@ const deleteVehicle = asyncHandler(async (req, res) => {
 const createVehicle = asyncHandler(async (req, res) => {
   const vehicle = new Vehicle({
     type: 'Small town car',
+    licensePlateNumber: 'AAA-0000',
     name: 'sample vehicle',
     miles_per_gallon: 0,
     cylinders: 3,
@@ -83,6 +84,7 @@ const updateVehicle = asyncHandler(async (req, res) => {
   const {
     type,
     name,
+    licensePlateNumber,
     miles_per_gallon,
     cylinders,
     horsepower,
@@ -100,6 +102,7 @@ const updateVehicle = asyncHandler(async (req, res) => {
   if (vehicle) {
     vehicle.type = type
     vehicle.name = name
+    vehicle.licensePlateNumber = licensePlateNumber
     vehicle.miles_per_gallon = miles_per_gallon
     vehicle.cylinders = cylinders
     vehicle.horsepower = horsepower

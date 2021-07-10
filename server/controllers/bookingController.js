@@ -101,7 +101,7 @@ const getMyBookings = asyncHandler(async (req, res) => {
 const getBookings = asyncHandler(async (req, res) => {
   const bookings = await Booking.find({})
     .populate('vehicle')
-    .populate('user', 'id name')
+    .populate('user', 'id firstName lastName')
   res.json(bookings)
 })
 

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,11 +8,16 @@ import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
 
 const RegisterScreen = ({ location, history }) => {
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
+  const [NIC, setNIC] = useState('')
+  const [licenseNumber, setLicenseNumber] = useState('')
+  const [contactNumber, setContactNumber] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [birthday, setBirthday] = useState('')
+  const [birthday, setBirthday] = useState()
   const [message, setMessage] = useState(null)
 
   const dispatch = useDispatch()
@@ -35,7 +38,19 @@ const RegisterScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      dispatch(register(name, email, password, birthday))
+      dispatch(
+        register(
+          firstName,
+          lastName,
+          contactNumber,
+          address,
+          NIC,
+          licenseNumber,
+          email,
+          password,
+          birthday
+        )
+      )
     }
   }
 
@@ -49,23 +64,94 @@ const RegisterScreen = ({ location, history }) => {
       {userRegister.loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Name</Form.Label>
+          <Row>
+            <Col>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='First name'
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              ></Form.Control>
+            </Col>
+            <Col>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='Last name'
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              ></Form.Control>
+            </Col>
+          </Row>
+        </Form.Group>
+        <Row>
+          <Col>
+            <Form.Group controlId='email'>
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                type='email'
+                placeholder='Enter email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId='contactNo'>
+              <Form.Label>Contact Number</Form.Label>
+              <Form.Control
+                type='tel'
+                placeholder='Enter contact number'
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Form.Group controlId='address'>
+          <Form.Label>Address</Form.Label>
           <Form.Control
-            type='name'
-            placeholder='Enter name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            type='address'
+            placeholder='Enter address'
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId='email'>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+        <Row>
+          <Col>
+            <Form.Group controlId='NIC'>
+              <Form.Label>NIC</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='NIC'
+                value={NIC}
+                onChange={(e) => setNIC(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId='lincenseNumber'>
+              <Form.Label>License Number</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='License Number'
+                value={licenseNumber}
+                onChange={(e) => setLicenseNumber(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId='birthday'>
+              <Form.Label>Date of birth </Form.Label>
+              <Form.Control
+                type='date'
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+        </Row>
 
         <Form.Group controlId='password'>
           <Form.Label>Password</Form.Label>
@@ -85,20 +171,6 @@ const RegisterScreen = ({ location, history }) => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId='confirmPassword'>
-          <Form.Label>Date of birth </Form.Label>
-
-          <DatePicker
-            selected={birthday}
-            onChange={(date) => setBirthday(date)}
-            dateFormat='yyyy-MM-dd'
-            maxDate={new Date(2018, 11, 24, 10, 33, 30, 0)}
-            isClearable
-            showYearDropdown
-            scrollableMonthYearDropdown
-          />
         </Form.Group>
 
         <Button

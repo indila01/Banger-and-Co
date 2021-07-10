@@ -138,10 +138,15 @@ const getMyBookings = asyncHandler(async (req, res) => {
 // @route   GET /api/bookings
 // @access  Private,admin
 const getBookings = asyncHandler(async (req, res) => {
+  const pageSize = 8
+  const page = Number(req.query.pageNumber) || 1
+  const count = await Booking.countDocuments({})
   const bookings = await Booking.find({})
     .populate('vehicle')
     .populate('user', 'id firstName lastName')
-  res.json(bookings)
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+  res.json({ bookings, page, pages: Math.ceil(count / pageSize) })
 })
 
 export {

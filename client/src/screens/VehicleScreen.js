@@ -201,7 +201,11 @@ const VehicleScreen = ({ match, history }) => {
                     </ListGroup.Item>
 
                     <ListGroup.Item>
-                      <Button type='submit' varient='primary'>
+                      <Button
+                        type='submit'
+                        className='my-3'
+                        style={{ width: '100%' }}
+                      >
                         Submit Review
                       </Button>
                     </ListGroup.Item>

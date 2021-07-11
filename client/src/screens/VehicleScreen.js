@@ -11,10 +11,23 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { saveVehicleDetails } from '../actions/bookingAction'
 import { VEHICLE_CREATE_REVIEW_RESET } from '../constants/vehicleConstants'
+import { DateRange } from 'react-date-range'
+import { addDays } from 'date-fns'
+import 'react-date-range/dist/styles.css' // main css file
+import 'react-date-range/dist/theme/default.css' // theme css file
 
 const VehicleScreen = ({ match, history }) => {
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 3),
+      key: 'selection',
+    },
+  ])
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [totalCost, setTotalCost] = useState(0)
+  const [numberOfDays, setNumberOfDays] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -33,6 +46,20 @@ const VehicleScreen = ({ match, history }) => {
     history.push('/login?redirect=driverDetails')
   }
 
+  const calNumberOfDays = (e) => {
+    e.preventDefault()
+    const startDate = new Date(date[0].startDate)
+    const endDate = new Date(date[0].endDate)
+    let dayCount = 0
+    while (endDate > startDate) {
+      dayCount++
+      startDate.setDate(startDate.getDate() + 1)
+    }
+
+    setNumberOfDays(dayCount)
+    setTotalCost(dayCount * vehicle.pricePerDay)
+  }
+
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(createVehicleReview(match.params.id, { rating, comment }))
@@ -44,8 +71,12 @@ const VehicleScreen = ({ match, history }) => {
       setComment('')
       dispatch({ type: VEHICLE_CREATE_REVIEW_RESET })
     }
-    dispatch(listVehicleDetails(match.params.id))
-  }, [dispatch, match, successVehicleReview])
+    if (!vehicle || !vehicle.name || vehicle._id !== match.params.id) {
+      dispatch(listVehicleDetails(match.params.id))
+    } else {
+      setTotalCost(Number(vehicle.pricePerDay))
+    }
+  }, [dispatch, match, successVehicleReview, vehicle])
 
   return (
     <>
@@ -55,11 +86,9 @@ const VehicleScreen = ({ match, history }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <Row>
-            <Col md={6}>
+          <Row className='justify-content-md-center'>
+            <Col md={7}>
               <Image src={vehicle.image} alt={vehicle.name} fluid rounded />
-            </Col>
-            <Col md={3}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
                   <h3 className='py-0'>{vehicle.name}</h3>
@@ -108,15 +137,61 @@ const VehicleScreen = ({ match, history }) => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={3}>
+
+            <Col md={4}>
               <Card>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <h4 className='py-2'>Rent Details</h4>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Row className='justify-content-md-center'>
+                      <Col md='auto'>
+                        <DateRange
+                          minDate={new Date()}
+                          maxDate={addDays(new Date(), 30)}
+                          onChange={(item) => setDate([item.selection])}
+                          showSelectionPreview={true}
+                          moveRangeOnFirstSelection={false}
+                          rangeColors={['#2fb380']}
+                          ranges={date}
+                          direction='horizontal'
+                        />
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Button
+                      style={{ width: '100%' }}
+                      className='btn-block'
+                      type='button'
+                      variant='success'
+                      onClick={calNumberOfDays}
+                    >
+                      Calculate cost
+                    </Button>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
                     <Row>
-                      <Col>Price:</Col>
+                      <Col>Price per day:</Col>
                       <Col>
                         <strong>${vehicle.pricePerDay}</strong>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>No. of days</Col>
+                      <Col>
+                        <strong>{numberOfDays}</strong>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Total cost </Col>
+                      <Col>
+                        <strong>${totalCost}</strong>
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -136,7 +211,7 @@ const VehicleScreen = ({ match, history }) => {
                       style={{ width: '100%' }}
                       className='btn-block'
                       type='button'
-                      disabled={vehicle.availability === false}
+                      disabled={numberOfDays < 1}
                       onClick={checkoutHandler}
                     >
                       Checkout
@@ -146,8 +221,8 @@ const VehicleScreen = ({ match, history }) => {
               </Card>
             </Col>
           </Row>
-          <Row>
-            <Col md={6}>
+          <Row className='justify-content-md-center'>
+            <Col md={7}>
               <h2 className='py-2'>Reviews</h2>
 
               {vehicle.reviews.length === 0 && <Message>No reviews</Message>}

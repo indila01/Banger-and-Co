@@ -1,14 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Row, Container } from 'react-bootstrap'
 import Vehicle from '../components/Vehicle'
 import { listVehicles } from '../actions/vehicleActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
+import { DateRange } from 'react-date-range'
+import { addDays } from 'date-fns'
+import 'react-date-range/dist/styles.css' // main css file
+import 'react-date-range/dist/theme/default.css' // theme css file
 // import VehicleCarousel from '../components/VehicleCarousel'
 
 const HomeScreen = ({ match }) => {
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 3),
+      key: 'selection',
+    },
+  ])
   const keyword = match.params.keyword
   const pageNumber = match.params.pageNumber || 1
 
@@ -23,6 +34,24 @@ const HomeScreen = ({ match }) => {
 
   return (
     <div>
+      <Container color='red'>
+        <Row className='justify-content-md-center'>
+          <Col md='mr'>
+            <DateRange
+              minDate={new Date()}
+              maxDate={addDays(new Date(), 30)}
+              onChange={(item) => setDate([item.selection])}
+              showSelectionPreview={true}
+              moveRangeOnFirstSelection={false}
+              months={2}
+              rangeColors={['#2fb380']}
+              ranges={date}
+              direction='horizontal'
+            />
+          </Col>
+        </Row>
+      </Container>
+
       {/* {!keyword && <VehicleCarousel />} */}
       <h1>Vehicles</h1>
 

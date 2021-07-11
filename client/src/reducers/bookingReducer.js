@@ -25,6 +25,7 @@ import {
   BOOKING_VERIFY_REQUEST,
   BOOKING_VERIFY_SUCCESS,
   BOOKING_VERIFY_RESET,
+  BOOKING_SAVE_BOOKING_DETAILS,
 } from '../constants/bookingConstants'
 
 export const bookingReduer = (state = { driverDetails: {} }, action) => {
@@ -43,6 +44,11 @@ export const bookingReduer = (state = { driverDetails: {} }, action) => {
       return {
         ...state,
         vehicleDetails: action.payload,
+      }
+    case BOOKING_SAVE_BOOKING_DETAILS:
+      return {
+        ...state,
+        bookingDetails: action.payload,
       }
     default:
       return state

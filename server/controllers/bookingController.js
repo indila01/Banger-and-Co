@@ -8,8 +8,16 @@ import Vehicle from '../models/vehicleModel.js'
 // @route   Post /api/bookings
 // @access  Private
 const createBooking = asyncHandler(async (req, res) => {
-  const { vehicleDetails, driverDetails, paymentMethod, totalPrice, tax } =
-    req.body
+  const {
+    vehicleDetails,
+    driverDetails,
+    paymentMethod,
+    totalPrice,
+    tax,
+    startDate,
+    endDate,
+    numberOfDays,
+  } = req.body
 
   if (!vehicleDetails) {
     res.status(400)
@@ -23,6 +31,9 @@ const createBooking = asyncHandler(async (req, res) => {
       paymentMethod,
       totalPrice,
       tax,
+      startDate,
+      endDate,
+      numberOfDays,
     })
 
     const createdBooking = await booking.save()

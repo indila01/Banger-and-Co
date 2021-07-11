@@ -39,16 +39,15 @@ const ProfileScreen = ({ location, history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
+      dispatch(listMyBookings())
       if (!user || !user.firstName || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
-        dispatch(listMyBookings())
       } else {
         setFirstName(user.firstName)
         setLastName(user.lastName)
         setContactNumber(user.contactNumber)
         setEmail(user.email)
-        // dispatch(listMyBookings())
       }
     }
   }, [history, userInfo, user, dispatch, success])

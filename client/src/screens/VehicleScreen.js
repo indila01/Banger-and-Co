@@ -9,7 +9,10 @@ import {
 } from '../actions/vehicleActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { saveVehicleDetails } from '../actions/bookingAction'
+import {
+  saveBookingDetails,
+  saveVehicleDetails,
+} from '../actions/bookingAction'
 import { VEHICLE_CREATE_REVIEW_RESET } from '../constants/vehicleConstants'
 import { DateRange } from 'react-date-range'
 import { addDays } from 'date-fns'
@@ -43,6 +46,11 @@ const VehicleScreen = ({ match, history }) => {
 
   const checkoutHandler = () => {
     dispatch(saveVehicleDetails(vehicle))
+    const startDate = date[0].startDate
+    const endDate = date[0].endDate
+    dispatch(
+      saveBookingDetails({ totalCost, startDate, endDate, numberOfDays })
+    )
     history.push('/login?redirect=driverDetails')
   }
 

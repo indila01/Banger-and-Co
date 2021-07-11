@@ -15,7 +15,7 @@ const getVehicles = asyncHandler(async (req, res) => {
         },
       }
     : {}
-  const count = await Vehicle.countDocuments({ ...keyword })
+  const count = await Vehicle.countDocuments({ ...keyword, availability: true })
   const vehicles = await Vehicle.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1))

@@ -42,6 +42,8 @@ const HomeScreen = ({ match }) => {
                 )
             )}
           </Row>
+          {/* eslint-disable-next-line */}
+          {vehicles == 0 && <Message>Vehicles are not available </Message>}
           <Paginate
             pages={pages}
             page={page}

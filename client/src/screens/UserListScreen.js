@@ -46,6 +46,8 @@ const UserListScreen = ({ history }) => {
                 <th>NAME</th>
                 <th>NIC</th>
                 <th>EMAIL</th>
+                <th>VERIFIED</th>
+                <th>BLACKLISTED</th>
                 <th>ADMIN</th>
                 <th></th>
               </tr>
@@ -62,6 +64,26 @@ const UserListScreen = ({ history }) => {
                     <a href={`mailto:${user.email}`}>{user.email}</a>
                   </td>
                   <td>
+                    {user.isVerified ? (
+                      <i
+                        className='fas fa-check'
+                        style={{ color: 'green' }}
+                      ></i>
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {user.isBlacklisted ? (
+                      <i
+                        className='fas fa-check'
+                        style={{ color: 'green' }}
+                      ></i>
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
                     {user.isAdmin ? (
                       <i
                         className='fas fa-check'
@@ -71,6 +93,7 @@ const UserListScreen = ({ history }) => {
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
                     )}
                   </td>
+
                   <td>
                     <LinkContainer to={`/admin/user/${user._id}/edit`}>
                       <Button variant='light' className='btn-sm'>

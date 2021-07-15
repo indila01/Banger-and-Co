@@ -12,6 +12,7 @@ const users = [
     birthday: 1999 - 2 - 19,
     password: bcrypt.hashSync('indila', 10),
     isAdmin: true,
+    isVerified: true,
   },
   {
     firstName: 'Sajani',

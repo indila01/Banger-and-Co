@@ -151,6 +151,11 @@ const VehicleScreen = ({ match, history }) => {
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <h4 className='py-2'>Rent Details</h4>
+                    {numberOfDays > 14 && (
+                      <Message variant='warning'>
+                        Cannot book for more than 14 days
+                      </Message>
+                    )}
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row className='justify-content-md-center'>
@@ -219,7 +224,7 @@ const VehicleScreen = ({ match, history }) => {
                       style={{ width: '100%' }}
                       className='btn-block'
                       type='button'
-                      disabled={numberOfDays < 1}
+                      disabled={numberOfDays < 1 || numberOfDays > 14}
                       onClick={checkoutHandler}
                     >
                       Checkout

@@ -185,6 +185,8 @@ const updateUser = asyncHandler(async (req, res) => {
     user.licenseNumber = req.body.licenseNumber || user.licenseNumber
     user.NIC = req.body.NIC || user.NIC
     user.isAdmin = req.body.isAdmin
+    user.isVerified = req.body.isVerified
+    user.isBlacklisted = req.body.isBlacklisted
 
     const updatedUser = await user.save()
     res.json({
@@ -196,6 +198,8 @@ const updateUser = asyncHandler(async (req, res) => {
       NIC: updatedUser.NIC,
       licenseNumber: updatedUser.licenseNumber,
       isAdmin: updatedUser.isAdmin,
+      isVerified: updateUser.isVerified,
+      isBlacklisted: updateUser.isBlacklisted,
     })
   } else {
     res.status(404)

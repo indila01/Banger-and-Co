@@ -69,9 +69,25 @@ const getBookedStatus = asyncHandler(async (req, res) => {
 // @route   GET /api/vehicles/:id
 // @access  Public
 const getVehicleById = asyncHandler(async (req, res) => {
+  const startDate = req.query.startDate ? new Date(req.query.startDate) : ''
+  const endDate = req.query.endDate ? new Date(req.query.endDate) : ''
+
   const vehicle = await Vehicle.findById(req.params.id)
 
   if (vehicle) {
+    var bookedVehicles = await Booking.find({
+      vehicle: vehicle._id,
+      $or: [
+        { startDate: { $lte: startDate }, endDate: { $gte: startDate } },
+        { startDate: { $lte: endDate }, endDate: { $gte: endDate } },
+        { startDate: { $gt: startDate }, endDate: { $lt: endDate } },
+      ],
+    })
+
+    if (bookedVehicles != 0) {
+      vehicle.isBooked = true
+    }
+
     res.json(vehicle)
   } else {
     res.status(404)

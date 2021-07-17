@@ -66,6 +66,7 @@ const VehicleScreen = ({ match, history }) => {
 
     setNumberOfDays(dayCount)
     setTotalCost(dayCount * vehicle.pricePerDay)
+    dispatch(listVehicleDetails(match.params.id, date))
   }
 
   const submitHandler = (e) => {
@@ -80,11 +81,9 @@ const VehicleScreen = ({ match, history }) => {
       dispatch({ type: VEHICLE_CREATE_REVIEW_RESET })
     }
     if (!vehicle || !vehicle.name || vehicle._id !== match.params.id) {
-      dispatch(listVehicleDetails(match.params.id))
-    } else {
-      setTotalCost(Number(vehicle.pricePerDay))
+      dispatch(listVehicleDetails(match.params.id, date))
     }
-  }, [dispatch, match, successVehicleReview, vehicle])
+  }, [dispatch, match, successVehicleReview, vehicle, date])
 
   return (
     <>
@@ -213,22 +212,33 @@ const VehicleScreen = ({ match, history }) => {
                     <Row>
                       <Col>Status:</Col>
                       <Col>
-                        {vehicle.availability === true
-                          ? 'Available'
-                          : 'Not available'}
+                        {vehicle.isBooked
+                          ? 'Booked'
+                          : !vehicle.availability
+                          ? 'Not Available'
+                          : 'Available'}
                       </Col>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
-                    <Button
-                      style={{ width: '100%' }}
-                      className='btn-block'
-                      type='button'
-                      disabled={numberOfDays < 1 || numberOfDays > 14}
-                      onClick={checkoutHandler}
-                    >
-                      Checkout
-                    </Button>
+                    {loading ? (
+                      <Loader />
+                    ) : (
+                      <Button
+                        style={{ width: '100%' }}
+                        className='btn-block'
+                        type='button'
+                        disabled={
+                          numberOfDays < 1 ||
+                          numberOfDays > 14 ||
+                          !vehicle.availability ||
+                          vehicle.isBooked
+                        }
+                        onClick={checkoutHandler}
+                      >
+                        Checkout
+                      </Button>
+                    )}
                   </ListGroup.Item>
                 </ListGroup>
               </Card>

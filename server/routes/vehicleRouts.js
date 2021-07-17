@@ -8,6 +8,7 @@ import {
   createVehicle,
   createVehicleReview,
   getTopVehicles,
+  getBookedStatus,
 } from '../controllers/vehicleController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -19,5 +20,7 @@ router
   .get(getVehicleById)
   .delete(protect, admin, deleteVehicle)
   .put(protect, admin, updateVehicle)
+
+router.route('/:id/booked').get(getBookedStatus)
 
 export default router

@@ -44,6 +44,27 @@ const getVehicles = asyncHandler(async (req, res) => {
   res.json({ vehicles, page, pages: Math.ceil(count / pageSize) })
 })
 
+// @desc    check booked status
+// @route   GET /api/booked
+// @access  Public
+const getBookedStatus = asyncHandler(async (req, res) => {
+  const startDate = new Date(req.query.startDate)
+  const endDate = new Date(req.query.endDate)
+
+  var vehiclesId = req.params.id
+
+  var bookedVehicles = await Booking.find({
+    vehicle: vehiclesId,
+    $or: [
+      { startDate: { $lte: startDate }, endDate: { $gte: startDate } },
+      { startDate: { $lte: endDate }, endDate: { $gte: endDate } },
+      { startDate: { $gt: startDate }, endDate: { $lt: endDate } },
+    ],
+  })
+
+  res.send(bookedVehicles)
+})
+
 // @desc    Fetch single vehicle
 // @route   GET /api/vehicles/:id
 // @access  Public
@@ -199,4 +220,5 @@ export {
   createVehicle,
   createVehicleReview,
   getTopVehicles,
+  getBookedStatus,
 }

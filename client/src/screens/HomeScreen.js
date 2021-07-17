@@ -70,14 +70,11 @@ const HomeScreen = ({ match }) => {
       ) : (
         <>
           <Row>
-            {vehicles.map(
-              (vehicle) =>
-                vehicle.availability && (
-                  <Col key={vehicle._id} sm={12} md={6} lg={4} xl={3}>
-                    <Vehicle vehicle={vehicle} />
-                  </Col>
-                )
-            )}
+            {vehicles.map((vehicle) => (
+              <Col key={vehicle._id} sm={12} md={6} lg={4} xl={3}>
+                <Vehicle vehicle={vehicle} />
+              </Col>
+            ))}
           </Row>
           {/* eslint-disable-next-line */}
           {vehicles == 0 && <Message>Vehicles are not available </Message>}

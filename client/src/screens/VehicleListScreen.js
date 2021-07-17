@@ -47,7 +47,7 @@ const VehicleListScreen = ({ history, match }) => {
     if (successCreate) {
       history.push(`/admin/vehicle/${createdVehicle._id}/edit`)
     } else {
-      dispatch(listVehicles('', pageNumber))
+      dispatch(listVehicles('', pageNumber, ''))
     }
   }, [
     dispatch,

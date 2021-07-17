@@ -30,8 +30,10 @@ export const listVehicles =
     try {
       dispatch({ type: VEHICLE_LIST_REQUEST })
 
-      const startDate = format(new Date(date[0].startDate), 'yyy-MM-dd')
-      const endDate = format(new Date(date[0].endDate), 'yyy-MM-dd')
+      const startDate = date
+        ? format(new Date(date[0].startDate), 'yyy-MM-dd')
+        : ''
+      const endDate = date ? format(new Date(date[0].endDate), 'yyy-MM-dd') : ''
 
       const { data } = await axios.get(
         `/api/vehicles?keyword=${keyword}&pageNumber=${pageNumber}&startDate=${startDate}&endDate=${endDate}`

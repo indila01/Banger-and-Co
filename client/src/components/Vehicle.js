@@ -26,16 +26,39 @@ const Vehicle = ({ vehicle }) => {
         </Card.Text>
 
         <Card.Text as='h3'>${vehicle.pricePerDay}</Card.Text>
-        <Link to={`/vehicle/${vehicle._id}`}>
+
+        {vehicle.isBooked ? (
           <Button
             style={{ width: '100%' }}
             type='button'
             className='btn-block'
-            variant='success'
+            variant='warning'
+            disabled={true}
           >
-            View
+            Booked
           </Button>
-        </Link>
+        ) : vehicle.availability ? (
+          <Link to={`/vehicle/${vehicle._id}`}>
+            <Button
+              style={{ width: '100%' }}
+              type='button'
+              className='btn-block'
+              variant='success'
+            >
+              View
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            style={{ width: '100%' }}
+            type='button'
+            className='btn-block'
+            variant='dark'
+            disabled={true}
+          >
+            Not available
+          </Button>
+        )}
       </Card.Body>
     </Card>
   )

@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Vehicle from '../models/vehicleModel.js'
+import Booking from '../models/bookingModel.js'
 
 // @desc    Fetch all vehicles
 // @route   GET /api/vehicles
@@ -7,6 +8,8 @@ import Vehicle from '../models/vehicleModel.js'
 const getVehicles = asyncHandler(async (req, res) => {
   const pageSize = 8
   const page = Number(req.query.pageNumber) || 1
+  const startDate = new Date(req.query.startDate)
+  const endDate = new Date(req.query.endDate)
   const keyword = req.query.keyword
     ? {
         name: {
@@ -16,9 +19,25 @@ const getVehicles = asyncHandler(async (req, res) => {
       }
     : {}
   const count = await Vehicle.countDocuments({ ...keyword, availability: true })
-  const vehicles = await Vehicle.find({ ...keyword })
+  var vehicles = await Vehicle.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1))
+
+  var bookedVehicles = await Booking.find({
+    $or: [
+      { startDate: { $lte: startDate }, endDate: { $gte: startDate } },
+      { startDate: { $lte: endDate }, endDate: { $gte: endDate } },
+      { startDate: { $gt: startDate }, endDate: { $lt: endDate } },
+    ],
+  }).populate('vehicle')
+
+  for (var i = 0, len = vehicles.length; i < len; i++) {
+    for (var j = 0, len2 = bookedVehicles.length; j < len2; j++) {
+      if (vehicles[i].name === bookedVehicles[j].vehicle.name) {
+        vehicles[i].isBooked = true
+      }
+    }
+  }
 
   res.json({ vehicles, page, pages: Math.ceil(count / pageSize) })
 })

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Col, Row, Container } from 'react-bootstrap'
+import { Col, Row, Container, Button } from 'react-bootstrap'
 import Vehicle from '../components/Vehicle'
 import { listVehicles } from '../actions/vehicleActions'
 import Message from '../components/Message'
@@ -20,6 +20,7 @@ const HomeScreen = ({ match }) => {
       key: 'selection',
     },
   ])
+  const [searchDate, setSearchDate] = useState(date)
   const keyword = match.params.keyword
   const pageNumber = match.params.pageNumber || 1
 
@@ -29,9 +30,12 @@ const HomeScreen = ({ match }) => {
   const { loading, error, vehicles, page, pages } = vehicleList
 
   useEffect(() => {
-    dispatch(listVehicles(keyword, pageNumber))
-  }, [dispatch, keyword, pageNumber])
+    dispatch(listVehicles(keyword, pageNumber, searchDate))
+  }, [dispatch, keyword, pageNumber, searchDate])
 
+  const searchDateHandler = () => {
+    setSearchDate(date)
+  }
   return (
     <div>
       <Container color='red'>
@@ -47,9 +51,13 @@ const HomeScreen = ({ match }) => {
               rangeColors={['#2fb380']}
               ranges={date}
               direction='horizontal'
+              dateDisplayFormat='MM/dd/yyyy'
             />
           </Col>
         </Row>
+        <Button className='btn-block' type='button' onClick={searchDateHandler}>
+          Search
+        </Button>
       </Container>
 
       {/* {!keyword && <VehicleCarousel />} */}

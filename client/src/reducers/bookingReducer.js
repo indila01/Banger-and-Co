@@ -2,6 +2,7 @@ import {
   BOOKING_CREATE_FAIL,
   BOOKING_CREATE_REQUEST,
   BOOKING_CREATE_SUCCESS,
+  BOOKING_CREATE_RESET,
   BOOKING_DETAILS_FAIL,
   BOOKING_DETAILS_REQUEST,
   BOOKING_DETAILS_RESET,
@@ -24,6 +25,7 @@ import {
   BOOKING_VERIFY_REQUEST,
   BOOKING_VERIFY_SUCCESS,
   BOOKING_VERIFY_RESET,
+  BOOKING_SAVE_BOOKING_DETAILS,
 } from '../constants/bookingConstants'
 
 export const bookingReduer = (state = { driverDetails: {} }, action) => {
@@ -42,6 +44,11 @@ export const bookingReduer = (state = { driverDetails: {} }, action) => {
       return {
         ...state,
         vehicleDetails: action.payload,
+      }
+    case BOOKING_SAVE_BOOKING_DETAILS:
+      return {
+        ...state,
+        bookingDetails: action.payload,
       }
     default:
       return state
@@ -65,6 +72,8 @@ export const bookingCreateReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       }
+    case BOOKING_CREATE_RESET:
+      return {}
     default:
       return state
   }

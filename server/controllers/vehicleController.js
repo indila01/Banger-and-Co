@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Vehicle from '../models/vehicleModel.js'
+import Booking from '../models/bookingModel.js'
 
 // @desc    Fetch all vehicles
 // @route   GET /api/vehicles
@@ -7,6 +8,8 @@ import Vehicle from '../models/vehicleModel.js'
 const getVehicles = asyncHandler(async (req, res) => {
   const pageSize = 8
   const page = Number(req.query.pageNumber) || 1
+  const startDate = req.query.startDate ? new Date(req.query.startDate) : ''
+  const endDate = req.query.endDate ? new Date(req.query.endDate) : ''
   const keyword = req.query.keyword
     ? {
         name: {
@@ -16,20 +19,75 @@ const getVehicles = asyncHandler(async (req, res) => {
       }
     : {}
   const count = await Vehicle.countDocuments({ ...keyword })
-  const vehicles = await Vehicle.find({ ...keyword })
+  var vehicles = await Vehicle.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1))
 
+  if (startDate != '') {
+    var bookedVehicles = await Booking.find({
+      $or: [
+        { startDate: { $lte: startDate }, endDate: { $gte: startDate } },
+        { startDate: { $lte: endDate }, endDate: { $gte: endDate } },
+        { startDate: { $gt: startDate }, endDate: { $lt: endDate } },
+      ],
+    }).populate('vehicle')
+
+    for (var i = 0, len = vehicles.length; i < len; i++) {
+      for (var j = 0, len2 = bookedVehicles.length; j < len2; j++) {
+        if (vehicles[i].name === bookedVehicles[j].vehicle.name) {
+          vehicles[i].isBooked = true
+        }
+      }
+    }
+  }
+
   res.json({ vehicles, page, pages: Math.ceil(count / pageSize) })
+})
+
+// @desc    check booked status
+// @route   GET /api/booked
+// @access  Public
+const getBookedStatus = asyncHandler(async (req, res) => {
+  const startDate = new Date(req.query.startDate)
+  const endDate = new Date(req.query.endDate)
+
+  var vehiclesId = req.params.id
+
+  var bookedVehicles = await Booking.find({
+    vehicle: vehiclesId,
+    $or: [
+      { startDate: { $lte: startDate }, endDate: { $gte: startDate } },
+      { startDate: { $lte: endDate }, endDate: { $gte: endDate } },
+      { startDate: { $gt: startDate }, endDate: { $lt: endDate } },
+    ],
+  })
+
+  res.send(bookedVehicles)
 })
 
 // @desc    Fetch single vehicle
 // @route   GET /api/vehicles/:id
 // @access  Public
 const getVehicleById = asyncHandler(async (req, res) => {
+  const startDate = req.query.startDate ? new Date(req.query.startDate) : ''
+  const endDate = req.query.endDate ? new Date(req.query.endDate) : ''
+
   const vehicle = await Vehicle.findById(req.params.id)
 
   if (vehicle) {
+    var bookedVehicles = await Booking.find({
+      vehicle: vehicle._id,
+      $or: [
+        { startDate: { $lte: startDate }, endDate: { $gte: startDate } },
+        { startDate: { $lte: endDate }, endDate: { $gte: endDate } },
+        { startDate: { $gt: startDate }, endDate: { $lt: endDate } },
+      ],
+    })
+
+    if (bookedVehicles != 0) {
+      vehicle.isBooked = true
+    }
+
     res.json(vehicle)
   } else {
     res.status(404)
@@ -141,7 +199,7 @@ const createVehicleReview = asyncHandler(async (req, res) => {
     }
 
     const review = {
-      name: req.user.name,
+      name: req.user.firstName + ' ' + req.user.lastName,
       rating: Number(rating),
       comment,
       user: req.user._id,
@@ -178,4 +236,5 @@ export {
   createVehicle,
   createVehicleReview,
   getTopVehicles,
+  getBookedStatus,
 }

@@ -11,6 +11,7 @@ import {
   verifyBooking,
 } from '../actions/bookingAction'
 import {
+  BOOKING_CREATE_RESET,
   BOOKING_PAY_RESET,
   BOOKING_VERIFY_RESET,
 } from '../constants/bookingConstants'
@@ -51,6 +52,7 @@ const BookingScreen = ({ match, history }) => {
     if (!booking || successPay || successVerify || booking._id !== bookingId) {
       dispatch({ type: BOOKING_PAY_RESET })
       dispatch({ type: BOOKING_VERIFY_RESET })
+      dispatch({ type: BOOKING_CREATE_RESET })
       dispatch(getBookingDetails(bookingId))
     } else if (!booking.isPaid) {
       if (!window.paypal) {
@@ -193,32 +195,49 @@ const BookingScreen = ({ match, history }) => {
                 <h2>Booking Summery</h2>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Row>
-                  <Col>Price Per day</Col>
-                  <Col> {booking.vehicle.pricePerDay}</Col>
+                <Row className='justify-content-md-center'>
+                  <Col>Start Day</Col>
+                  <Col>
+                    {new Date(booking.startDate).toString().substring(0, 15)}
+                  </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Row>
-                  <Col>Car Rental Price</Col>
+                <Row className='justify-content-md-center'>
+                  <Col>End Day</Col>
                   <Col>
-                    {' '}
-                    {booking.numberOfDays} * {booking.vehicle.pricePerDay}
+                    {new Date(booking.endDate).toString().substring(0, 15)}
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Tax</Col>
-                  <Col>${booking.tax}</Col>
+                  <Col>Price Per day</Col>
+                  <Col>${booking.vehicle.pricePerDay}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Total Price</Col>
+                  <Col>No. of Days</Col>
+                  <Col>{booking.numberOfDays}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>Tax</Col>
+                  <Col>
+                    ${booking.tax} <strong> (15%)</strong>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Total Price after Tax</Col>
                   <Col>${booking.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+
               {!booking.isPaid && !userInfo.isAdmin && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}

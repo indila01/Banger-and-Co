@@ -21,16 +21,22 @@ import {
   VEHICLE_TOP_SUCCESS,
   VEHICLE_TOP_FAIL,
 } from '../constants/vehicleConstants'
+import { format } from 'date-fns'
 import axios from 'axios'
 
 export const listVehicles =
-  (keyword = '', pageNumber = '') =>
+  (keyword = '', pageNumber = '', date) =>
   async (dispatch) => {
     try {
       dispatch({ type: VEHICLE_LIST_REQUEST })
 
+      const startDate = date
+        ? format(new Date(date[0].startDate), 'yyy-MM-dd')
+        : ''
+      const endDate = date ? format(new Date(date[0].endDate), 'yyy-MM-dd') : ''
+
       const { data } = await axios.get(
-        `/api/vehicles?keyword=${keyword}&pageNumber=${pageNumber}`
+        `/api/vehicles?keyword=${keyword}&pageNumber=${pageNumber}&startDate=${startDate}&endDate=${endDate}`
       )
 
       dispatch({
@@ -48,11 +54,18 @@ export const listVehicles =
     }
   }
 
-export const listVehicleDetails = (id) => async (dispatch) => {
+export const listVehicleDetails = (id, date) => async (dispatch) => {
   try {
     dispatch({ type: VEHICLE_DETAILS_REQUEST })
 
-    const { data } = await axios.get(`/api/vehicles/${id}`)
+    const startDate = date
+      ? format(new Date(date[0].startDate), 'yyy-MM-dd')
+      : ''
+    const endDate = date ? format(new Date(date[0].endDate), 'yyy-MM-dd') : ''
+
+    const { data } = await axios.get(
+      `/api/vehicles/${id}?startDate=${startDate}&endDate=${endDate}`
+    )
 
     dispatch({
       type: VEHICLE_DETAILS_SUCCESS,

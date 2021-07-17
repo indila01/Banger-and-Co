@@ -39,16 +39,15 @@ const ProfileScreen = ({ location, history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
+      dispatch(listMyBookings())
       if (!user || !user.firstName || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
-        dispatch(listMyBookings())
       } else {
         setFirstName(user.firstName)
         setLastName(user.lastName)
         setContactNumber(user.contactNumber)
         setEmail(user.email)
-        // dispatch(listMyBookings())
       }
     }
   }, [history, userInfo, user, dispatch, success])
@@ -145,7 +144,12 @@ const ProfileScreen = ({ location, history }) => {
             ></Form.Control>
           </Form.Group>
 
-          <Button type='submit' variant='primary'>
+          <Button
+            type='submit'
+            variant='primary'
+            className='my-3'
+            style={{ width: '100%' }}
+          >
             Update
           </Button>
         </Form>
@@ -157,48 +161,58 @@ const ProfileScreen = ({ location, history }) => {
         ) : errorBookings ? (
           <Message variant='danger'>{errorBookings}</Message>
         ) : (
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Total</th>
-                <th>Paid</th>
-                <th>Verified</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map((booking) => (
-                <tr key={booking._id}>
-                  <td>{booking._id}</td>
-                  <td>{booking.createdAt.substring(0, 10)}</td>
-                  <td>{booking.totalPrice}</td>
-                  <td>
-                    {booking.isPaid ? (
-                      booking.paidAt.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    {booking.isVerified ? (
-                      booking.verifiedAt.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/booking/${booking._id}`}>
-                      <Button className='btn-sm' variant='light'>
-                        Details
-                      </Button>
-                    </LinkContainer>
-                  </td>
+          <>
+            <Table striped bordered hover responsive className='table-sm'>
+              <thead>
+                <tr>
+                  <th>VEHICLE LICENSE</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Paid</th>
+                  <th>Verified</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {bookings.map((booking) => (
+                  <tr key={booking._id}>
+                    <td>{booking.vehicle.licensePlateNumber}</td>
+                    <td>{booking.createdAt.substring(0, 10)}</td>
+                    <td>{booking.totalPrice}</td>
+                    <td>
+                      {booking.isPaid ? (
+                        booking.paidAt.substring(0, 10)
+                      ) : (
+                        <i
+                          className='fas fa-times'
+                          style={{ color: 'red' }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      {booking.isVerified ? (
+                        booking.verifiedAt.substring(0, 10)
+                      ) : (
+                        <i
+                          className='fas fa-times'
+                          style={{ color: 'red' }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      <LinkContainer to={`/booking/${booking._id}`}>
+                        <Button className='btn-sm' variant='light'>
+                          Details
+                        </Button>
+                      </LinkContainer>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+            {/* eslint-disable-next-line */}
+            {bookings == 0 && <Message>Bookings are not available </Message>}
+          </>
         )}
       </Col>
     </Row>

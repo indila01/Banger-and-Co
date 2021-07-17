@@ -64,12 +64,16 @@ const driverDetailsFromStorage = localStorage.getItem('driverDetails')
 const vehicleDetailsFromStorage = localStorage.getItem('vehicleDetails')
   ? JSON.parse(localStorage.getItem('vehicleDetails'))
   : {}
+const bookingDetailsFromStorage = localStorage.getItem('bookingDetails')
+  ? JSON.parse(localStorage.getItem('bookingDetails'))
+  : {}
 
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
   bookingDetails: {
     driverDetails: driverDetailsFromStorage,
     vehicleDetails: vehicleDetailsFromStorage,
+    bookingDetails: bookingDetailsFromStorage,
   },
 }
 

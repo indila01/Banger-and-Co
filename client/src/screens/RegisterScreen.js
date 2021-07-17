@@ -6,8 +6,12 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
+import { Calendar } from 'react-date-range'
+import 'react-date-range/dist/styles.css' // main css file
+import 'react-date-range/dist/theme/default.css' // theme css file
 
 const RegisterScreen = ({ location, history }) => {
+  const [dob, setDob] = useState(new Date())
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -17,7 +21,6 @@ const RegisterScreen = ({ location, history }) => {
   const [contactNumber, setContactNumber] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [birthday, setBirthday] = useState()
   const [message, setMessage] = useState(null)
 
   const dispatch = useDispatch()
@@ -35,7 +38,17 @@ const RegisterScreen = ({ location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    if (password !== confirmPassword) {
+
+    const today = new Date()
+    const birthday = new Date(dob)
+    var age_now = today.getFullYear() - birthday.getFullYear()
+    const m = today.getMonth() - birthday.getMonth()
+    if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+      age_now--
+    }
+    if (age_now < 18) {
+      setMessage('Youre below 18, you must be above 18 to register.')
+    } else if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
       dispatch(
@@ -141,37 +154,46 @@ const RegisterScreen = ({ location, history }) => {
               ></Form.Control>
             </Form.Group>
           </Col>
+        </Row>
+        <Col>
+          <Form.Group controlId='birthday'>
+            <Form.Label>Date of birth </Form.Label>
+            <Calendar
+              maxDate={new Date()}
+              color='#2fb380'
+              className='form-control'
+              onChange={(item) => setDob(item)}
+              date={dob}
+              months={2}
+              direction='horizontal'
+            />
+          </Form.Group>
+        </Col>
+
+        <Row>
           <Col>
-            <Form.Group controlId='birthday'>
-              <Form.Label>Date of birth </Form.Label>
+            <Form.Group controlId='password'>
+              <Form.Label>Password</Form.Label>
               <Form.Control
-                type='date'
-                value={birthday}
-                onChange={(e) => setBirthday(e.target.value)}
+                type='password'
+                placeholder='Enter password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId='confirmPassword'>
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type='password'
+                placeholder='Confirm password'
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               ></Form.Control>
             </Form.Group>
           </Col>
         </Row>
-
-        <Form.Group controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId='confirmPassword'>
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Confirm password'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
 
         <Button
           type='submit'

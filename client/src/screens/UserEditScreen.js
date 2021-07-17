@@ -19,6 +19,8 @@ const UserEditScreen = ({ match, history }) => {
   const [contactNumber, setContactNumber] = useState('')
   const [birthday, setBirthday] = useState()
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
+  const [isBlacklisted, setIsBlacklisted] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -49,6 +51,8 @@ const UserEditScreen = ({ match, history }) => {
         setBirthday(user.birthday)
         setEmail(user.email)
         setIsAdmin(user.isAdmin)
+        setIsBlacklisted(user.isBlacklisted)
+        setIsVerified(user.isVerified)
       }
     }
   }, [user, dispatch, userId, successUpdate, history])
@@ -66,6 +70,8 @@ const UserEditScreen = ({ match, history }) => {
         address,
         email,
         isAdmin,
+        isVerified,
+        isBlacklisted,
       })
     )
   }
@@ -110,7 +116,6 @@ const UserEditScreen = ({ match, history }) => {
                 </Form.Group>
               </Col>
             </Row>
-
             <Form.Group controlId='contact'>
               <Form.Label>Contact Number</Form.Label>
               <Form.Control
@@ -120,7 +125,6 @@ const UserEditScreen = ({ match, history }) => {
                 onChange={(e) => setContactNumber(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
             <Form.Group controlId='email'>
               <Form.Label>Email Address</Form.Label>
               <Form.Control
@@ -164,7 +168,6 @@ const UserEditScreen = ({ match, history }) => {
                 </Form.Group>
               </Col>
             </Row>
-
             <Form.Group controlId='address'>
               <Form.Label>Address</Form.Label>
               <Form.Control
@@ -174,7 +177,6 @@ const UserEditScreen = ({ match, history }) => {
                 onChange={(e) => setAddress(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
             <Form.Group controlId='isadmin'>
               <Form.Check
                 type='checkbox'
@@ -183,7 +185,22 @@ const UserEditScreen = ({ match, history }) => {
                 onChange={(e) => setIsAdmin(e.target.checked)}
               ></Form.Check>
             </Form.Group>
-
+            <Form.Group controlId='isverified'>
+              <Form.Check
+                type='checkbox'
+                label='Verify'
+                checked={isVerified}
+                onChange={(e) => setIsVerified(e.target.checked)}
+              ></Form.Check>
+            </Form.Group>{' '}
+            <Form.Group controlId='isblacklisted'>
+              <Form.Check
+                type='checkbox'
+                label='Blacklist'
+                checked={isBlacklisted}
+                onChange={(e) => setIsBlacklisted(e.target.checked)}
+              ></Form.Check>
+            </Form.Group>
             <Button
               type='submit'
               variant='success'

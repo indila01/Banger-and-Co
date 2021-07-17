@@ -88,6 +88,11 @@ const vehicleSchema = mongoose.Schema(
       required: true,
       default: true,
     },
+    isBooked: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,

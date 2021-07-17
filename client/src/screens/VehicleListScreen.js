@@ -47,7 +47,7 @@ const VehicleListScreen = ({ history, match }) => {
     if (successCreate) {
       history.push(`/admin/vehicle/${createdVehicle._id}/edit`)
     } else {
-      dispatch(listVehicles('', pageNumber))
+      dispatch(listVehicles('', pageNumber, ''))
     }
   }, [
     dispatch,
@@ -140,6 +140,8 @@ const VehicleListScreen = ({ history, match }) => {
               ))}
             </tbody>
           </Table>
+          {/* eslint-disable-next-line */}
+          {vehicles == 0 && <Message>Vehicles are not available </Message>}
           <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}

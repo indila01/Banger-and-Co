@@ -20,6 +20,7 @@ import {
   BOOKING_VERIFY_REQUEST,
   BOOKING_VERIFY_SUCCESS,
   BOOKING_VERIFY_FAIL,
+  BOOKING_SAVE_BOOKING_DETAILS,
 } from '../constants/bookingConstants'
 import axios from 'axios'
 
@@ -48,6 +49,15 @@ export const saveVehicleDetails = (data) => (dispatch) => {
   })
 
   localStorage.setItem('vehicleDetails', JSON.stringify(data))
+}
+
+export const saveBookingDetails = (data) => (dispatch) => {
+  dispatch({
+    type: BOOKING_SAVE_BOOKING_DETAILS,
+    payload: data,
+  })
+
+  localStorage.setItem('bookingDetails', JSON.stringify(data))
 }
 
 export const createBooking = (booking) => async (dispatch, getState) => {

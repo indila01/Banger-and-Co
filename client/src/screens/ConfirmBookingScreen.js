@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createBooking } from '../actions/bookingAction'
+import { BOOKING_VERIFY_RESET } from '../constants/bookingConstants'
 
 const ConfirmBookingScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
@@ -12,15 +13,19 @@ const ConfirmBookingScreen = ({ history }) => {
   const dispatch = useDispatch()
   const bookingDetails = useSelector((state) => state.bookingDetails)
 
+  const startDate = new Date(bookingDetails.bookingDetails.startDate)
+
+  const endDate = new Date(bookingDetails.bookingDetails.endDate)
+
   //   Calculate prices
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
   const tax = addDecimals(
-    Number((0.15 * bookingDetails.vehicleDetails.pricePerDay).toFixed(2))
+    Number((0.15 * bookingDetails.bookingDetails.totalCost).toFixed(2))
   )
   const totalPrice = (
-    Number(bookingDetails.vehicleDetails.pricePerDay) + Number(tax)
+    Number(bookingDetails.bookingDetails.totalCost) + Number(tax)
   ).toFixed(2)
 
   const bookingCreate = useSelector((state) => state.bookingCreate)
@@ -30,6 +35,7 @@ const ConfirmBookingScreen = ({ history }) => {
     if (userInfo) {
       if (success) {
         history.push(`/booking/${booking._id}`)
+        dispatch({ type: BOOKING_VERIFY_RESET })
       }
     } else {
       history.push('/login')
@@ -45,6 +51,9 @@ const ConfirmBookingScreen = ({ history }) => {
         paymentMethod: bookingDetails.paymentMethod,
         totalPrice: totalPrice,
         tax: tax,
+        startDate: startDate,
+        endDate: endDate,
+        numberOfDays: bookingDetails.bookingDetails.numberOfDays,
       })
     )
   }
@@ -70,7 +79,12 @@ const ConfirmBookingScreen = ({ history }) => {
                   </Col>
                   <Col md={6}>
                     <Row>
-                      <h2>{bookingDetails.vehicleDetails.name} </h2>
+                      <h2 className='mb-0'>
+                        {bookingDetails.vehicleDetails.name}
+                      </h2>
+                      <h6>
+                        {bookingDetails.vehicleDetails.licensePlateNumber}
+                      </h6>
                       <p>{bookingDetails.vehicleDetails.type}</p>
                     </Row>
                     <Row>
@@ -105,9 +119,6 @@ const ConfirmBookingScreen = ({ history }) => {
                       </Col>
                     </Row>
                   </Col>
-                  {/* <Col> */}
-                  {/* {item.qty} x ${item.price} = ${item.qty * item.price} */}
-                  {/* </Col> */}
                 </Row>
               )}
             </ListGroup.Item>
@@ -153,39 +164,60 @@ const ConfirmBookingScreen = ({ history }) => {
                 <h2>Booking Summery</h2>
               </ListGroup.Item>
               <ListGroup.Item>
+                <Row className='justify-content-md-center'>
+                  <Col>Start Day</Col>
+                  <Col>{startDate.toString().substring(0, 15)}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row className='justify-content-md-center'>
+                  <Col>End Day</Col>
+                  <Col>{endDate.toString().substring(0, 15)}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Row>
                   <Col>Price Per day</Col>
                   <Col>
-                    {' '}
                     ${addDecimals(bookingDetails.vehicleDetails.pricePerDay)}
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Car Rental Price</Col>
+                  <Col>No. of Days</Col>
+                  <Col>{bookingDetails.bookingDetails.numberOfDays}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Total Price before Tax</Col>
                   <Col>
-                    {' '}
-                    ${addDecimals(bookingDetails.vehicleDetails.pricePerDay)} *
-                    days
+                    ${addDecimals(bookingDetails.bookingDetails.totalCost)}
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${tax}</Col>
+                  <Col>
+                    ${tax} <strong> (15%)</strong>
+                  </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Total Price</Col>
+                  <Col>Total Price after Tax</Col>
                   <Col>${totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                {error && <Message variant='danger'>{error}</Message>}
-              </ListGroup.Item>
+
+              {error && (
+                <ListGroup.Item>
+                  <Message variant='danger'>{error}</Message>
+                </ListGroup.Item>
+              )}
+
               <ListGroup.Item>
                 <Button
                   style={{ width: '100%' }}

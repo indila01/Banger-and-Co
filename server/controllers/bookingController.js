@@ -1,12 +1,23 @@
 import asyncHandler from 'express-async-handler'
 import Booking from '../models/bookingModel.js'
+import User from '../models/userModel.js'
+import nodemailer from 'nodemailer'
+import Vehicle from '../models/vehicleModel.js'
 
 // @desc    Create new booking
 // @route   Post /api/bookings
 // @access  Private
 const createBooking = asyncHandler(async (req, res) => {
-  const { vehicleDetails, driverDetails, paymentMethod, totalPrice, tax } =
-    req.body
+  const {
+    vehicleDetails,
+    driverDetails,
+    paymentMethod,
+    totalPrice,
+    tax,
+    startDate,
+    endDate,
+    numberOfDays,
+  } = req.body
 
   if (!vehicleDetails) {
     res.status(400)
@@ -20,9 +31,48 @@ const createBooking = asyncHandler(async (req, res) => {
       paymentMethod,
       totalPrice,
       tax,
+      startDate,
+      endDate,
+      numberOfDays,
     })
+
     const createdBooking = await booking.save()
     res.status(201).json(createdBooking)
+
+    const user = await User.findById(req.user._id)
+    const vehicle = await Vehicle.findById(vehicleDetails._id)
+
+    const emailBody = `<h1>Booking Confirmation Completed</h1>
+    <h3>${vehicle.name}</h3>
+    <h6>${vehicle.licensePlateNumber}</h6>
+    <ul>
+    <li>Driver Name: ${createdBooking.driverDetails.driverFirstName} ${createdBooking.driverDetails.driverLastName}</li>
+    <li>Driver NIC: ${createdBooking.driverDetails.driverNIC} </li>
+    <li>Driver License: ${createdBooking.driverDetails.driverLicenseNumber}</li>
+    <li>Paid: ${createdBooking.isPaid}</li>
+    <li>Verified: ${createdBooking.isVerified} </li>
+    </ul>
+    `
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS,
+      },
+    })
+    transporter
+      .sendMail({
+        from: 'Banger and Co<bangerandco4@gmail.com>',
+        to: user.email,
+        subject: `Booking confirmation ${createdBooking._id}`,
+        html: emailBody,
+      })
+      .then((info) => {
+        console.log({ info })
+      })
+      .catch(console.error)
   }
 })
 

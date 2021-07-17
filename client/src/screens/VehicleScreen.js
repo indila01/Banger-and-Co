@@ -9,12 +9,28 @@ import {
 } from '../actions/vehicleActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { saveVehicleDetails } from '../actions/bookingAction'
+import {
+  saveBookingDetails,
+  saveVehicleDetails,
+} from '../actions/bookingAction'
 import { VEHICLE_CREATE_REVIEW_RESET } from '../constants/vehicleConstants'
+import { DateRange } from 'react-date-range'
+import { addDays } from 'date-fns'
+import 'react-date-range/dist/styles.css' // main css file
+import 'react-date-range/dist/theme/default.css' // theme css file
 
 const VehicleScreen = ({ match, history }) => {
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 3),
+      key: 'selection',
+    },
+  ])
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [totalCost, setTotalCost] = useState(0)
+  const [numberOfDays, setNumberOfDays] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -30,7 +46,27 @@ const VehicleScreen = ({ match, history }) => {
 
   const checkoutHandler = () => {
     dispatch(saveVehicleDetails(vehicle))
+    const startDate = date[0].startDate
+    const endDate = date[0].endDate
+    dispatch(
+      saveBookingDetails({ totalCost, startDate, endDate, numberOfDays })
+    )
     history.push('/login?redirect=driverDetails')
+  }
+
+  const calNumberOfDays = (e) => {
+    e.preventDefault()
+    const startDate = new Date(date[0].startDate)
+    const endDate = new Date(date[0].endDate)
+    let dayCount = 0
+    while (endDate > startDate) {
+      dayCount++
+      startDate.setDate(startDate.getDate() + 1)
+    }
+
+    setNumberOfDays(dayCount)
+    setTotalCost(dayCount * vehicle.pricePerDay)
+    dispatch(listVehicleDetails(match.params.id, date))
   }
 
   const submitHandler = (e) => {
@@ -44,8 +80,10 @@ const VehicleScreen = ({ match, history }) => {
       setComment('')
       dispatch({ type: VEHICLE_CREATE_REVIEW_RESET })
     }
-    dispatch(listVehicleDetails(match.params.id))
-  }, [dispatch, match, successVehicleReview])
+    if (!vehicle || !vehicle.name || vehicle._id !== match.params.id) {
+      dispatch(listVehicleDetails(match.params.id, date))
+    }
+  }, [dispatch, match, successVehicleReview, vehicle, date])
 
   return (
     <>
@@ -55,11 +93,9 @@ const VehicleScreen = ({ match, history }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <Row>
-            <Col md={6}>
+          <Row className='justify-content-md-center'>
+            <Col md={7}>
               <Image src={vehicle.image} alt={vehicle.name} fluid rounded />
-            </Col>
-            <Col md={3}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
                   <h3 className='py-0'>{vehicle.name}</h3>
@@ -108,26 +144,31 @@ const VehicleScreen = ({ match, history }) => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={3}>
+
+            <Col md={4}>
               <Card>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <h4 className='py-2'>Rent Details</h4>
-                    <Row>
-                      <Col>Price:</Col>
-                      <Col>
-                        <strong>${vehicle.pricePerDay}</strong>
-                      </Col>
-                    </Row>
+                    {numberOfDays > 14 && (
+                      <Message variant='warning'>
+                        Cannot book for more than 14 days
+                      </Message>
+                    )}
                   </ListGroup.Item>
-
                   <ListGroup.Item>
-                    <Row>
-                      <Col>Status:</Col>
-                      <Col>
-                        {vehicle.availability === true
-                          ? 'Available'
-                          : 'Not available'}
+                    <Row className='justify-content-md-center'>
+                      <Col md='auto'>
+                        <DateRange
+                          minDate={new Date()}
+                          maxDate={addDays(new Date(), 30)}
+                          onChange={(item) => setDate([item.selection])}
+                          showSelectionPreview={true}
+                          moveRangeOnFirstSelection={false}
+                          rangeColors={['#2fb380']}
+                          ranges={date}
+                          direction='horizontal'
+                        />
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -136,18 +177,75 @@ const VehicleScreen = ({ match, history }) => {
                       style={{ width: '100%' }}
                       className='btn-block'
                       type='button'
-                      disabled={vehicle.availability === false}
-                      onClick={checkoutHandler}
+                      variant='success'
+                      onClick={calNumberOfDays}
                     >
-                      Checkout
+                      Calculate cost
                     </Button>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Price per day:</Col>
+                      <Col>
+                        <strong>${vehicle.pricePerDay}</strong>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>No. of days</Col>
+                      <Col>
+                        <strong>{numberOfDays}</strong>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Total cost </Col>
+                      <Col>
+                        <strong>${totalCost}</strong>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Status:</Col>
+                      <Col>
+                        {vehicle.isBooked
+                          ? 'Booked'
+                          : !vehicle.availability
+                          ? 'Not Available'
+                          : 'Available'}
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    {loading ? (
+                      <Loader />
+                    ) : (
+                      <Button
+                        style={{ width: '100%' }}
+                        className='btn-block'
+                        type='button'
+                        disabled={
+                          numberOfDays < 1 ||
+                          numberOfDays > 14 ||
+                          !vehicle.availability ||
+                          vehicle.isBooked
+                        }
+                        onClick={checkoutHandler}
+                      >
+                        Checkout
+                      </Button>
+                    )}
                   </ListGroup.Item>
                 </ListGroup>
               </Card>
             </Col>
           </Row>
-          <Row>
-            <Col md={6}>
+          <Row className='justify-content-md-center'>
+            <Col md={7}>
               <h2 className='py-2'>Reviews</h2>
 
               {vehicle.reviews.length === 0 && <Message>No reviews</Message>}
@@ -201,7 +299,11 @@ const VehicleScreen = ({ match, history }) => {
                     </ListGroup.Item>
 
                     <ListGroup.Item>
-                      <Button type='submit' varient='primary'>
+                      <Button
+                        type='submit'
+                        className='my-3'
+                        style={{ width: '100%' }}
+                      >
                         Submit Review
                       </Button>
                     </ListGroup.Item>

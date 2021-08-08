@@ -10,6 +10,7 @@ import { DateRange } from 'react-date-range'
 import { addDays } from 'date-fns'
 import 'react-date-range/dist/styles.css' // main css file
 import 'react-date-range/dist/theme/default.css' // theme css file
+import backgroundImage from '../heroimage.jpg'
 // import VehicleCarousel from '../components/VehicleCarousel'
 
 const HomeScreen = ({ match }) => {
@@ -38,9 +39,14 @@ const HomeScreen = ({ match }) => {
   }
   return (
     <div>
-      <Container color='red'>
+      <Container
+        style={{
+          backgroundImage: 'url(' + backgroundImage + ')',
+          backgroundSize: '800px 500px',
+        }}
+      >
         <Row className='justify-content-md-center'>
-          <Col md='mr'>
+          <Col>
             <DateRange
               minDate={new Date()}
               maxDate={addDays(new Date(), 30)}
@@ -61,7 +67,6 @@ const HomeScreen = ({ match }) => {
       </Container>
 
       {/* {!keyword && <VehicleCarousel />} */}
-      <h1>Vehicles</h1>
 
       {loading ? (
         <Loader />

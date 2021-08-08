@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable'
 import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -18,9 +20,25 @@ const VehicleEditScreen = ({ match, history }) => {
   const [miles_per_gallon, setMiles_per_gallon] = useState(0)
   const [cylinders, setCylinders] = useState(0)
   const [horsepower, setHorsepower] = useState(0)
-  const [transmission, setTransmission] = useState('')
-  const [type, setType] = useState('')
-  const [fuel, setFuel] = useState('')
+  const [transmission, setTransmission] = useState({})
+  const transmissionOptions = [
+    { value: 'Manual', label: 'Manual' },
+    { value: 'Automatic', label: 'Automatic' },
+  ]
+  const [type, setType] = useState({})
+  const typeOption = [
+    { value: 'Family Hatchback', label: 'Family Hatchback' },
+    { value: 'Small Town Car', label: 'Small Town Car' },
+    { value: 'Van', label: 'Van' },
+    { value: 'Sedan', label: 'Sedan' },
+    { value: 'Estate', label: 'Estate' },
+  ]
+  const [fuel, setFuel] = useState({})
+  const fuelOptions = [
+    { value: 'Petrol', label: 'Petrol' },
+    { value: 'Diesel', label: 'Diesel' },
+    { value: 'Hybrid', label: 'Hybrid' },
+  ]
   const [engine, setEngine] = useState(0)
   const [seats, setseats] = useState(0)
   const [pricePerDay, setPricePerDay] = useState(0)
@@ -53,9 +71,18 @@ const VehicleEditScreen = ({ match, history }) => {
         setMiles_per_gallon(vehicle.miles_per_gallon)
         setCylinders(vehicle.cylinders)
         setHorsepower(vehicle.horsepower)
-        setTransmission(vehicle.transmission)
-        setType(vehicle.type)
-        setFuel(vehicle.fuel)
+        setTransmission({
+          value: vehicle.transmission,
+          label: vehicle.transmission,
+        })
+        setType({
+          value: vehicle.type,
+          label: vehicle.type,
+        })
+        setFuel({
+          value: vehicle.fuel,
+          label: vehicle.fuel,
+        })
         setEngine(vehicle.engine)
         setseats(vehicle.seats)
         setPricePerDay(vehicle.pricePerDay)
@@ -98,9 +125,9 @@ const VehicleEditScreen = ({ match, history }) => {
         miles_per_gallon,
         cylinders,
         horsepower,
-        transmission,
-        type,
-        fuel,
+        transmission: transmission.value,
+        type: type.value,
+        fuel: fuel.value,
         engine,
         seats,
         pricePerDay,
@@ -150,6 +177,10 @@ const VehicleEditScreen = ({ match, history }) => {
               </Col>
             </Row>
 
+            <Col className='my-3'>
+              <Image src={image} alt={image} fluid rounded />
+            </Col>
+
             <Form.Group controlId='image'>
               <Form.Label>Image</Form.Label>
               <Form.Control
@@ -158,10 +189,8 @@ const VehicleEditScreen = ({ match, history }) => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
-
               <Form.File
                 id='image-file'
-                label='Choose File'
                 custom
                 onChange={uploadFileHandler}
               ></Form.File>
@@ -170,86 +199,103 @@ const VehicleEditScreen = ({ match, history }) => {
 
             <Form.Group controlId='type'>
               <Form.Label>Vehicle Type</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter Vehicle Type'
+
+              <CreatableSelect
+                options={typeOption}
+                placeholder='Vehicle Type...'
+                isSearchable={true}
+                onChange={setType}
                 value={type}
-                onChange={(e) => setType(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
+            <Row>
+              <Col>
+                <Form.Group controlId='seats'>
+                  <Form.Label>No. of Seats</Form.Label>
+                  <Form.Control
+                    type='number'
+                    placeholder='Enter Number of Seats'
+                    value={seats}
+                    onChange={(e) => setseats(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='transmission'>
+                  <Form.Label>Transmission</Form.Label>
+                  <Select
+                    options={transmissionOptions}
+                    placeholder='Transmission'
+                    isSearchable={true}
+                    onChange={setTransmission}
+                    value={transmission}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group controlId='fuel'>
+                  <Form.Label>Fuel Type</Form.Label>
+                  <Select
+                    options={fuelOptions}
+                    placeholder='Select fuel type'
+                    onChange={setFuel}
+                    value={fuel}
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='horsepower'>
+                  <Form.Label>Horsepower</Form.Label>
+                  <Form.Control
+                    type='number'
+                    placeholder='HP'
+                    step='.1'
+                    value={horsepower}
+                    onChange={(e) => setHorsepower(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
 
-            <Form.Group controlId='seats'>
-              <Form.Label>No. of Seats</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='Enter Number of Seats'
-                value={seats}
-                onChange={(e) => setseats(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId='transmission'>
-              <Form.Label>Transmission</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Automatic/Manual'
-                value={transmission}
-                onChange={(e) => setTransmission(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId='fuel'>
-              <Form.Label>Fuel Type</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Select Fuel Type'
-                value={fuel}
-                onChange={(e) => setFuel(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId='horsepower'>
-              <Form.Label>Horsepower</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='HP'
-                step='.1'
-                value={horsepower}
-                onChange={(e) => setHorsepower(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId='engine'>
-              <Form.Label>Engine Capacity</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='L'
-                step='.1'
-                value={engine}
-                onChange={(e) => setEngine(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId='milespergallon'>
-              <Form.Label>Miles Per Gallon</Form.Label>
-              <Form.Control
-                type='number'
-                step='.1'
-                placeholder='mpg'
-                value={miles_per_gallon}
-                onChange={(e) => setMiles_per_gallon(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId='cylinders'>
-              <Form.Label>Cylinders</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='Enter Cylinders'
-                value={cylinders}
-                onChange={(e) => setCylinders(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+            <Row>
+              <Col>
+                <Form.Group controlId='engine'>
+                  <Form.Label>Engine Capacity</Form.Label>
+                  <Form.Control
+                    type='number'
+                    placeholder='L'
+                    step='.1'
+                    value={engine}
+                    onChange={(e) => setEngine(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='milespergallon'>
+                  <Form.Label>Miles Per Gallon</Form.Label>
+                  <Form.Control
+                    type='number'
+                    step='.1'
+                    placeholder='mpg'
+                    value={miles_per_gallon}
+                    onChange={(e) => setMiles_per_gallon(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='cylinders'>
+                  <Form.Label>Cylinders</Form.Label>
+                  <Form.Control
+                    type='number'
+                    placeholder='Enter Cylinders'
+                    value={cylinders}
+                    onChange={(e) => setCylinders(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
 
             <Form.Group controlId='priceperday'>
               <Form.Label>Price Per Day</Form.Label>

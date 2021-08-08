@@ -31,6 +31,7 @@ const VehicleScreen = ({ match, history }) => {
   const [comment, setComment] = useState('')
   const [totalCost, setTotalCost] = useState(0)
   const [numberOfDays, setNumberOfDays] = useState(0)
+  const [message, setMessage] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -45,13 +46,29 @@ const VehicleScreen = ({ match, history }) => {
     vehicleReviewCreate
 
   const checkoutHandler = () => {
-    dispatch(saveVehicleDetails(vehicle))
-    const startDate = date[0].startDate
-    const endDate = date[0].endDate
-    dispatch(
-      saveBookingDetails({ totalCost, startDate, endDate, numberOfDays })
-    )
-    history.push('/login?redirect=driverDetails')
+    if (userInfo) {
+      const today = new Date()
+      const birthday = new Date(userInfo.DOB)
+      var age_now = today.getFullYear() - birthday.getFullYear()
+      const m = today.getMonth() - birthday.getMonth()
+      if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+        age_now--
+      }
+
+      if (age_now < 25 && vehicle.type !== 'Small town car') {
+        setMessage('Youre below 25, You can only checkout small town cars.')
+      } else {
+        dispatch(saveVehicleDetails(vehicle))
+        const startDate = date[0].startDate
+        const endDate = date[0].endDate
+        dispatch(
+          saveBookingDetails({ totalCost, startDate, endDate, numberOfDays })
+        )
+        history.push('/login?redirect=driverDetails')
+      }
+    } else {
+      history.push('/login')
+    }
   }
 
   const calNumberOfDays = (e) => {
@@ -150,6 +167,7 @@ const VehicleScreen = ({ match, history }) => {
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <h4 className='py-2'>Rent Details</h4>
+                    {message && <Message variant='warning'>{message}</Message>}
                     {numberOfDays > 14 && (
                       <Message variant='warning'>
                         Cannot book for more than 14 days

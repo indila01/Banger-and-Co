@@ -22,6 +22,7 @@ const authUser = asyncHandler(async (req, res) => {
       licenseNumber: user.licenseNumber,
       contactNumber: user.contactNumber,
       isAdmin: user.isAdmin,
+      DOB: user.birthday,
       token: generateToken(user._id),
     })
   } else {
@@ -76,6 +77,7 @@ const registerUser = asyncHandler(async (req, res) => {
       NIC: user.NIC,
       contactNumber: user.contactNumber,
       isAdmin: user.isAdmin,
+      DOB: user.birthday,
       token: generateToken(user._id),
     })
   } else {

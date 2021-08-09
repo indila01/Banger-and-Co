@@ -55,7 +55,7 @@ const VehicleScreen = ({ match, history }) => {
         age_now--
       }
 
-      if (age_now < 25 && vehicle.type !== 'Small town car') {
+      if (age_now < 25 && vehicle.type !== 'Small Town Car') {
         setMessage('Youre below 25, You can only checkout small town cars.')
       } else {
         dispatch(saveVehicleDetails(vehicle))

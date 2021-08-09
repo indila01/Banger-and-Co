@@ -22,6 +22,8 @@ const authUser = asyncHandler(async (req, res) => {
       licenseNumber: user.licenseNumber,
       contactNumber: user.contactNumber,
       isAdmin: user.isAdmin,
+      isBlacklisted: user.isBlacklisted,
+      isVerified: user.isVerified,
       DOB: user.birthday,
       token: generateToken(user._id),
     })
@@ -77,6 +79,8 @@ const registerUser = asyncHandler(async (req, res) => {
       NIC: user.NIC,
       contactNumber: user.contactNumber,
       isAdmin: user.isAdmin,
+      isBlacklisted: user.isBlacklisted,
+      isVerified: user.isVerified,
       DOB: user.birthday,
       token: generateToken(user._id),
     })

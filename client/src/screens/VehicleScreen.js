@@ -57,6 +57,12 @@ const VehicleScreen = ({ match, history }) => {
 
       if (age_now < 25 && vehicle.type !== 'Small Town Car') {
         setMessage('Youre below 25, You can only checkout small town cars.')
+      } else if (userInfo.isBlacklisted) {
+        setMessage('Youre blacklisted, You cannot checkout any vehicle.')
+      } else if (!userInfo.isVerified) {
+        setMessage(
+          'Your account is not verified, You cannot checkout until admin verifies your account.'
+        )
       } else {
         dispatch(saveVehicleDetails(vehicle))
         const startDate = date[0].startDate

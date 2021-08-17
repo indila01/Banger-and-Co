@@ -1,10 +1,10 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+// import { Route } from 'react-router-dom'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../actions/userActions'
-import SearchBox from './SearchBox'
+// import SearchBox from './SearchBox'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -31,11 +31,6 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Route render={({ history }) => <SearchBox history={history} />} />
-            <Nav className='mb-auto'>
-              <Nav.Link href='#home'>Home</Nav.Link>
-              <Nav.Link href='#link'>Link</Nav.Link>
-            </Nav>
             <Nav className='ms-auto'>
               {userInfo ? (
                 <NavDropdown
@@ -47,10 +42,12 @@ const Header = () => {
                   id='username'
                 >
                   <LinkContainer to='/profile'>
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <i class='fas fa-user' /> Profile
+                    </NavDropdown.Item>
                   </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>
-                    Logout
+                    <i class='fas fa-sign-out-alt' /> Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
@@ -66,13 +63,19 @@ const Header = () => {
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title='Admin' id='adminmenu'>
                   <LinkContainer to='/admin/userlist'>
-                    <NavDropdown.Item>Users</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <i class='fas fa-users' /> Users
+                    </NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to='/admin/vehiclelist'>
-                    <NavDropdown.Item>Vehicles</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <i className='fas fa-car-alt' /> Vehicles
+                    </NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to='/admin/bookinglist'>
-                    <NavDropdown.Item>Bookings</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <i class='fas fa-book' /> Bookings
+                    </NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}

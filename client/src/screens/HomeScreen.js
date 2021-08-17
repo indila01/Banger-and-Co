@@ -18,7 +18,7 @@ import { DateRange } from 'react-date-range'
 import { addDays } from 'date-fns'
 import 'react-date-range/dist/styles.css' // main css file
 import 'react-date-range/dist/theme/default.css' // theme css file
-import backgroundImage from '../heroimage.jpg'
+
 // import VehicleCarousel from '../components/VehicleCarousel'
 
 const HomeScreen = ({ match }) => {
@@ -29,7 +29,7 @@ const HomeScreen = ({ match }) => {
       key: 'selection',
     },
   ])
-
+  const [keyword, setKeyword] = useState('')
   const [show, setShow] = useState(false)
 
   const handleClose = () => {
@@ -39,7 +39,6 @@ const HomeScreen = ({ match }) => {
   const handleShow = () => setShow(true)
 
   const [searchDate, setSearchDate] = useState(date)
-  const keyword = match.params.keyword
   const pageNumber = match.params.pageNumber || 1
 
   const dispatch = useDispatch()
@@ -86,7 +85,8 @@ const HomeScreen = ({ match }) => {
             <Form.Control
               type='text'
               name='vehicle name'
-              placeholder='Search Vehicles'
+              placeholder='🔎 Search Vehicles'
+              onChange={(e) => setKeyword(e.target.value)}
               className='mr-sm-2 ml-sm-5'
             />
 

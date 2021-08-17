@@ -28,8 +28,10 @@ import {
   bookingListReducer,
   bookingVerifyReducer,
 } from './reducers/bookingReducer'
+import { equipmentListReducer } from './reducers/equipmentReducer'
 
 const reducer = combineReducers({
+  equipmentList: equipmentListReducer,
   vehicleList: vehicleListReducer,
   vehicleDetails: vehicleDetailstReducer,
   vehicleDelete: vehicleDeleteReducer,

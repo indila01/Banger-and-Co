@@ -114,3 +114,10 @@ h3 {
     background-color: rgb(16, 78, 136);
     color: white;
 }
+
+.equipmentcard {
+    max-width: auto !important;
+    padding: 8px !important;
+    background-color: #febb0246 !important;
+    border-color: #febb0246;
+}

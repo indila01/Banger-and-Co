@@ -64,7 +64,7 @@ const HomeScreen = ({ match }) => {
             showSelectionPreview={true}
             moveRangeOnFirstSelection={false}
             months={2}
-            rangeColors={['#2fb380']}
+            rangeColors={['#febb02']}
             ranges={date}
             direction='horizontal'
             dateDisplayFormat='MM/dd/yyyy'

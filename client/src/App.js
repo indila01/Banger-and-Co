@@ -17,6 +17,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import VehicleListScreen from './screens/VehicleListScreen'
 import VehicleEditScreen from './screens/VehicleEditScreen'
 import BookingListScreen from './screens/BookingListScreen'
+import EquipmentsScreen from './screens/EquipmentsScreen'
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
           <Route path='/profile' component={ProfileScreen} />
+          <Route path='/equipments' component={EquipmentsScreen} />
           <Route path='/driverDetails' component={DriverDetailsScreen} />
           <Route path='/confirmBooking' component={ConfirmBookingScreen} />
           <Route path='/payment' component={PaymentScreen} />

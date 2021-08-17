@@ -70,7 +70,7 @@ const VehicleScreen = ({ match, history }) => {
         dispatch(
           saveBookingDetails({ totalCost, startDate, endDate, numberOfDays })
         )
-        history.push('/login?redirect=driverDetails')
+        history.push('/login?redirect=equipments')
       }
     } else {
       history.push('/login')
@@ -189,7 +189,7 @@ const VehicleScreen = ({ match, history }) => {
                           onChange={(item) => setDate([item.selection])}
                           showSelectionPreview={true}
                           moveRangeOnFirstSelection={false}
-                          rangeColors={['#2fb380']}
+                          rangeColors={['#febb02']}
                           ranges={date}
                           direction='horizontal'
                         />

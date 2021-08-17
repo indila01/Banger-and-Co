@@ -54,7 +54,7 @@ const DriverDetailsScreen = ({ history }) => {
 
   return (
     <FormContainer>
-      <CheckoutSteps step1 step2 />
+      <CheckoutSteps step1 step2 step3 />
       <h1>Driver Details</h1>
       <Button className='my-3' onClick={clear} type='submit' varient='primary'>
         Add a new driver

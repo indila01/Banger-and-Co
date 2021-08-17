@@ -8,6 +8,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 //routes
 import vehicleRoutes from './routes/vehicleRouts.js'
+import equipmentRouts from './routes/equipmentRouts.js'
 import userRoutes from './routes/userRoutes.js'
 import bookingRoutes from './routes/bookingRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/vehicles', vehicleRoutes)
+app.use('/api/equipments', equipmentRouts)
 app.use('/api/users', userRoutes)
 app.use('/api/bookings', bookingRoutes)
 app.use('/api/upload', uploadRoutes)

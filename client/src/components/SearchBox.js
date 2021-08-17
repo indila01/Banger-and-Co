@@ -21,7 +21,7 @@ const SearchBox = ({ history }) => {
           name='q'
           onChange={(e) => setKeyword(e.target.value)}
           placeholder='Search Vehicles'
-          className='mr-sm-2 ml-sm-5'
+          className='mr-sm-2 ml-sm-5 mx-1'
         />
         <Button type='submit' variant='outline-dark' className='p-2'>
           Search

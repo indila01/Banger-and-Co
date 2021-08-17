@@ -2176,11 +2176,11 @@ progress {
 }
 
 .form-control:focus {
-    color: #495057;
+    color: #000000;
     background-color: #fff;
-    border-color: #9aacf3;
+    border-color: #000000;
     outline: 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 0.25rem rgba(52, 89, 230, 0.25);
+    /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 0.25rem rgba(52, 89, 230, 0.25); */
 }
 
 .form-control::-webkit-date-and-time-value {
@@ -2835,8 +2835,8 @@ textarea.form-control-lg {
 
 .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),
 .input-group:not(.has-validation)> :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    /* border-top-right-radius: 0;
+    border-bottom-right-radius: 0; */
 }
 
 .input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),
@@ -2847,8 +2847,8 @@ textarea.form-control-lg {
 
 .input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
     margin-left: -1px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    /* border-top-left-radius: 0;
+    border-bottom-left-radius: 0; */
 }
 
 .valid-feedback {
@@ -3105,21 +3105,22 @@ textarea.form-control.is-invalid {
 .btn-check:focus+.btn,
 .btn:focus {
     outline: 0;
-    box-shadow: 0 1px 2px rgba(255, 255, 255, 0.05);
+    /* box-shadow: 0 1px 2px rgba(255, 255, 255, 0.05); */
+    box-shadow: none;
 }
 
 .btn-check:active+.btn,
 .btn-check:checked+.btn,
 .btn.active,
 .btn:active {
-    box-shadow: 0 1px 2px rgba(255, 255, 255, 0.05);
+    box-shadow: none;
 }
 
 .btn-check:active+.btn:focus,
 .btn-check:checked+.btn:focus,
 .btn.active:focus,
 .btn:active:focus {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
 }
 
 .btn.disabled,
@@ -3148,7 +3149,7 @@ fieldset:disabled .btn {
     color: #fff;
     background-color: #4d4d4d;
     border-color: #ffffff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
+    box-shadow: none;
 }
 
 .btn-check:active+.btn-primary,

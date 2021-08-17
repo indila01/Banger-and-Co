@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Col, Row, Container, Button } from 'react-bootstrap'
+import {
+  Col,
+  Row,
+  Container,
+  Button,
+  Modal,
+  Form,
+  InputGroup,
+} from 'react-bootstrap'
 import Vehicle from '../components/Vehicle'
 import { listVehicles } from '../actions/vehicleActions'
 import Message from '../components/Message'
@@ -21,6 +29,15 @@ const HomeScreen = ({ match }) => {
       key: 'selection',
     },
   ])
+
+  const [show, setShow] = useState(false)
+
+  const handleClose = () => {
+    setShow(false)
+    searchDateHandler()
+  }
+  const handleShow = () => setShow(true)
+
   const [searchDate, setSearchDate] = useState(date)
   const keyword = match.params.keyword
   const pageNumber = match.params.pageNumber || 1
@@ -39,33 +56,59 @@ const HomeScreen = ({ match }) => {
   }
   return (
     <div>
-      <Container
-        style={{
-          backgroundImage: 'url(' + backgroundImage + ')',
-          backgroundSize: '800px 500px',
-        }}
-      >
-        <Row className='justify-content-md-center'>
-          <Col>
-            <DateRange
-              minDate={new Date()}
-              maxDate={addDays(new Date(), 30)}
-              onChange={(item) => setDate([item.selection])}
-              showSelectionPreview={true}
-              moveRangeOnFirstSelection={false}
-              months={2}
-              rangeColors={['#2fb380']}
-              ranges={date}
-              direction='horizontal'
-              dateDisplayFormat='MM/dd/yyyy'
-            />
-          </Col>
-        </Row>
-        <Button className='btn-block' type='button' onClick={searchDateHandler}>
-          Search
-        </Button>
-      </Container>
+      <Modal dialogClassName='modal-90w' show={show} onHide={handleClose}>
+        <Modal.Body>
+          <DateRange
+            minDate={new Date()}
+            maxDate={addDays(new Date(), 30)}
+            onChange={(item) => setDate([item.selection])}
+            showSelectionPreview={true}
+            moveRangeOnFirstSelection={false}
+            months={2}
+            rangeColors={['#2fb380']}
+            ranges={date}
+            direction='horizontal'
+            dateDisplayFormat='MM/dd/yyyy'
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='primary' onClick={handleClose}>
+            Search
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
+      <h3 className='pb-0'>Find deals on hotels, homes, and much more...</h3>
+      <p>From cozy country homes to funky city apartments</p>
+      <Container className='searchBar my-3'>
+        <Form>
+          <InputGroup style={{ height: '45px' }}>
+            <Form.Control
+              type='text'
+              name='vehicle name'
+              placeholder='Search Vehicles'
+              className='mr-sm-2 ml-sm-5'
+            />
+
+            <Form.Control
+              type='text'
+              name='dates'
+              placeholder='Dates'
+              className='mr-sm-2 ml-sm-5 mx-1'
+              onClick={handleShow}
+              value={`${date[0].startDate.toDateString()} - ${date[0].endDate.toDateString()}`}
+            />
+
+            <Button
+              className='btn-block searchbutton'
+              type='button'
+              onClick={searchDateHandler}
+            >
+              Search
+            </Button>
+          </InputGroup>
+        </Form>
+      </Container>
       {/* {!keyword && <VehicleCarousel />} */}
 
       {loading ? (

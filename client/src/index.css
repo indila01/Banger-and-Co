@@ -81,3 +81,36 @@ h3 {
 .carousel a {
     margin: 0 auto;
 }
+
+.modal-90w {
+    width: 50vw;
+    max-width: 50vw;
+}
+
+.searchBar {
+    color: #333;
+    display: table;
+    background-color: #febb02;
+    padding: 4px;
+    border-radius: 4px;
+    margin: auto;
+    position: relative;
+    width: 70%;
+}
+
+.searchbutton:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.searchbutton {
+    background-color: rgb(17, 101, 181);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 0px 30px;
+}
+
+.searchbutton:hover {
+    background-color: rgb(16, 78, 136);
+    color: white;
+}

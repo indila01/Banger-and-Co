@@ -121,3 +121,8 @@ h3 {
     background-color: #febb0246 !important;
     border-color: #febb0246;
 }
+
+.noMousePointer {
+    pointer-events: none;
+    cursor: default;
+}

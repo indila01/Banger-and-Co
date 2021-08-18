@@ -6,7 +6,7 @@ import './bootstrap.min.css'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-
+import 'mdbreact/dist/css/mdb.css'
 ReactDOM.render(
   <Provider store={store}>
     <App />

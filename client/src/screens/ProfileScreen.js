@@ -26,7 +26,11 @@ const ProfileScreen = ({ location, history }) => {
   const { userInfo } = userLogin
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { success } = userUpdateProfile
+  const {
+    success,
+    error: updateError,
+    loading: updateLoding,
+  } = userUpdateProfile
 
   const bookingListMy = useSelector((state) => state.bookingListMy)
   const {
@@ -75,9 +79,12 @@ const ProfileScreen = ({ location, history }) => {
       <Col md={3}>
         <h2>User Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
+        {error ||
+          (updateError && (
+            <Message variant='danger'>{error || updateError}</Message>
+          ))}
         {success && <Message variant='success'>Profile Updated</Message>}
-        {loading && <Loader />}
+        {loading && updateLoding && <Loader />}
         <Form onSubmit={submitHandler}>
           <Row>
             <Col>

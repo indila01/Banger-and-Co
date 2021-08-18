@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col } from 'react-bootstrap'
+import { Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -11,6 +11,7 @@ import {
 } from '../actions/vehicleActions'
 import { VEHICLE_CREATE_RESET } from '../constants/vehicleConstants'
 import Paginate from '../components/Paginate'
+import { MDBDataTable } from 'mdbreact'
 
 const VehicleListScreen = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1
@@ -18,6 +19,32 @@ const VehicleListScreen = ({ history, match }) => {
 
   const vehicleList = useSelector((state) => state.vehicleList)
   const { loading, error, vehicles, page, pages } = vehicleList
+
+  const [tableData, setTableData] = useState({
+    columns: [
+      {
+        label: 'LICENSE',
+        field: 'licensePlateNumber',
+        sort: 'ace',
+        width: 150,
+      },
+      { label: 'NAME', field: 'name', sort: 'ace', width: 150 },
+      { label: 'PRICE', field: 'pricePerDay', sort: 'ace', width: 150 },
+      { label: 'TYPE', field: 'type', sort: 'ace', width: 150 },
+      { label: 'SEATS', field: 'seats', sort: 'ace', width: 150 },
+      { label: 'TRANSMISSION', field: 'transmission', sort: 'ace', width: 150 },
+      { label: 'HORSEPOWER', field: 'horsepower', sort: 'ace', width: 150 },
+      {
+        label: 'ENGINE CAPACITY',
+        field: 'engine',
+        sort: 'ace',
+        width: 150,
+      },
+      { label: 'MPG', field: 'miles_per_gallon', sort: 'ace', width: 150 },
+      { label: 'ACTION', field: 'action', sort: 'ace', width: 150 },
+    ],
+    rows: [],
+  })
 
   const vehicleDelete = useSelector((state) => state.vehicleDelete)
   const {
@@ -39,7 +66,6 @@ const VehicleListScreen = ({ history, match }) => {
 
   useEffect(() => {
     dispatch({ type: VEHICLE_CREATE_RESET })
-
     if (!userInfo || !userInfo.isAdmin) {
       history.push('/login')
     }
@@ -48,6 +74,40 @@ const VehicleListScreen = ({ history, match }) => {
       history.push(`/admin/vehicle/${createdVehicle._id}/edit`)
     } else {
       dispatch(listVehicles('', pageNumber, ''))
+      if (vehicles) {
+        setTableData({
+          ...tableData,
+          rows: [
+            ...vehicles.map((vehicle) => ({
+              name: vehicle.name,
+              licensePlateNumber: vehicle.licensePlateNumber,
+              pricePerDay: vehicle.pricePerDay,
+              type: vehicle.type,
+              seats: vehicle.seats,
+              transmission: vehicle.transmission,
+              horsepower: vehicle.horsepower,
+              engine: vehicle.engine,
+              miles_per_gallon: vehicle.miles_per_gallon,
+              action: (
+                <>
+                  <LinkContainer to={`/admin/vehicle/${vehicle._id}/edit`}>
+                    <Button variant='light' className='btn-sm'>
+                      <i className='fas fa-edit'></i>
+                    </Button>
+                  </LinkContainer>
+                  <Button
+                    variant='danger'
+                    className='btn-sm'
+                    onClick={() => deleteHandler(vehicle._id)}
+                  >
+                    <i className='fas fa-trash'></i>
+                  </Button>
+                </>
+              ),
+            })),
+          ],
+        })
+      }
     }
   }, [
     dispatch,
@@ -91,55 +151,8 @@ const VehicleListScreen = ({ history, match }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>License</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>TYPE</th>
-                <th>SEATS</th>
-                <th>TRANSMISSION</th>
-                <th>FUEL</th>
-                <th>CYLINDERS</th>
-                <th>HORSEPOWER</th>
-                <th>ENGINE CAPACITY</th>
-                <th>MPG</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {vehicles.map((vehicle) => (
-                <tr key={vehicle._id}>
-                  <td>{vehicle.licensePlateNumber}</td>
-                  <td>{vehicle.name}</td>
-                  <td>{vehicle.pricePerDay}</td>
-                  <td>{vehicle.type}</td>
-                  <td>{vehicle.seats}</td>
-                  <td>{vehicle.transmission}</td>
-                  <td>{vehicle.fuel}</td>
-                  <td>{vehicle.cylinders} </td>
-                  <td>{vehicle.horsepower} hp</td>
-                  <td>{vehicle.engine} L</td>
-                  <td>{vehicle.miles_per_gallon} mpg</td>
-                  <td>
-                    <LinkContainer to={`/admin/vehicle/${vehicle._id}/edit`}>
-                      <Button variant='light' className='btn-sm'>
-                        <i className='fas fa-edit'></i>
-                      </Button>
-                    </LinkContainer>
-                    <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(vehicle._id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <MDBDataTable striped bordered small data={tableData} />
+
           {/* eslint-disable-next-line */}
           {vehicles == 0 && <Message>Vehicles are not available </Message>}
           <Paginate pages={pages} page={page} isAdmin={true} />

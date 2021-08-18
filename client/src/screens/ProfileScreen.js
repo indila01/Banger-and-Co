@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyBookings } from '../actions/bookingAction'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import { MDBDataTable } from 'mdbreact'
 
 const ProfileScreen = ({ location, history }) => {
   const [firstName, setFirstName] = useState('')
@@ -16,6 +17,28 @@ const ProfileScreen = ({ location, history }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
+
+  const tableData = {
+    columns: [
+      {
+        label: 'VEHICLE LICENSE',
+        field: 'lisence',
+        sort: 'ace',
+        width: 150,
+      },
+      { label: 'DATE', field: 'date', sort: 'ace', width: 150 },
+      { label: 'TOTAL', field: 'total', sort: 'ace', width: 150 },
+      { label: 'PAID', field: 'paid', sort: 'ace', width: 150 },
+      { label: 'VERIFIED', field: 'verified', sort: 'ace', width: 150 },
+      {
+        label: 'ACTION',
+        field: 'action',
+        sort: 'ace',
+        width: 150,
+      },
+    ],
+    rows: [],
+  }
 
   const dispatch = useDispatch()
 
@@ -169,54 +192,40 @@ const ProfileScreen = ({ location, history }) => {
           <Message variant='danger'>{errorBookings}</Message>
         ) : (
           <>
-            <Table striped bordered hover responsive className='table-sm'>
-              <thead>
-                <tr>
-                  <th>VEHICLE LICENSE</th>
-                  <th>Date</th>
-                  <th>Total</th>
-                  <th>Paid</th>
-                  <th>Verified</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings.map((booking) => (
-                  <tr key={booking._id}>
-                    <td>{booking.vehicle.licensePlateNumber}</td>
-                    <td>{booking.createdAt.substring(0, 10)}</td>
-                    <td>{booking.totalPrice}</td>
-                    <td>
-                      {booking.isPaid ? (
-                        booking.paidAt.substring(0, 10)
-                      ) : (
-                        <i
-                          className='fas fa-times'
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-                    <td>
-                      {booking.isVerified ? (
-                        booking.verifiedAt.substring(0, 10)
-                      ) : (
-                        <i
-                          className='fas fa-times'
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-                    <td>
-                      <LinkContainer to={`/booking/${booking._id}`}>
-                        <Button className='btn-sm' variant='light'>
-                          Details
-                        </Button>
-                      </LinkContainer>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            <MDBDataTable
+              striped
+              bordered
+              small
+              data={{
+                ...tableData,
+                rows: [
+                  ...bookings.map((booking) => ({
+                    lisence: booking.vehicle.licensePlateNumber,
+                    date: booking.createdAt.substring(0, 10),
+                    total: `$${booking.totalPrice}`,
+                    paid: booking.isPaid ? (
+                      booking.paidAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    ),
+                    verified: booking.isVerified ? (
+                      booking.verifiedAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    ),
+                    action: (
+                      <div className='d-flex justify-content-center'>
+                        <LinkContainer to={`/booking/${booking._id}`}>
+                          <Button className='btn-sm' variant='light'>
+                            Details
+                          </Button>
+                        </LinkContainer>
+                      </div>
+                    ),
+                  })),
+                ],
+              }}
+            />
             {/* eslint-disable-next-line */}
             {bookings == 0 && <Message>Bookings are not available </Message>}
           </>

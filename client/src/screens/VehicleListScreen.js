@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,7 +20,7 @@ const VehicleListScreen = ({ history, match }) => {
   const vehicleList = useSelector((state) => state.vehicleList)
   const { loading, error, vehicles, page, pages } = vehicleList
 
-  const [tableData, setTableData] = useState({
+  const tableData = {
     columns: [
       {
         label: 'LICENSE',
@@ -44,7 +44,7 @@ const VehicleListScreen = ({ history, match }) => {
       { label: 'ACTION', field: 'action', sort: 'ace', width: 150 },
     ],
     rows: [],
-  })
+  }
 
   const vehicleDelete = useSelector((state) => state.vehicleDelete)
   const {

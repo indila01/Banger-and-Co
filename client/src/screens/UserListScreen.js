@@ -45,51 +45,51 @@ const UserListScreen = ({ history }) => {
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers())
-      if (users) {
-        setTableData({
-          ...tableData,
-          rows: [
-            ...users.map((user) => ({
-              id: user._id.substring(19, 24),
-              name: `${user.firstName} ${user.lastName}`,
-              email: user.email,
-              nic: user.NIC,
-              verified: user.isVerified ? (
-                ({ verified: true },
-                (<i className='fas fa-check' style={{ color: 'green' }}></i>))
-              ) : (
-                <i className='fas fa-times' style={{ color: 'red' }}></i>
-              ),
-              blacklisted: user.isBlacklisted ? (
-                <i className='fas fa-check' style={{ color: 'green' }}></i>
-              ) : (
-                <i className='fas fa-times' style={{ color: 'red' }}></i>
-              ),
-              admin: user.isAdmin ? (
-                <i className='fas fa-check' style={{ color: 'green' }}></i>
-              ) : (
-                <i className='fas fa-times' style={{ color: 'red' }}></i>
-              ),
-              action: (
-                <>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                    <Button variant='light' className='btn-sm'>
-                      <i className='fas fa-edit'></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant='danger'
-                    className='btn-sm'
-                    onClick={() => deleteHandler(user._id)}
-                  >
-                    <i className='fas fa-trash'></i>
-                  </Button>
-                </>
-              ),
-            })),
-          ],
-        })
-      }
+      // if (users) {
+      // setTableData({
+      //   ...tableData,
+      //   rows: [
+      //     ...users.map((user) => ({
+      //       id: user._id.substring(19, 24),
+      //       name: `${user.firstName} ${user.lastName}`,
+      //       email: user.email,
+      //       nic: user.NIC,
+      //       verified: user.isVerified ? (
+      //         ({ verified: true },
+      //         (<i className='fas fa-check' style={{ color: 'green' }}></i>))
+      //       ) : (
+      //         <i className='fas fa-times' style={{ color: 'red' }}></i>
+      //       ),
+      //       blacklisted: user.isBlacklisted ? (
+      //         <i className='fas fa-check' style={{ color: 'green' }}></i>
+      //       ) : (
+      //         <i className='fas fa-times' style={{ color: 'red' }}></i>
+      //       ),
+      //       admin: user.isAdmin ? (
+      //         <i className='fas fa-check' style={{ color: 'green' }}></i>
+      //       ) : (
+      //         <i className='fas fa-times' style={{ color: 'red' }}></i>
+      //       ),
+      //       action: (
+      //         <>
+      //           <LinkContainer to={`/admin/user/${user._id}/edit`}>
+      //             <Button variant='light' className='btn-sm'>
+      //               <i className='fas fa-edit'></i>
+      //             </Button>
+      //           </LinkContainer>
+      //           <Button
+      //             variant='danger'
+      //             className='btn-sm'
+      //             onClick={() => deleteHandler(user._id)}
+      //           >
+      //             <i className='fas fa-trash'></i>
+      //           </Button>
+      //         </>
+      //       ),
+      //     })),
+      //   ],
+      // })
+      // }
     } else history.push('/login')
   }, [dispatch, history, successDelete, userInfo])
 
@@ -108,7 +108,59 @@ const UserListScreen = ({ history }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <MDBDataTable striped bordered small data={tableData} />
+          <MDBDataTable
+            striped
+            bordered
+            small
+            data={{
+              ...tableData,
+              rows: [
+                ...users.map((user) => ({
+                  id: user._id.substring(19, 24),
+                  name: `${user.firstName} ${user.lastName}`,
+                  email: user.email,
+                  nic: user.NIC,
+                  verified: user.isVerified ? (
+                    ({ verified: true },
+                    (
+                      <i
+                        className='fas fa-check'
+                        style={{ color: 'green' }}
+                      ></i>
+                    ))
+                  ) : (
+                    <i className='fas fa-times' style={{ color: 'red' }}></i>
+                  ),
+                  blacklisted: user.isBlacklisted ? (
+                    <i className='fas fa-check' style={{ color: 'green' }}></i>
+                  ) : (
+                    <i className='fas fa-times' style={{ color: 'red' }}></i>
+                  ),
+                  admin: user.isAdmin ? (
+                    <i className='fas fa-check' style={{ color: 'green' }}></i>
+                  ) : (
+                    <i className='fas fa-times' style={{ color: 'red' }}></i>
+                  ),
+                  action: (
+                    <>
+                      <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                        <Button variant='light' className='btn-sm'>
+                          <i className='fas fa-edit'></i>
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant='danger'
+                        className='btn-sm'
+                        onClick={() => deleteHandler(user._id)}
+                      >
+                        <i className='fas fa-trash'></i>
+                      </Button>
+                    </>
+                  ),
+                })),
+              ],
+            }}
+          />
           {/* eslint-disable-next-line */}
           {users == 0 && <Message>Users are not available </Message>}
         </>

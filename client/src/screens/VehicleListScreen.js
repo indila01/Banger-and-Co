@@ -74,40 +74,6 @@ const VehicleListScreen = ({ history, match }) => {
       history.push(`/admin/vehicle/${createdVehicle._id}/edit`)
     } else {
       dispatch(listVehicles('', pageNumber, ''))
-      if (vehicles) {
-        setTableData({
-          ...tableData,
-          rows: [
-            ...vehicles.map((vehicle) => ({
-              name: vehicle.name,
-              licensePlateNumber: vehicle.licensePlateNumber,
-              pricePerDay: vehicle.pricePerDay,
-              type: vehicle.type,
-              seats: vehicle.seats,
-              transmission: vehicle.transmission,
-              horsepower: vehicle.horsepower,
-              engine: vehicle.engine,
-              miles_per_gallon: vehicle.miles_per_gallon,
-              action: (
-                <>
-                  <LinkContainer to={`/admin/vehicle/${vehicle._id}/edit`}>
-                    <Button variant='light' className='btn-sm'>
-                      <i className='fas fa-edit'></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant='danger'
-                    className='btn-sm'
-                    onClick={() => deleteHandler(vehicle._id)}
-                  >
-                    <i className='fas fa-trash'></i>
-                  </Button>
-                </>
-              ),
-            })),
-          ],
-        })
-      }
     }
   }, [
     dispatch,
@@ -151,8 +117,43 @@ const VehicleListScreen = ({ history, match }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <MDBDataTable striped bordered small data={tableData} />
-
+          <MDBDataTable
+            striped
+            bordered
+            small
+            data={{
+              ...tableData,
+              rows: [
+                ...vehicles.map((vehicle) => ({
+                  name: vehicle.name,
+                  licensePlateNumber: vehicle.licensePlateNumber,
+                  pricePerDay: vehicle.pricePerDay,
+                  type: vehicle.type,
+                  seats: vehicle.seats,
+                  transmission: vehicle.transmission,
+                  horsepower: vehicle.horsepower,
+                  engine: vehicle.engine,
+                  miles_per_gallon: vehicle.miles_per_gallon,
+                  action: (
+                    <>
+                      <LinkContainer to={`/admin/vehicle/${vehicle._id}/edit`}>
+                        <Button variant='light' className='btn-sm'>
+                          <i className='fas fa-edit'></i>
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant='danger'
+                        className='btn-sm'
+                        onClick={() => deleteHandler(vehicle._id)}
+                      >
+                        <i className='fas fa-trash'></i>
+                      </Button>
+                    </>
+                  ),
+                })),
+              ],
+            }}
+          />
           {/* eslint-disable-next-line */}
           {vehicles == 0 && <Message>Vehicles are not available </Message>}
           <Paginate pages={pages} page={page} isAdmin={true} />

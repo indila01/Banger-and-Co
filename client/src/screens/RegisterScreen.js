@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
 import { Calendar } from 'react-date-range'
+import FileUpload from '../components/file-upload/file-upload.component'
 import 'react-date-range/dist/styles.css' // main css file
 import 'react-date-range/dist/theme/default.css' // theme css file
 
@@ -22,6 +23,14 @@ const RegisterScreen = ({ location, history }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
+  const [newUserInfo, setNewUserInfo] = useState({
+    documents: [],
+  })
+
+  const updateUploadedFiles = (files) => {
+    setNewUserInfo({ ...newUserInfo, documents: files })
+    console.log(files)
+  }
 
   const dispatch = useDispatch()
 
@@ -61,7 +70,8 @@ const RegisterScreen = ({ location, history }) => {
           licenseNumber,
           email,
           password,
-          birthday
+          birthday,
+          newUserInfo
         )
       )
     }
@@ -82,6 +92,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 type='name'
+                required
                 placeholder='First name'
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -91,6 +102,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 type='name'
+                required
                 placeholder='Last name'
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
@@ -104,6 +116,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type='email'
+                required
                 placeholder='Enter email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -115,6 +128,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>Contact Number</Form.Label>
               <Form.Control
                 type='tel'
+                required
                 placeholder='Enter contact number'
                 value={contactNumber}
                 onChange={(e) => setContactNumber(e.target.value)}
@@ -126,6 +140,7 @@ const RegisterScreen = ({ location, history }) => {
           <Form.Label>Address</Form.Label>
           <Form.Control
             type='address'
+            required
             placeholder='Enter address'
             value={address}
             onChange={(e) => setAddress(e.target.value)}
@@ -137,6 +152,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>NIC</Form.Label>
               <Form.Control
                 type='name'
+                required
                 placeholder='NIC'
                 value={NIC}
                 onChange={(e) => setNIC(e.target.value)}
@@ -148,6 +164,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>License Number</Form.Label>
               <Form.Control
                 type='name'
+                required
                 placeholder='License Number'
                 value={licenseNumber}
                 onChange={(e) => setLicenseNumber(e.target.value)}
@@ -169,6 +186,14 @@ const RegisterScreen = ({ location, history }) => {
             />
           </Form.Group>
         </Col>
+        <Col>
+          <FileUpload
+            accept='.jpg,.png,.jpeg'
+            label='Documents'
+            multiple
+            updateFilesCb={updateUploadedFiles}
+          />
+        </Col>
 
         <Row>
           <Col>
@@ -176,6 +201,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type='password'
+                required
                 placeholder='Enter password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -187,6 +213,7 @@ const RegisterScreen = ({ location, history }) => {
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 type='password'
+                required
                 placeholder='Confirm password'
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

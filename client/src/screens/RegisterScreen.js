@@ -10,6 +10,7 @@ import { Calendar } from 'react-date-range'
 import FileUpload from '../components/file-upload/file-upload.component'
 import 'react-date-range/dist/styles.css' // main css file
 import 'react-date-range/dist/theme/default.css' // theme css file
+import axios from 'axios'
 
 const RegisterScreen = ({ location, history }) => {
   const [dob, setDob] = useState(new Date())
@@ -29,7 +30,6 @@ const RegisterScreen = ({ location, history }) => {
 
   const updateUploadedFiles = (files) => {
     setNewUserInfo({ ...newUserInfo, documents: files })
-    console.log(files)
   }
 
   const dispatch = useDispatch()
@@ -60,6 +60,18 @@ const RegisterScreen = ({ location, history }) => {
     } else if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
+      newUserInfo.documents.map((file) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('upload_preset', 'o3aaulge')
+        formData.append('folder', `${email}/`)
+        formData.append('api_key', '827283169955268')
+
+        axios.post(
+          'https://api.cloudinary.com/v1_1/dn0cobibi/image/upload',
+          formData
+        )
+      })
       dispatch(
         register(
           firstName,
@@ -70,8 +82,7 @@ const RegisterScreen = ({ location, history }) => {
           licenseNumber,
           email,
           password,
-          birthday,
-          newUserInfo
+          birthday
         )
       )
     }
@@ -188,7 +199,7 @@ const RegisterScreen = ({ location, history }) => {
         </Col>
         <Col>
           <FileUpload
-            accept='.jpg,.png,.jpeg'
+            accept='.jpg,.png,.jpeg,.pdf'
             label='Documents'
             multiple
             updateFilesCb={updateUploadedFiles}

@@ -77,8 +77,8 @@ const HomeScreen = ({ match }) => {
         </Modal.Footer>
       </Modal>
 
-      <h3 className='pb-0'>Find deals on hotels, homes, and much more...</h3>
-      <p>From cozy country homes to funky city apartments</p>
+      <h3 className='pb-0'>Let’s find your ideal car</h3>
+      <p>Search, Compare & Save</p>
       <Container className='searchBar my-3'>
         <Form>
           <InputGroup style={{ height: '45px' }}>

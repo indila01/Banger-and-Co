@@ -161,7 +161,7 @@ const UserEditScreen = ({ match, history }) => {
                 <Form.Group controlId='birthday'>
                   <Form.Label>Date of birth </Form.Label>
                   <Form.Control
-                    type='date'
+                    type='text'
                     value={birthday}
                     onChange={(e) => setBirthday(e.target.value)}
                   ></Form.Control>
@@ -177,30 +177,38 @@ const UserEditScreen = ({ match, history }) => {
                 onChange={(e) => setAddress(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId='isadmin'>
-              <Form.Check
-                type='checkbox'
-                label='Admin'
-                checked={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.checked)}
-              ></Form.Check>
-            </Form.Group>
-            <Form.Group controlId='isverified'>
-              <Form.Check
-                type='checkbox'
-                label='Verify'
-                checked={isVerified}
-                onChange={(e) => setIsVerified(e.target.checked)}
-              ></Form.Check>
-            </Form.Group>{' '}
-            <Form.Group controlId='isblacklisted'>
-              <Form.Check
-                type='checkbox'
-                label='Blacklist'
-                checked={isBlacklisted}
-                onChange={(e) => setIsBlacklisted(e.target.checked)}
-              ></Form.Check>
-            </Form.Group>
+            <Row className='mt-2'>
+              <Col>
+                <Form.Group controlId='isadmin'>
+                  <Form.Check
+                    type='checkbox'
+                    label='Admin'
+                    checked={isAdmin}
+                    onChange={(e) => setIsAdmin(e.target.checked)}
+                  ></Form.Check>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='isverified'>
+                  <Form.Check
+                    type='checkbox'
+                    label='Verify'
+                    checked={isVerified}
+                    onChange={(e) => setIsVerified(e.target.checked)}
+                  ></Form.Check>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId='isblacklisted'>
+                  <Form.Check
+                    type='checkbox'
+                    label='Blacklist'
+                    checked={isBlacklisted}
+                    onChange={(e) => setIsBlacklisted(e.target.checked)}
+                  ></Form.Check>
+                </Form.Group>
+              </Col>
+            </Row>
             <Button
               type='submit'
               variant='success'

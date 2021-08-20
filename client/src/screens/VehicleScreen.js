@@ -102,6 +102,7 @@ const VehicleScreen = ({ match, history }) => {
       setRating(0)
       setComment('')
       dispatch({ type: VEHICLE_CREATE_REVIEW_RESET })
+      dispatch(listVehicleDetails(match.params.id, date))
     }
     if (!vehicle || !vehicle.name || vehicle._id !== match.params.id) {
       dispatch(listVehicleDetails(match.params.id, date))

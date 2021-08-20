@@ -60,31 +60,35 @@ const RegisterScreen = ({ location, history }) => {
     } else if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      newUserInfo.documents.map((file) => {
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('upload_preset', 'o3aaulge')
-        formData.append('folder', `${email}/`)
-        formData.append('api_key', '827283169955268')
+      if (newUserInfo.documents == 0) {
+        setMessage('Upload documents to register')
+      } else {
+        newUserInfo.documents.map((file) => {
+          const formData = new FormData()
+          formData.append('file', file)
+          formData.append('upload_preset', 'o3aaulge')
+          formData.append('folder', `${email}/`)
+          formData.append('api_key', '827283169955268')
 
-        axios.post(
-          'https://api.cloudinary.com/v1_1/dn0cobibi/image/upload',
-          formData
+          axios.post(
+            'https://api.cloudinary.com/v1_1/dn0cobibi/image/upload',
+            formData
+          )
+        })
+        dispatch(
+          register(
+            firstName,
+            lastName,
+            contactNumber,
+            address,
+            NIC,
+            licenseNumber,
+            email,
+            password,
+            birthday
+          )
         )
-      })
-      dispatch(
-        register(
-          firstName,
-          lastName,
-          contactNumber,
-          address,
-          NIC,
-          licenseNumber,
-          email,
-          password,
-          birthday
-        )
-      )
+      }
     }
   }
 

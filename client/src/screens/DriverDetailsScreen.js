@@ -106,17 +106,6 @@ const DriverDetailsScreen = ({ history }) => {
             ></Form.Control>
           </Form.Group>
 
-          <Form.Group controlId='driverContactNumber'>
-            <Form.Label>Driver Contact Number</Form.Label>
-            <Form.Control
-              type='tel'
-              required
-              placeholder='Enter driver contact number'
-              value={driverContactNumber}
-              onChange={(e) => setDriverContactNumber(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
           <Form.Group controlId='driverAddress'>
             <Form.Label>Driver Address</Form.Label>
             <Form.Control
@@ -127,31 +116,47 @@ const DriverDetailsScreen = ({ history }) => {
               onChange={(e) => setDriverAddress(e.target.value)}
             ></Form.Control>
           </Form.Group>
-
-          <Form.Group controlId='driverLicenseNumber'>
-            <Form.Label>Driver License Number</Form.Label>
-            <Form.Control
-              type='text'
-              required
-              placeholder='Enter driver license number'
-              value={driverLicenseNumber}
-              onChange={(e) => setDriverLicenseNumber(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId='driverNIC'>
-            <Form.Label>Driver NIC</Form.Label>
-            <Form.Control
-              type='text'
-              required
-              placeholder='Enter driver NIC number'
-              value={driverNIC}
-              onChange={(e) => setDriverNIC(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+          <Row>
+            <Col>
+              <Form.Group controlId='driverContactNumber'>
+                <Form.Label>Driver Contact Number</Form.Label>
+                <Form.Control
+                  type='tel'
+                  required
+                  placeholder='Enter driver contact number'
+                  value={driverContactNumber}
+                  onChange={(e) => setDriverContactNumber(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId='driverLicenseNumber'>
+                <Form.Label>Driver License Number</Form.Label>
+                <Form.Control
+                  type='text'
+                  required
+                  placeholder='Enter driver license number'
+                  value={driverLicenseNumber}
+                  onChange={(e) => setDriverLicenseNumber(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId='driverNIC'>
+                <Form.Label>Driver NIC</Form.Label>
+                <Form.Control
+                  type='text'
+                  required
+                  placeholder='Enter driver NIC number'
+                  value={driverNIC}
+                  onChange={(e) => setDriverNIC(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
 
           <Button
-            className='my-3'
+            className='my-3 mx-auto'
             style={{ width: '100%' }}
             type='submit'
             varient='primery'

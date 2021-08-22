@@ -3,6 +3,7 @@ import fs from 'fs'
 import neatCsv from 'neat-csv'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
+
 // @desc    Get all suspended and lost license numbers
 // @route   get /api/dmv
 // @access  public
@@ -28,4 +29,42 @@ const getSuspenededLicense = asyncHandler(async (req, res) => {
   }
 })
 
-export { getSuspenededLicense }
+// @desc     send notification to DMV
+// @route   post /api/dmv
+// @access  public
+const notifyDmv = asyncHandler(async (req, res) => {
+  const emailBody = `<h1>Booking Confirmation Completed</h1>
+    <h3>${vehicle.name}</h3>
+    <h6>${vehicle.licensePlateNumber}</h6>
+    <ul>
+    <li>Driver Name: ${createdBooking.driverDetails.driverFirstName} ${createdBooking.driverDetails.driverLastName}</li>
+    <li>Driver NIC: ${createdBooking.driverDetails.driverNIC} </li>
+    <li>Driver License: ${createdBooking.driverDetails.driverLicenseNumber}</li>
+    <li>Paid: ${createdBooking.isPaid}</li>
+    <li>Verified: ${createdBooking.isVerified} </li>
+    </ul>
+    `
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASS,
+    },
+  })
+  transporter
+    .sendMail({
+      from: 'Banger and Co<bangerandco4@gmail.com>',
+      to: user.email,
+      subject: `Booking confirmation ${createdBooking._id}`,
+      html: emailBody,
+    })
+    .then((info) => {
+      console.log({ info })
+      res.status(200)
+    })
+    .catch(res.status(500))
+})
+
+export { getSuspenededLicense, notifyDmv }

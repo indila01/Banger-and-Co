@@ -6,10 +6,10 @@
     "type": "module",
     "scripts": {
         "start": "node server/server",
-        "server": "nodemon server/server",
+        "server": "nodemon --delay 500ms server/server",
         "client": "npm start --prefix client",
         "external": "npm run server --prefix external_server",
-        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "dev": "concurrently \"npm run external\" \"npm run server\" \"npm run client\"",
         "data:import": "node server/seeder",
         "data:destroy": "node server/seeder -d"
     },

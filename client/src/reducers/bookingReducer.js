@@ -26,6 +26,7 @@ import {
   BOOKING_VERIFY_SUCCESS,
   BOOKING_VERIFY_RESET,
   BOOKING_SAVE_BOOKING_DETAILS,
+  BOOKING_SAVE_EQUIPMENTS_DETAILS,
 } from '../constants/bookingConstants'
 
 export const bookingReduer = (state = { driverDetails: {} }, action) => {
@@ -34,6 +35,11 @@ export const bookingReduer = (state = { driverDetails: {} }, action) => {
       return {
         ...state,
         driverDetails: action.payload,
+      }
+    case BOOKING_SAVE_EQUIPMENTS_DETAILS:
+      return {
+        ...state,
+        equipments: action.payload,
       }
     case BOOKING_SAVE_PAYMENT_METHOD:
       return {

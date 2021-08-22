@@ -2,6 +2,7 @@ import { json } from 'express'
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../util/generateToken.js'
+import axios from 'axios'
 
 // @desc    Auth user and get JWT token
 // @route   POST /api/user/login
@@ -47,9 +48,24 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     birthday,
+    documents,
   } = req.body
 
   const userExists = await User.findOne({ email })
+
+  //verify license
+  const { data: licenseNumbers } = await axios.get(
+    'http://localhost:3131/api/dmv'
+  )
+
+  const checkLicenseNumber = (obj) => obj.licensenumber === licenseNumber
+
+  if (licenseNumbers.some(checkLicenseNumber)) {
+    res.status(400)
+    throw new Error(
+      'Your license number is expired or stolen. Please contact DMV'
+    )
+  }
 
   if (userExists) {
     res.status(400)
@@ -66,6 +82,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     birthday,
+    documents,
   })
 
   if (user) {

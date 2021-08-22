@@ -74,7 +74,8 @@ export const register =
     licenseNumber,
     email,
     password,
-    birthday
+    birthday,
+    newUserInfo
   ) =>
   async (dispatch) => {
     try {
@@ -99,6 +100,7 @@ export const register =
           email,
           password,
           birthday,
+          documents: newUserInfo.documentsUrl,
         },
         config
       )

@@ -26,6 +26,7 @@ const RegisterScreen = ({ location, history }) => {
   const [message, setMessage] = useState(null)
   const [newUserInfo, setNewUserInfo] = useState({
     documents: [],
+    documentsUrl: [],
   })
 
   const updateUploadedFiles = (files) => {
@@ -63,6 +64,7 @@ const RegisterScreen = ({ location, history }) => {
       if (newUserInfo.documents == 0) {
         setMessage('Upload documents to register')
       } else {
+        const urls = []
         newUserInfo.documents.map((file) => {
           const formData = new FormData()
           formData.append('file', file)
@@ -70,11 +72,17 @@ const RegisterScreen = ({ location, history }) => {
           formData.append('folder', `${email}/`)
           formData.append('api_key', '827283169955268')
 
-          axios.post(
-            'https://api.cloudinary.com/v1_1/dn0cobibi/image/upload',
-            formData
-          )
+          axios
+            .post(
+              'https://api.cloudinary.com/v1_1/dn0cobibi/image/upload',
+              formData
+            )
+            .then((response) => {
+              const data = response.data
+              urls.push(data.secure_url)
+            })
         })
+        setNewUserInfo({ ...newUserInfo, documentsUrl: urls })
         dispatch(
           register(
             firstName,
@@ -85,7 +93,8 @@ const RegisterScreen = ({ location, history }) => {
             licenseNumber,
             email,
             password,
-            birthday
+            birthday,
+            newUserInfo
           )
         )
       }
@@ -240,7 +249,7 @@ const RegisterScreen = ({ location, history }) => {
         <Button
           type='submit'
           variant='primary'
-          className='my-3'
+          className='my-3 mx-auto'
           style={{ width: '100%' }}
         >
           Register

@@ -21,6 +21,7 @@ import {
   BOOKING_VERIFY_SUCCESS,
   BOOKING_VERIFY_FAIL,
   BOOKING_SAVE_BOOKING_DETAILS,
+  BOOKING_SAVE_EQUIPMENTS_DETAILS,
 } from '../constants/bookingConstants'
 import axios from 'axios'
 
@@ -31,6 +32,12 @@ export const saveDriverDetails = (data) => (dispatch) => {
   })
 
   localStorage.setItem('driverDetails', JSON.stringify(data))
+}
+export const saveEquipmentsDetails = (data) => (dispatch) => {
+  dispatch({
+    type: BOOKING_SAVE_EQUIPMENTS_DETAILS,
+    payload: data,
+  })
 }
 
 export const savePaymentMethod = (data) => (dispatch) => {

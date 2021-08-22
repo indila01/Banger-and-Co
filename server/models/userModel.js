@@ -37,6 +37,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    documents: {
+      type: [String],
+    },
     birthday: {
       type: Date,
       required: true,

@@ -9,8 +9,12 @@ const bookingSchema = mongoose.Schema(
     },
     vehicle: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: 'Vehicle',
+    },
+    equipments: {
+      type: [mongoose.Schema.Types.ObjectId],
+      required: true,
+      ref: 'Equipment',
     },
     driverDetails: {
       driverFirstName: { type: String, required: true },

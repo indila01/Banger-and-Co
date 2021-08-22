@@ -59,7 +59,7 @@ const LoginScreen = ({ location, history }) => {
             <Button
               type='submit'
               variant='primary'
-              className='my-3'
+              className='my-3 mx-auto'
               style={{ width: '100%' }}
             >
               Sign In

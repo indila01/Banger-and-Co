@@ -22,11 +22,26 @@ const ConfirmBookingScreen = ({ history }) => {
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
+
+  var calcEquipmentsPrice = bookingDetails.equipments
+    ? bookingDetails.equipments.reduce(
+        (calcEquipmentsPrice, v) =>
+          (calcEquipmentsPrice = calcEquipmentsPrice + v.price),
+        0
+      )
+    : (calcEquipmentsPrice = 0)
   const tax = addDecimals(
-    Number((0.15 * bookingDetails.bookingDetails.totalCost).toFixed(2))
+    Number(
+      (
+        0.15 *
+        (bookingDetails.bookingDetails.totalCost + calcEquipmentsPrice)
+      ).toFixed(2)
+    )
   )
   const totalPrice = (
-    Number(bookingDetails.bookingDetails.totalCost) + Number(tax)
+    Number(bookingDetails.bookingDetails.totalCost) +
+    Number(tax) +
+    Number(calcEquipmentsPrice)
   ).toFixed(2)
 
   const bookingCreate = useSelector((state) => state.bookingCreate)
@@ -55,6 +70,7 @@ const ConfirmBookingScreen = ({ history }) => {
         startDate: startDate,
         endDate: endDate,
         numberOfDays: bookingDetails.bookingDetails.numberOfDays,
+        equipments: bookingDetails.equipments && bookingDetails.equipments,
       })
     )
   }
@@ -125,32 +141,53 @@ const ConfirmBookingScreen = ({ history }) => {
               )}
             </ListGroup.Item>
             <ListGroup.Item>
-              <h2>Driver Details</h2>
-              <p className='my-0'>
-                <strong>Name : </strong>
-                {bookingDetails.driverDetails.driverFirstName}{' '}
-                {bookingDetails.driverDetails.driverLastName}
-              </p>
-              <p className='my-0'>
-                <strong>Email : </strong>
-                {bookingDetails.driverDetails.driverEmail}
-              </p>
-              <p className='my-0'>
-                <strong>Contact Number : </strong>
-                {bookingDetails.driverDetails.driverContactNumber}
-              </p>
-              <p className='my-0'>
-                <strong>Address : </strong>
-                {bookingDetails.driverDetails.driverAddress}
-              </p>
-              <p className='my-0'>
-                <strong>NIC : </strong>
-                {bookingDetails.driverDetails.driverNIC}
-              </p>
-              <p className='my-0'>
-                <strong>Driving License : </strong>
-                {bookingDetails.driverDetails.driverLicenseNumber}
-              </p>
+              <Row>
+                <Col>
+                  <h2>Driver Details</h2>
+                  <p className='my-0'>
+                    <strong>Name : </strong>
+                    {bookingDetails.driverDetails.driverFirstName}{' '}
+                    {bookingDetails.driverDetails.driverLastName}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Email : </strong>
+                    {bookingDetails.driverDetails.driverEmail}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Contact Number : </strong>
+                    {bookingDetails.driverDetails.driverContactNumber}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Address : </strong>
+                    {bookingDetails.driverDetails.driverAddress}
+                  </p>
+                  <p className='my-0'>
+                    <strong>NIC : </strong>
+                    {bookingDetails.driverDetails.driverNIC}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Driving License : </strong>
+                    {bookingDetails.driverDetails.driverLicenseNumber}
+                  </p>
+                </Col>
+                {bookingDetails.equipments && (
+                  <Col>
+                    <ListGroup>
+                      <ListGroup.Item>
+                        <b>Equipments</b>
+                      </ListGroup.Item>
+                      {bookingDetails.equipments.map((equipment) => (
+                        <ListGroup.Item className='py-2'>
+                          <Row>
+                            <Col>{equipment.name}</Col>
+                            <Col>${equipment.price}</Col>
+                          </Row>
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Col>
+                )}
+              </Row>
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Payment Method</h2>
@@ -191,11 +228,24 @@ const ConfirmBookingScreen = ({ history }) => {
                   <Col>{bookingDetails.bookingDetails.numberOfDays}</Col>
                 </Row>
               </ListGroup.Item>
+              {bookingDetails.equipments && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Equipments price</Col>
+                    <Col>${calcEquipmentsPrice}</Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
+
               <ListGroup.Item>
                 <Row>
                   <Col>Total Price before Tax</Col>
                   <Col>
-                    ${addDecimals(bookingDetails.bookingDetails.totalCost)}
+                    $
+                    {addDecimals(
+                      bookingDetails.bookingDetails.totalCost +
+                        calcEquipmentsPrice
+                    )}
                   </Col>
                 </Row>
               </ListGroup.Item>

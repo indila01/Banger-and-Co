@@ -3,6 +3,7 @@ import Booking from '../models/bookingModel.js'
 import User from '../models/userModel.js'
 import nodemailer from 'nodemailer'
 import Vehicle from '../models/vehicleModel.js'
+import axios from 'axios'
 
 // @desc    Create new booking
 // @route   Post /api/bookings
@@ -17,7 +18,24 @@ const createBooking = asyncHandler(async (req, res) => {
     startDate,
     endDate,
     numberOfDays,
+    equipments,
   } = req.body
+  console.log(equipments)
+  //verify license
+  const user = await User.findById(req.user._id).select('documents')
+  const documents = user.documents
+  const { data: licenseNumbers } = await axios.get(
+    'http://localhost:3131/api/dmv'
+  )
+  const checkLicenseNumber = (obj) =>
+    obj.licensenumber === driverDetails.driverLicenseNumber
+
+  if (licenseNumbers.some(checkLicenseNumber)) {
+    res.status(400)
+    throw new Error(
+      'Your license number is expired or stolen. Please contact DMV'
+    )
+  }
 
   if (!vehicleDetails) {
     res.status(400)
@@ -34,6 +52,7 @@ const createBooking = asyncHandler(async (req, res) => {
       startDate,
       endDate,
       numberOfDays,
+      equipments,
     })
 
     const createdBooking = await booking.save()
@@ -83,6 +102,7 @@ const getBookingbyId = asyncHandler(async (req, res) => {
   const booking = await Booking.findById(req.params.id)
     .populate('user', 'name email')
     .populate('vehicle')
+    .populate('equipments')
 
   if (booking) {
     res.json(booking)

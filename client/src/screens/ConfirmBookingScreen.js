@@ -125,32 +125,53 @@ const ConfirmBookingScreen = ({ history }) => {
               )}
             </ListGroup.Item>
             <ListGroup.Item>
-              <h2>Driver Details</h2>
-              <p className='my-0'>
-                <strong>Name : </strong>
-                {bookingDetails.driverDetails.driverFirstName}{' '}
-                {bookingDetails.driverDetails.driverLastName}
-              </p>
-              <p className='my-0'>
-                <strong>Email : </strong>
-                {bookingDetails.driverDetails.driverEmail}
-              </p>
-              <p className='my-0'>
-                <strong>Contact Number : </strong>
-                {bookingDetails.driverDetails.driverContactNumber}
-              </p>
-              <p className='my-0'>
-                <strong>Address : </strong>
-                {bookingDetails.driverDetails.driverAddress}
-              </p>
-              <p className='my-0'>
-                <strong>NIC : </strong>
-                {bookingDetails.driverDetails.driverNIC}
-              </p>
-              <p className='my-0'>
-                <strong>Driving License : </strong>
-                {bookingDetails.driverDetails.driverLicenseNumber}
-              </p>
+              <Row>
+                <Col>
+                  <h2>Driver Details</h2>
+                  <p className='my-0'>
+                    <strong>Name : </strong>
+                    {bookingDetails.driverDetails.driverFirstName}{' '}
+                    {bookingDetails.driverDetails.driverLastName}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Email : </strong>
+                    {bookingDetails.driverDetails.driverEmail}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Contact Number : </strong>
+                    {bookingDetails.driverDetails.driverContactNumber}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Address : </strong>
+                    {bookingDetails.driverDetails.driverAddress}
+                  </p>
+                  <p className='my-0'>
+                    <strong>NIC : </strong>
+                    {bookingDetails.driverDetails.driverNIC}
+                  </p>
+                  <p className='my-0'>
+                    <strong>Driving License : </strong>
+                    {bookingDetails.driverDetails.driverLicenseNumber}
+                  </p>
+                </Col>
+                {bookingDetails.equipments && (
+                  <Col>
+                    <ListGroup>
+                      <ListGroup.Item>
+                        <b>Equipments</b>
+                      </ListGroup.Item>
+                      {bookingDetails.equipments.map((equipment) => (
+                        <ListGroup.Item className='py-2'>
+                          <Row>
+                            <Col>{equipment.name}</Col>
+                            <Col>${equipment.price}</Col>
+                          </Row>
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Col>
+                )}
+              </Row>
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Payment Method</h2>

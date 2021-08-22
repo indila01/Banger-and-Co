@@ -75,7 +75,7 @@ const EquipmentsScreen = ({ history }) => {
                                 <strong>{equipment.name}</strong>
                               </Card.Title>
                               <Card.Text className='my-0' as='p'>
-                                price: {equipment.price}
+                                price: ${equipment.price}
                               </Card.Text>
                             </Card.Body>
                           </Col>

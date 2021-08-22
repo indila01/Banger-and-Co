@@ -18,8 +18,9 @@ const createBooking = asyncHandler(async (req, res) => {
     startDate,
     endDate,
     numberOfDays,
+    equipments,
   } = req.body
-
+  console.log(equipments)
   //verify license
   const user = await User.findById(req.user._id).select('documents')
   const documents = user.documents
@@ -51,6 +52,7 @@ const createBooking = asyncHandler(async (req, res) => {
       startDate,
       endDate,
       numberOfDays,
+      equipments,
     })
 
     const createdBooking = await booking.save()
@@ -100,6 +102,7 @@ const getBookingbyId = asyncHandler(async (req, res) => {
   const booking = await Booking.findById(req.params.id)
     .populate('user', 'name email')
     .populate('vehicle')
+    .populate('equipments')
 
   if (booking) {
     res.json(booking)

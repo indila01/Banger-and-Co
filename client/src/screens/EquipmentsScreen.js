@@ -107,6 +107,7 @@ const EquipmentsScreen = ({ history }) => {
                 <h2>Equipment Summery</h2>
                 {message && <Message variant='warning'>{message}</Message>}
               </ListGroup.Item>
+                {/* eslint-disable-next-line  */}
               {addedEquipments != 0 &&
                 addedEquipments.map((addedEquipment) => (
                   <ListGroup.Item>
@@ -138,6 +139,7 @@ const EquipmentsScreen = ({ history }) => {
                   className='btn-block px-5 mx-3'
                   variant='success'
                   onClick={submitEquipmenttHandler}
+// eslint-disable-next-line 
                   disabled={addedEquipments.length == 0 && true}
                 >
                   Next

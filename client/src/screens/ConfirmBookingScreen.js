@@ -23,13 +23,14 @@ const ConfirmBookingScreen = ({ history }) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
 
+
   var calcEquipmentsPrice = bookingDetails.equipments
-    ? bookingDetails.equipments.reduce(
+    && bookingDetails.equipments.reduce(
         (calcEquipmentsPrice, v) =>
           (calcEquipmentsPrice = calcEquipmentsPrice + v.price),
         0
       )
-    : (calcEquipmentsPrice = 0)
+   
   const tax = addDecimals(
     Number(
       (

@@ -61,10 +61,12 @@ const RegisterScreen = ({ location, history }) => {
     } else if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
+      // eslint-disable-next-line 
       if (newUserInfo.documents == 0) {
         setMessage('Upload documents to register')
       } else {
         const urls = []
+        // eslint-disable-next-line 
         newUserInfo.documents.map((file) => {
           const formData = new FormData()
           formData.append('file', file)

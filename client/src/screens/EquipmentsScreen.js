@@ -107,7 +107,7 @@ const EquipmentsScreen = ({ history }) => {
                 <h2>Equipment Summery</h2>
                 {message && <Message variant='warning'>{message}</Message>}
               </ListGroup.Item>
-                 // eslint-disable-next-line 
+                {/* eslint-disable-next-line  */}
               {addedEquipments != 0 &&
                 addedEquipments.map((addedEquipment) => (
                   <ListGroup.Item>

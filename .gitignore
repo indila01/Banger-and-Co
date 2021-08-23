@@ -9,10 +9,9 @@ node_modules/
 # testing
 /coverage
 
-/uploads
 
 #external server 
-/external_server
+# /external_server
 # production
 /client/build
 

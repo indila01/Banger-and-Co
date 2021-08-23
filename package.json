@@ -12,7 +12,7 @@
     "dev": "concurrently \"npm run external\" \"npm run server\" \"npm run client\"",
     "data:import": "node server/seeder",
     "data:destroy": "node server/seeder -d",
-    "azure": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run start"
+    "azure": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Indila Dineth",
   "license": "MIT",

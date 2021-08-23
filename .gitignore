@@ -9,6 +9,8 @@ node_modules/
 # testing
 /coverage
 
+.github/
+
 
 #external server 
 # /external_server

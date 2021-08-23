@@ -9,7 +9,9 @@ node_modules/
 # testing
 /coverage
 
-.github/
+.vscode
+
+.github
 
 
 #external server 

@@ -39,8 +39,8 @@ jobs:
       run: |
         # Build and test the project, then
         # deploy to Azure Web App.
-        npm install --prefix client
-        npm run build --prefix client
+        npm install 
+        npm run build 
 
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v2

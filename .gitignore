@@ -17,7 +17,6 @@ node_modules/
 #external server 
 # /external_server
 # production
-/client/build
 
 # misc
 .DS_Store

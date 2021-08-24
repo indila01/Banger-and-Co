@@ -177,7 +177,7 @@ const ProfileScreen = ({ location, history }) => {
           <Button
             type='submit'
             variant='primary'
-            className='my-3'
+            className='my-3 mx-auto'
             style={{ width: '100%' }}
           >
             Update
@@ -214,13 +214,13 @@ const ProfileScreen = ({ location, history }) => {
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
                     ),
                     action: (
-                      <div className='d-flex justify-content-center'>
+                      <Col>
                         <LinkContainer to={`/booking/${booking._id}`}>
                           <Button className='btn-sm' variant='light'>
                             Details
                           </Button>
                         </LinkContainer>
-                      </div>
+                      </Col>
                     ),
                   })),
                 ],

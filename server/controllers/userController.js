@@ -55,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //verify license
   const { data: licenseNumbers } = await axios.get(
-    'http://localhost:3131/api/dmv'
+    'https://bangerexternalapi.azurewebsites.net/api/dmv'
   )
 
   const checkLicenseNumber = (obj) => obj.licensenumber === licenseNumber

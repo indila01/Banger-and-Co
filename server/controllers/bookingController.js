@@ -25,7 +25,7 @@ const createBooking = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select('documents')
   const documents = user.documents
   const { data: licenseNumbers } = await axios.get(
-    'http://localhost:3131/api/dmv'
+    'https://bangerexternalapi.azurewebsites.net/api/dmv'
   )
   const checkLicenseNumber = (obj) =>
     obj.licensenumber === driverDetails.driverLicenseNumber

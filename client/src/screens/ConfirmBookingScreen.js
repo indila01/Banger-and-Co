@@ -25,11 +25,12 @@ const ConfirmBookingScreen = ({ history }) => {
 
 
   var calcEquipmentsPrice = bookingDetails.equipments
-    && bookingDetails.equipments.reduce(
+    ? (bookingDetails.equipments.reduce(
         (calcEquipmentsPrice, v) =>
           (calcEquipmentsPrice = calcEquipmentsPrice + v.price),
         0
-      )
+        // eslint-disable-next-line
+      )):(calcEquipmentsPrice = 0)
    
   const tax = addDecimals(
     Number(

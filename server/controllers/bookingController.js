@@ -20,17 +20,43 @@ const createBooking = asyncHandler(async (req, res) => {
     numberOfDays,
     equipments,
   } = req.body
-  console.log(equipments)
+
   //verify license
-  const user = await User.findById(req.user._id).select('documents')
-  const documents = user.documents
+  const user = await User.findById(req.user._id)
+  // const documents = user.documents
   const { data: licenseNumbers } = await axios.get(
-    'https://bangerexternalapi.azurewebsites.net/api/dmv'
+    'http://localhost:3131/api/dmv'
   )
   const checkLicenseNumber = (obj) =>
     obj.licensenumber === driverDetails.driverLicenseNumber
 
   if (licenseNumbers.some(checkLicenseNumber)) {
+    const emailBody = ` <p>User tried to rent a vehicle with an expired or stolen license</p>
+    <ul>
+    <li>Driver Name: ${driverDetails.driverFirstName} ${driverDetails.driverLastName}</li>
+    <li>Driver NIC: ${driverDetails.driverNIC} </li>
+    <li>Driver License: ${driverDetails.driverLicenseNumber}</li>
+ <hr>
+ <p> ${user.documents[0]}</p>
+ <p> ${user.documents[1]}</p>
+    </ul>
+    `
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS,
+      },
+    })
+    transporter.sendMail({
+      from: 'Banger and Co<bangerandco4@gmail.com>',
+      to: 'indiladineth@yahoo.com',
+      subject: `Expired or stolen license number`,
+      html: emailBody,
+    })
+
     res.status(400)
     throw new Error(
       'Your license number is expired or stolen. Please contact DMV'

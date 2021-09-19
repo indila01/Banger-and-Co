@@ -62,7 +62,7 @@ export const compareDetails = () => async (dispatch) => {
       type: VEHICLE_COMPARE_REQUEST,
     })
 
-    const { data } = await axios.get('api/compare')
+    const { data } = await axios.get('/api/compare')
 
     dispatch({
       type: VEHICLE_COMPARE_SUCCESS,

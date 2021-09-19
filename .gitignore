@@ -13,6 +13,7 @@ node_modules/
 
 .github
 
+client/cypress
 
 #external server 
 # /external_server

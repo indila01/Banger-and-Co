@@ -7,7 +7,7 @@ import Rating from './Rating'
 
 const Vehicle = ({ vehicle }) => {
   const compareVehicles = useSelector((state) => state.vehicleCompare)
-  const { loading: compareloading, success, compare } = compareVehicles
+  const { compare } = compareVehicles
   return (
     <Card className='my-3 p-3 rounded'>
       <Link to={`/vehicle/${vehicle._id}`}>

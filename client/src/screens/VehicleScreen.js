@@ -55,8 +55,8 @@ const VehicleScreen = ({ match, history }) => {
         age_now--
       }
 
-      if (age_now < 25 && vehicle.type !== 'Small Town Car') {
-        setMessage('Youre below 25, You can only checkout small town cars.')
+      if (age_now < 25 && vehicle.type.toUpperCase() !== 'SMALL TOWN CAR') {
+        setMessage(`Youre below 25, You can only checkout small town cars.`)
       } else if (userInfo.isBlacklisted) {
         setMessage('Youre blacklisted, You cannot checkout any vehicle.')
       } else if (!userInfo.isVerified) {

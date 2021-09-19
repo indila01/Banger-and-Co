@@ -12,6 +12,7 @@ import equipmentRouts from './routes/equipmentRouts.js'
 import userRoutes from './routes/userRoutes.js'
 import bookingRoutes from './routes/bookingRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
+import compareRoutes from './routes/compareRoutes.js'
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ app.use('/api/equipments', equipmentRouts)
 app.use('/api/users', userRoutes)
 app.use('/api/bookings', bookingRoutes)
 app.use('/api/upload', uploadRoutes)
+app.use('/api/compare', compareRoutes)
 
 app.get('/api/congif/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)

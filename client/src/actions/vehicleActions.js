@@ -20,6 +20,9 @@ import {
   VEHICLE_TOP_REQUEST,
   VEHICLE_TOP_SUCCESS,
   VEHICLE_TOP_FAIL,
+  VEHICLE_COMPARE_REQUEST,
+  VEHICLE_COMPARE_SUCCESS,
+  VEHICLE_COMPARE_FAIL,
 } from '../constants/vehicleConstants'
 import { format } from 'date-fns'
 import axios from 'axios'
@@ -53,6 +56,28 @@ export const listVehicles =
       })
     }
   }
+export const compareDetails = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: VEHICLE_COMPARE_REQUEST,
+    })
+
+    const { data } = await axios.get('api/compare')
+
+    dispatch({
+      type: VEHICLE_COMPARE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: VEHICLE_COMPARE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
 
 export const listVehicleDetails = (id, date) => async (dispatch) => {
   try {

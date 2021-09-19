@@ -10,7 +10,7 @@ import {
   InputGroup,
 } from 'react-bootstrap'
 import Vehicle from '../components/Vehicle'
-import { listVehicles } from '../actions/vehicleActions'
+import { listVehicles, compareDetails } from '../actions/vehicleActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
@@ -46,8 +46,12 @@ const HomeScreen = ({ match }) => {
   const vehicleList = useSelector((state) => state.vehicleList)
   const { loading, error, vehicles, page, pages } = vehicleList
 
+  // const compareVehicles = useSelector((state) => state.vehicleCompare)
+  // const { loading: compareloading, success, compare } = compareDetails
+
   useEffect(() => {
     dispatch(listVehicles(keyword, pageNumber, searchDate))
+    dispatch(compareDetails())
   }, [dispatch, keyword, pageNumber, searchDate])
 
   const searchDateHandler = () => {
@@ -77,8 +81,8 @@ const HomeScreen = ({ match }) => {
         </Modal.Footer>
       </Modal>
 
-      <h3 className='pb-0'>Let’s find your ideal car</h3>
-      <p>Search, Compare & Save</p>
+      <h3 className='pb-0'>Let’s find your ideal car </h3>
+      <p>Search, Compare & Save </p>
       <Container className='searchBar my-3'>
         <Form>
           <InputGroup style={{ height: '45px' }}>

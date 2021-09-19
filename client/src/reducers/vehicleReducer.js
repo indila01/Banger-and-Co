@@ -1,4 +1,7 @@
 import {
+  VEHICLE_COMPARE_FAIL,
+  VEHICLE_COMPARE_REQUEST,
+  VEHICLE_COMPARE_SUCCESS,
   VEHICLE_CREATE_FAIL,
   VEHICLE_CREATE_REQUEST,
   VEHICLE_CREATE_RESET,
@@ -124,6 +127,19 @@ export const vehicleTopRatedReducer = (state = { vehicles: [] }, action) => {
     case VEHICLE_TOP_SUCCESS:
       return { loading: false, vehicles: action.payload }
     case VEHICLE_TOP_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const vehicleCompareReducer = (state = { compare: {} }, action) => {
+  switch (action.type) {
+    case VEHICLE_COMPARE_REQUEST:
+      return { loading: true }
+    case VEHICLE_COMPARE_SUCCESS:
+      return { loading: false, success: true, compare: action.payload }
+    case VEHICLE_COMPARE_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state

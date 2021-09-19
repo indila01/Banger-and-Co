@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import {
+  vehicleCompareReducer,
   vehicleCreateReducer,
   vehicleDeleteReducer,
   vehicleDetailstReducer,
@@ -39,6 +40,7 @@ const reducer = combineReducers({
   vehicleUpdate: vehicleUpdateReducer,
   vehicleReviewCreate: vehicleReviewCreateReducer,
   vehicleTopRated: vehicleTopRatedReducer,
+  vehicleCompare: vehicleCompareReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,

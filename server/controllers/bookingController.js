@@ -23,10 +23,12 @@ const createBooking = asyncHandler(async (req, res) => {
 
   //verify license
   const user = await User.findById(req.user._id)
-  // const documents = user.documents
+
+  //dmv
   const { data: licenseNumbers } = await axios.get(
     'http://localhost:3131/api/dmv'
   )
+
   const checkLicenseNumber = (obj) =>
     obj.licensenumber === driverDetails.driverLicenseNumber
 
@@ -60,6 +62,17 @@ const createBooking = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error(
       'Your license number is expired or stolen. Please contact DMV'
+    )
+  }
+
+  //insurers
+  const { data: NIC } = await axios.get('http://localhost:3131/api/insurance')
+  const checkNIC = (obj) => obj.NIC === driverDetails.driverNIC
+
+  if (NIC.some(checkNIC)) {
+    res.status(400)
+    throw new Error(
+      'Your made fraudulent claims for car accidents. You cannon book vehicles'
     )
   }
 

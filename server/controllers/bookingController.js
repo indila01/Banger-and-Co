@@ -26,7 +26,7 @@ const createBooking = asyncHandler(async (req, res) => {
 
   //dmv
   const { data: licenseNumbers } = await axios.get(
-    'http://localhost:3131/api/dmv'
+    'https://bangerexternalapi.azurewebsites.net/api/dmv'
   )
 
   const checkLicenseNumber = (obj) =>
@@ -66,7 +66,9 @@ const createBooking = asyncHandler(async (req, res) => {
   }
 
   //insurers
-  const { data: NIC } = await axios.get('http://localhost:3131/api/insurance')
+  const { data: NIC } = await axios.get(
+    'https://bangerexternalapi.azurewebsites.net/api/insurance'
+  )
   const checkNIC = (obj) => obj.NIC === driverDetails.driverNIC
 
   if (NIC.some(checkNIC)) {

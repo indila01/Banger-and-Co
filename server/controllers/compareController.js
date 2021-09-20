@@ -6,7 +6,9 @@ import axios from 'axios'
 // @route   GET  /api/user/
 // @access  Private/admin
 const compareDetails = asyncHandler(async (req, res) => {
-  const { data } = await axios.get('http://localhost:3131/api/prices')
+  const { data } = await axios.get(
+    'https://bangerexternalapi.azurewebsites.net/api/prices'
+  )
   res.json(data)
 })
 
